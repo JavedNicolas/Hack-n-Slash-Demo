@@ -14,6 +14,8 @@ public class MovementController : MonoBehaviour
     // Path variable
     private List<Vector3> path = new List<Vector3>();
     NavMeshPath navMeshPath;
+
+    // distance stop
     float distanceToStop = 0.1f;
 
     void Awake()

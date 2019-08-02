@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "Enemies")]
+[System.Serializable]
 public class Enemy : Being
 {
+    public Enemy(float currentLife, float baseLife, float shield, float aSPD, float attackRange, float strength, List<Skill> skills, float movementSpeedPercentage) :
+        base(currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage){
 
+    }
+
+    public Enemy() { }
 }

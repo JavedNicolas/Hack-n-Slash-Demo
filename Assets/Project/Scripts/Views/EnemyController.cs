@@ -12,8 +12,14 @@ public class EnemyController : MovementController
     List<PlayerController> players = new List<PlayerController>();
     public Enemy enemy;
 
+    int closestPlayerIndex = 0;
+    Vector3 closestPlayerPosition;
+    float closestPlayerDistance;
+
     void Start()
     {
+        enemy.skills.Add(new BasicAttack(10));
+        
         players = FindObjectsOfType<PlayerController>().ToList();
         InvokeRepeating("checkForPlayerInRange", 0.0f, 0.1f);
     }
@@ -21,6 +27,7 @@ public class EnemyController : MovementController
     private void Update()
     {
         setMoveSpeed(enemy.movementSpeedPercentage);
+        checkIfPLayerIsInAttackRange();
     }
 
     /// <summary>
@@ -30,8 +37,9 @@ public class EnemyController : MovementController
     {
         if (players.Count > 0)
         {
-            Vector3 closestPlayerPosition = players[0].transform.position;
-            float closestPlayerDistance = Vector3.Distance(transform.position, closestPlayerPosition);
+            closestPlayerIndex = 0;
+            closestPlayerPosition = players[0].transform.position;
+            closestPlayerDistance = Vector3.Distance(transform.position, closestPlayerPosition);
 
             for (int i = 1; i < players.Count; i++)
             {
@@ -41,6 +49,7 @@ public class EnemyController : MovementController
                 {
                     closestPlayerPosition = players[i].transform.position;
                     closestPlayerDistance = distance2;
+                    closestPlayerIndex = i;
                 }   
             }
 
@@ -48,10 +57,21 @@ public class EnemyController : MovementController
             {
                 moveTo(closestPlayerPosition, attackRange);
             }
-
-            if (closestPlayerDistance < attackRange)
-                transform.LookAt(closestPlayerPosition);
-               
         }
+    }
+
+    void checkIfPLayerIsInAttackRange()
+    {
+        if (closestPlayerDistance < attackRange)
+        {
+            transform.LookAt(closestPlayerPosition);
+            attack(players[closestPlayerIndex]);
+        }
+    }
+
+    void attack(PlayerController player)
+    {
+        enemy.skills[0].effect(player.player, enemy.aspd);
+        print(player.player.currentLife);
     }
 }
