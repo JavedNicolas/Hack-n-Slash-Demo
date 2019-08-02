@@ -14,7 +14,7 @@ public class CameraMovement : MonoBehaviour
         camera = GetComponent<Camera>();
     }
 
-    void Update()
+    void LateUpdate()
     {
         movement();
     }
@@ -27,5 +27,6 @@ public class CameraMovement : MonoBehaviour
         Vector3 cameraPosition = camera.transform.position;
         Vector3 playerPosition = playerController.transform.position;
         camera.transform.position = new Vector3(playerPosition.x, cameraPosition.y, playerPosition.z - cameraZOffset);
+        camera.transform.eulerAngles = new Vector3(camera.transform.eulerAngles.x, 0, 0);
     }
 }

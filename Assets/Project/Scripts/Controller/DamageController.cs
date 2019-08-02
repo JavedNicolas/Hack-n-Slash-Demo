@@ -18,7 +18,6 @@ public class DamageController
     /// <param name="damage">The damage to apply</param>
     public void applyDamage(Being target, float damage)
     {
-        Debug.Log(damage);
         target.currentLife = Mathf.Clamp(target.currentLife - damage, 0, target.getCurrentMaxLife());
     }
 

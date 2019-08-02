@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Database<T> : ScriptableObject
 {
-    [SerializeField] List<T> elements = new List<T>();
+    [SerializeField] protected List<T> elements = new List<T>();
 
     public T getElementAt(int index)
     {

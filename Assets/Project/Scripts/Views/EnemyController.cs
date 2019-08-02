@@ -28,6 +28,10 @@ public class EnemyController : MovementController
     {
         setMoveSpeed(enemy.movementSpeedPercentage);
         checkIfPLayerIsInAttackRange();
+        if(enemy != null && enemy.currentLife <= 0)
+        {
+            die();
+        }
     }
 
     /// <summary>
@@ -72,6 +76,10 @@ public class EnemyController : MovementController
     void attack(PlayerController player)
     {
         enemy.skills[0].effect(player.player, enemy.aspd);
-        print(player.player.currentLife);
+    }
+
+    void die()
+    {
+        Destroy(gameObject);
     }
 }

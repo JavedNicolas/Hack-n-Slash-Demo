@@ -11,4 +11,14 @@ public class Enemy : Being
     }
 
     public Enemy() { }
+
+    public Enemy(Enemy enemy) : base(enemy.currentLife, enemy.baseLife, enemy.shield, enemy.aspd, enemy.attackRange, enemy.strength, enemy.skills, enemy.movementSpeedPercentage)
+    {
+        this.currentLife = this.baseLife;
+    }
+
+    public void setLife()
+    {
+        currentLife = baseLife;
+    }
 }

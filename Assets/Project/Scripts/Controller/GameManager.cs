@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
 
     // Players & Enemies
-    Player player = new Player(100, 100, 0, 1, 10, 0, new List<Skill>(), 150);
+    Player player = new Player(100, 100, 0, 10, 10, 0, new List<Skill>(), 150);
 
 
     private void Awake()
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this);
         player.prefab = playerPrefab;
-        //enemyDatabase.addElement(new Enemy(100, 100, 0, 3, 5, 10, new List<Skill>(), 100));
+        player.skills.Add(new BasicAttack(50));
     }
 
     // Start is called before the first frame update

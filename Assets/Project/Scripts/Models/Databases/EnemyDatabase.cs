@@ -6,4 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Database/Enemies")]
 public class EnemyDatabase : Database<Enemy>
 {
+   
+
 }

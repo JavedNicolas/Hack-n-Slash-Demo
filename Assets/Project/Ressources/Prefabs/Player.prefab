@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cf7c347c7e95014c89633cfd3030594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transformToMove: {fileID: 1832822816280725536}
   gameObjectHeight: 2
   cameraRotation: 30
   camera: {fileID: 8251357967158934507}
@@ -248,7 +249,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8251357967158934505}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b0eda4316766b54f9a18a701304c30a, type: 3}
   m_Name: 

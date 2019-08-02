@@ -6,9 +6,12 @@ using System.Linq;
 
 public class MovementController : MonoBehaviour
 {
+    public Transform transformToMove;
+
     [Header("Speed")]
     public float gameObjectHeight;
     float movementSpeed;
+    Vector3 yOffset;
 
 
     // Path variable
@@ -21,6 +24,7 @@ public class MovementController : MonoBehaviour
     void Awake()
     {
         navMeshPath = new NavMeshPath();
+        yOffset = new Vector3(0, gameObjectHeight / 2 - 0.1f, 0);
     }
 
     void FixedUpdate()
@@ -35,7 +39,7 @@ public class MovementController : MonoBehaviour
     /// <param name="distanceToStop">Distance from which the move need to be stopped</param>
     protected void moveTo(Vector3 destination, float distanceToStop = 0.1f)
     {
-        NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, navMeshPath);
+        NavMesh.CalculatePath(transformToMove.position, destination, NavMesh.AllAreas, navMeshPath);
         this.distanceToStop = distanceToStop;
 
         if (navMeshPath.corners.Length > 0)
@@ -51,13 +55,11 @@ public class MovementController : MonoBehaviour
     {
         if (path.Count == 0)
             return;
-
-        Vector3 yOffset = new Vector3(0, gameObjectHeight / 2 - 0.1f, 0);
         Vector3 currentPathDestination = path[0] + yOffset;
-        transform.position = Vector3.MoveTowards(transform.position, currentPathDestination, movementSpeed * Time.deltaTime);
-        transform.LookAt(currentPathDestination);
+        transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, movementSpeed * Time.deltaTime);
+        lookAtStraight(currentPathDestination);
 
-        if (transform.position == currentPathDestination ||(path.Count == 1 && Vector3.Distance(transform.position, currentPathDestination) <= distanceToStop))
+        if (transformToMove.position == currentPathDestination ||(path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= distanceToStop))
         {
             path.RemoveAt(0);
         }
@@ -66,5 +68,11 @@ public class MovementController : MonoBehaviour
     protected void setMoveSpeed(float moveSpeedPercent)
     {
         movementSpeed = BeingConstant.baseMoveSpeed * moveSpeedPercent / 100;
+    }
+
+    protected void lookAtStraight(Vector3 position)
+    {
+        transform.LookAt(position);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 }

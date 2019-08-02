@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elements:
   - name: test1
-    currentLife: 0
+    currentLife: 100
     baseLife: 100
     shield: 0
     aspd: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 3}
     movementSpeedPercentage: 100
   - name: test2
-    currentLife: 0
+    currentLife: 100
     baseLife: 100
     shield: 0
     aspd: 2
