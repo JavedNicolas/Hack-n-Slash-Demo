@@ -9,6 +9,9 @@ public class EnemyController : MovementController
     public float dectetionRange = 10f;
     public float attackRange = 2f;
 
+    [Header("EnemyUI")]
+    public LifeUI lifeUI;
+
     List<PlayerController> players = new List<PlayerController>();
     public Enemy enemy;
 
@@ -19,8 +22,10 @@ public class EnemyController : MovementController
     void Start()
     {
         enemy.skills.Add(new BasicAttack(10));
-        
         players = FindObjectsOfType<PlayerController>().ToList();
+
+        lifeUI.setBeing(enemy);
+
         InvokeRepeating("checkForPlayerInRange", 0.0f, 0.1f);
     }
 

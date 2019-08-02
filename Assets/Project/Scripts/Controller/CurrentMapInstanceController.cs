@@ -8,20 +8,27 @@ public class CurrentMapInstanceController
     public static CurrentMapInstanceController instance = new CurrentMapInstanceController();
 
     private CurrentMapInstanceController() {
+
     }
     #endregion
 
-    List<Enemy> enemies = new List<Enemy>();
+    List<GameObject> enemies = new List<GameObject>();
 
-    public void generateEnemies()
+    public void loadZone()
+    {
+        spawnEnemies();
+        
+    }
+
+    void spawnEnemies()
     {
         int numberOfEnemies = Random.Range(1, 10);
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            enemies.Add(GameManager.instance.getEnemyDatabase().getRandomElement());
+            Enemy enemy = GameManager.instance.getEnemyDatabase().getRandomElement();
+            GameObject enemyGO = SpawningController.instance.spawnEnemy(enemy);
+            enemies.Add(enemyGO);
         }
-
-        GameManager.instance.spawnBeings(enemies);
     }
 }

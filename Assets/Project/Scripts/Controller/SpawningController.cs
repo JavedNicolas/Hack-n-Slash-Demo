@@ -14,28 +14,19 @@ public class SpawningController : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void spawnEnemy(Enemy enemy)
+    public GameObject spawnEnemy(Enemy enemy)
     {
         GameObject enemyGO = Instantiate(enemy.prefab);
         enemyGO.GetComponent<EnemyController>().enemy = new Enemy(enemy);
         enemyGO.transform.position = new Vector3(Random.Range(-90, -20), 2, 50);
+        return enemyGO;
     }
 
-    public void spawnPlayer(Player player)
+    public GameObject spawnPlayer(Player player)
     {
         GameObject playerGO = Instantiate(player.prefab);
         playerGO.GetComponentInChildren<PlayerController>().player = player;
         playerGO.transform.position = new Vector3(-87, 2, 8);
+        return playerGO;
     }
 }

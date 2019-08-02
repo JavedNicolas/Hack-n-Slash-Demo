@@ -8,24 +8,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] EnemyDatabase enemyDatabase;
 
     public static GameManager instance;
-    public GameObject playerPrefab;
+    GameObject player;
 
-    // Players & Enemies
-    Player player = new Player(100, 100, 0, 10, 10, 0, new List<Skill>(), 150);
+    // TMP------------------
+    public GameObject playerPrefab;
+    Player playerTMp = new Player(100, 100, 0, 10, 10, 0, new List<Skill>(), 150);
 
 
     private void Awake()
     {
         instance = this;
         DontDestroyOnLoad(this);
-        player.prefab = playerPrefab;
-        player.skills.Add(new BasicAttack(50));
+        playerTMp.prefab = playerPrefab;
+        playerTMp.skills.Add(new BasicAttack(50));
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        CurrentMapInstanceController.instance.generateEnemies();
+        CurrentMapInstanceController.instance.loadZone();
+        spawnPlayer();
+        GameUI.instance.displayUI(player.GetComponentInChildren<PlayerController>().player);
     }
 
     // Update is called once per frame
@@ -34,14 +37,12 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void spawnBeings(List<Enemy> enemies)
+    public void spawnPlayer()
     {
-        for (int i = 0; i < enemies.Count; i++)
-            SpawningController.instance.spawnEnemy(enemies[i]);
-
-        SpawningController.instance.spawnPlayer(player);
+        player = SpawningController.instance.spawnPlayer(playerTMp);
     }
 
     // Getter
     public EnemyDatabase getEnemyDatabase() { return enemyDatabase; }
+    public Player getPlayer() { return player.GetComponentInChildren<PlayerController>().player; }
 }
