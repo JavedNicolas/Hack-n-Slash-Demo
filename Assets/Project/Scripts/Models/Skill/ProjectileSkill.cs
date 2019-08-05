@@ -5,5 +5,5 @@ using UnityEngine;
 public abstract class ProjectileSkill : Skill
 {
     public GameObject model { get; set; }
-
+    public float proectileBaseSpeed = 25;
 }

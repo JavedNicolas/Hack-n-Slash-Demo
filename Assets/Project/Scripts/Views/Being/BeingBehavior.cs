@@ -97,7 +97,6 @@ public class BeingBehavior : MonoBehaviour
             case SkillType.Projectile: projectile((ProjectileSkill)skill, targetedPosition); break;
             case SkillType.Regular: attackRegular(target, skill); break;
             case SkillType.line: break;
-            
         }
     }
 
@@ -127,7 +126,7 @@ public class BeingBehavior : MonoBehaviour
 
             // Apply force to it
             if (projectile.GetComponent<Rigidbody>() != null)
-                projectile.GetComponent<Rigidbody>().AddForce(direction * 100, ForceMode.Impulse);
+                projectile.GetComponent<Rigidbody>().AddForce(direction * skill.proectileBaseSpeed, ForceMode.Impulse);
 
             // set is collision effect
             if (projectile.GetComponent<Projectile>() != null)
