@@ -18,7 +18,7 @@ public class GameUI : BaseUI
         
     }
 
-    public void displayUI(Player player)
+    public void displayUI(Being player)
     {
         lifeUI.GetComponent<LifeUI>().setBeing(player);
     }

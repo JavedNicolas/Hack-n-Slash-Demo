@@ -4,21 +4,17 @@ using UnityEngine;
 
 [System.Serializable]
 public class Enemy : Being
-{
-    public Enemy(float currentLife, float baseLife, float shield, float aSPD, float attackRange, float strength, List<Skill> skills, float movementSpeedPercentage) :
-        base(currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage){
-
-    }
-
-    public Enemy() { }
-
-    public Enemy(Enemy enemy) : base(enemy.currentLife, enemy.baseLife, enemy.shield, enemy.aspd, enemy.attackRange, enemy.strength, enemy.skills, enemy.movementSpeedPercentage)
+{ 
+    public Enemy(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Skill> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed) : base(name, currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
     {
-        this.currentLife = this.baseLife;
     }
 
-    public void setLife()
+    public Enemy()
     {
-        currentLife = baseLife;
     }
+
+    public Enemy(Enemy enemy) : base(enemy.name, enemy.baseLife, enemy.baseLife, enemy.shield, enemy.bonusAttackSpeed, enemy.attackRange, enemy.strength, enemy.skills, enemy.movementSpeedBonus, enemy.prefab, enemy.projectileSpeed)
+    {
+    }
+
 }

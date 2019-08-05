@@ -20,7 +20,7 @@ public class EnemyDatabaseEditor : Editor
     {
         if (GUILayout.Button("Add an enemy")){
             EnemyDatabaseWindow windows = new EnemyDatabaseWindow();
-            windows.showWindows(enemyDatabase, new Enemy());
+            windows.showWindows(enemyDatabase);
         }
 
         for (int i =0; i < enemyDatabase.getDatabaseSize(); i++)

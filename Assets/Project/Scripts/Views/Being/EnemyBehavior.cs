@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class EnemyController : MovementController
+public class EnemyBehavior : BeingBehavior
 {
     [Header("Player Dectection")]
     public float dectetionRange = 10f;
@@ -12,8 +12,7 @@ public class EnemyController : MovementController
     [Header("EnemyUI")]
     public LifeUI lifeUI;
 
-    List<PlayerController> players = new List<PlayerController>();
-    public Enemy enemy;
+    List<PlayerBehavior> players = new List<PlayerBehavior>();
 
     int closestPlayerIndex = 0;
     Vector3 closestPlayerPosition;
@@ -21,19 +20,18 @@ public class EnemyController : MovementController
 
     void Start()
     {
-        enemy.skills.Add(new BasicAttack(10));
-        players = FindObjectsOfType<PlayerController>().ToList();
+        being.skills.Add(new BasicAttack(10));
+        players = FindObjectsOfType<PlayerBehavior>().ToList();
 
-        lifeUI.setBeing(enemy);
+        lifeUI.setBeing(being);
 
         InvokeRepeating("checkForPlayerInRange", 0.0f, 0.1f);
     }
 
     private void Update()
     {
-        setMoveSpeed(enemy.movementSpeedPercentage);
         checkIfPLayerIsInAttackRange();
-        if(enemy != null && enemy.currentLife <= 0)
+        if(being != null && being.currentLife <= 0)
         {
             die();
         }
@@ -69,22 +67,14 @@ public class EnemyController : MovementController
         }
     }
 
+    /// <summary>
+    /// Check if the player is in attack range if so attack
+    /// </summary>
     void checkIfPLayerIsInAttackRange()
     {
         if (closestPlayerDistance < attackRange)
         {
-            transform.LookAt(closestPlayerPosition);
-            attack(players[closestPlayerIndex]);
+            attack(being.skills[0], closestPlayerPosition, players[closestPlayerIndex]);
         }
-    }
-
-    void attack(PlayerController player)
-    {
-        enemy.skills[0].effect(player.player, enemy.aspd);
-    }
-
-    void die()
-    {
-        Destroy(gameObject);
     }
 }

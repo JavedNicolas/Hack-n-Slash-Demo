@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Player : Being
 {
-    public Player(float currentLife, float baseLife, float shield, float aSPD, float attackRange, float strength, List<Skill> skills, float movementSpeedPercentage) : 
-        base(currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage)
+    public Player(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Skill> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed) : base(name, currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
     {
-        
     }
 }

@@ -12,24 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e189dde40a143854aab697413c5d2153, type: 3}
   m_Name: EnemyDatabase
   m_EditorClassIdentifier: 
-  elements:
-  - name: test1
-    currentLife: 0
-    baseLife: 100
-    shield: 0
-    aspd: 1
-    attackRange: 0
-    strength: 0
-    prefab: {fileID: 7699618545951562393, guid: 539abc4bc8423374ea56e4d48393cccc,
-      type: 3}
-    movementSpeedPercentage: 100
-  - name: test2
-    currentLife: 0
-    baseLife: 100
-    shield: 0
-    aspd: 2
-    attackRange: 0
-    strength: 0
-    prefab: {fileID: 7699618545951562393, guid: 32c51c63ea64b644c931f9d6d037aeac,
-      type: 3}
-    movementSpeedPercentage: 200
+  elements: []

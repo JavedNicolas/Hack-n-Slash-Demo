@@ -12,15 +12,17 @@ public class GameManager : MonoBehaviour
 
     // TMP------------------
     public GameObject playerPrefab;
-    Player playerTMp = new Player(100, 100, 0, 10, 10, 0, new List<Skill>(), 150);
+    public GameObject projectilePrefab;
+    Player playerTMp;
 
 
     private void Awake()
     {
         instance = this;
         DontDestroyOnLoad(this);
-        playerTMp.prefab = playerPrefab;
-        playerTMp.skills.Add(new BasicAttack(50));
+        playerTMp = new Player("Test", 100, 100, 0, 10, 10, 0, new List<Skill>(), 50, playerPrefab, 0);
+        playerTMp.skills.Add(new BasicAttack(10));
+        playerTMp.skills.Add(new LightningBall(50, projectilePrefab));
     }
 
     // Start is called before the first frame update
@@ -28,7 +30,7 @@ public class GameManager : MonoBehaviour
     {
         CurrentMapInstanceController.instance.loadZone();
         spawnPlayer();
-        GameUI.instance.displayUI(player.GetComponentInChildren<PlayerController>().player);
+        GameUI.instance.displayUI(player.GetComponentInChildren<PlayerBehavior>().being);
     }
 
     // Update is called once per frame
@@ -44,5 +46,5 @@ public class GameManager : MonoBehaviour
 
     // Getter
     public EnemyDatabase getEnemyDatabase() { return enemyDatabase; }
-    public Player getPlayer() { return player.GetComponentInChildren<PlayerController>().player; }
+    public Being getPlayer() { return player.GetComponentInChildren<PlayerBehavior>().being; }
 }

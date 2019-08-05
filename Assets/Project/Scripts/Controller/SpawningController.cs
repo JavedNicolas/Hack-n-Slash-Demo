@@ -17,7 +17,7 @@ public class SpawningController : MonoBehaviour
     public GameObject spawnEnemy(Enemy enemy)
     {
         GameObject enemyGO = Instantiate(enemy.prefab);
-        enemyGO.GetComponent<EnemyController>().enemy = new Enemy(enemy);
+        enemyGO.GetComponent<EnemyBehavior>().being = new Enemy(enemy);
         enemyGO.transform.position = new Vector3(Random.Range(-90, -20), 2, 50);
         return enemyGO;
     }
@@ -25,7 +25,7 @@ public class SpawningController : MonoBehaviour
     public GameObject spawnPlayer(Player player)
     {
         GameObject playerGO = Instantiate(player.prefab);
-        playerGO.GetComponentInChildren<PlayerController>().player = player;
+        playerGO.GetComponentInChildren<PlayerBehavior>().being = player;
         playerGO.transform.position = new Vector3(-87, 2, 8);
         return playerGO;
     }

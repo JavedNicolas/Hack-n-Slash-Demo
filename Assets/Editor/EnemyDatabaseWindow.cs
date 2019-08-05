@@ -10,24 +10,31 @@ public class EnemyDatabaseWindow : EditorWindow
     Enemy enemy;
     int databaseIndex;
 
-    public void showWindows(EnemyDatabase database, Enemy enemy, bool edit = false, int index = -1)
+    // Enemy Field
+    string enemyName;
+    float baseLife;
+    float attackSpeedBonus;
+    GameObject prefab;
+    float movementSpeedBonus;
+
+
+    public void showWindows(EnemyDatabase database, Enemy enemy = null, bool edit = false, int index = -1)
     {
         this.Show();
         this.database = database;
         this.edit = edit;
-        this.enemy = enemy;
         this.databaseIndex = index;
+        updateEnemy(enemy);
     }
 
     void OnGUI()
-    {
+    { 
         EditorGUILayout.BeginVertical();
-
-        enemy.name = EditorGUILayout.TextField("Name : ", enemy.name);
-        enemy.baseLife = EditorGUILayout.FloatField("baseLife : ", enemy.baseLife);
-        enemy.aspd = EditorGUILayout.FloatField("Attack per Second :", enemy.aspd);
-        enemy.prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", enemy.prefab, typeof(GameObject), false);
-        enemy.movementSpeedPercentage = EditorGUILayout.FloatField("Movement Speed Percentage : ", enemy.movementSpeedPercentage);
+        enemyName = EditorGUILayout.TextField("Name : ", enemyName);
+        baseLife = EditorGUILayout.FloatField("baseLife : ", baseLife);
+        attackSpeedBonus = EditorGUILayout.FloatField("Attack Speed Bonus :", attackSpeedBonus);
+        prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", prefab, typeof(GameObject), false);
+        movementSpeedBonus = EditorGUILayout.FloatField("Movement Speed Bonus : ", movementSpeedBonus);
 
         EditorGUILayout.EndVertical();
         displayButtons();
@@ -40,6 +47,7 @@ public class EnemyDatabaseWindow : EditorWindow
         {
             if (GUILayout.Button("Update"))
             {
+                updateEnemy();
                 database.updateElement(enemy, databaseIndex);
                 EditorUtility.SetDirty(database);
                 AssetDatabase.SaveAssets();
@@ -51,6 +59,7 @@ public class EnemyDatabaseWindow : EditorWindow
         {
             if (GUILayout.Button("Add"))
             {
+                updateEnemy();
                 database.addElement(enemy);
                 EditorUtility.SetDirty(database);
                 AssetDatabase.SaveAssets();
@@ -59,6 +68,7 @@ public class EnemyDatabaseWindow : EditorWindow
             }
             if (GUILayout.Button("Add & continue"))
             {
+                updateEnemy();
                 database.addElement(enemy);
                 EditorUtility.SetDirty(database);
                 AssetDatabase.SaveAssets();
@@ -72,5 +82,19 @@ public class EnemyDatabaseWindow : EditorWindow
             this.Close();
         }
         EditorGUILayout.EndHorizontal();
+    }
+
+    void updateEnemy(Enemy enemyToEdit = null)
+    {
+        if(enemyToEdit == null)
+            enemy = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Skill>(), movementSpeedBonus, prefab, 0);
+        else
+        {
+            enemyName = enemyToEdit.name;
+            baseLife = enemyToEdit.baseLife;
+            attackSpeedBonus = enemyToEdit.bonusAttackSpeed;
+            movementSpeedBonus = enemyToEdit.movementSpeedBonus;
+            prefab = enemyToEdit.prefab;
+        }
     }
 }
