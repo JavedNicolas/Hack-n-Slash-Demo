@@ -5,14 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="Basic Attack", menuName = "Skills/Attacks/Basic Attack")]
 public class BasicAttack : Skill
 {
-    public float damage;
-
-    public BasicAttack(float damage)
-    {
-        this.damage = damage;
-        this.skillType = SkillType.Regular;
-        this.coolDownType = SkillCoolDownType.Attack;
-    }
+    public override SkillType skillType => SkillType.Regular;
+    public override SkillCoolDownType coolDownType => SkillCoolDownType.Attack;
 
     public override void animation()
     {
@@ -21,6 +15,6 @@ public class BasicAttack : Skill
 
     public override void effect(Being target, Being sender)
     {
-       target.takeDamage(damage);
+       target.takeDamage(10);
     }
 }

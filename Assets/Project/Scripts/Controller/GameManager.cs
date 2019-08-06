@@ -21,8 +21,8 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this);
         playerTMp = new Player("Test", 100, 100, 0, 10, 10, 0, new List<Skill>(), 50, playerPrefab, 100);
-        playerTMp.skills.Add(new BasicAttack(10));
-        playerTMp.skills.Add(new LightningBall(50, projectilePrefab));
+        playerTMp.skills.Add(new BasicAttack());
+        playerTMp.skills.Add(new LightningBall());
     }
 
     // Start is called before the first frame update

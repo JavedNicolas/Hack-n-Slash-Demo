@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class LightningBall : ProjectileSkill
 {
-    public float damage = 10f; 
+    public override int numberOfProjectile => 3;
+    public override ProjectileFormType projectileFormType => ProjectileFormType.Cone;
+    public override float offsetBetweenProjectile => 3;
+    public override SkillType skillType => SkillType.Projectile;
+    public override SkillCoolDownType coolDownType => SkillCoolDownType.Spell;
 
-    public LightningBall(float damage, GameObject projectilePrefab)
+    public LightningBall()
     {
-        this.damage = damage;
-        this.model = projectilePrefab;
-        this.skillType = SkillType.Projectile;
-        this.coolDownType = SkillCoolDownType.Spell;
-        this.projectileFormType = ProjectileFormType.Cone;
-        this.numberOfProjectile = 5;
-        this.offsetBetweenProjectile = 3;
+        this.model = Resources.Load<GameObject>(SkillConstant.projectilePrefabFolder + "LightningBall");
     }
+
 
     public override void animation()
     {
@@ -24,6 +23,6 @@ public class LightningBall : ProjectileSkill
 
     public override void effect(Being target, Being sender)
     {
-        target.takeDamage(damage);
+        target.takeDamage(50);
     }
 }

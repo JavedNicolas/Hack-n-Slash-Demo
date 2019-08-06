@@ -6,8 +6,8 @@ public abstract class Skill
 {
     protected float lastTimeUsed = Time.time;
 
-    public SkillType skillType;
-    public SkillCoolDownType coolDownType;
+    public abstract SkillType skillType { get; }
+    public abstract SkillCoolDownType coolDownType { get; }
 
     abstract public void animation();
     abstract public void effect(Being target, Being sender);
