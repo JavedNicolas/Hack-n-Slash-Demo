@@ -5,9 +5,9 @@ using UnityEngine;
 public abstract class Skill
 {
     protected float lastTimeUsed = Time.time;
- 
-    abstract public SkillType skillType { get; }
-    abstract public SkillCoolDownType coolDownType { get; } 
+
+    public SkillType skillType;
+    public SkillCoolDownType coolDownType;
 
     abstract public void animation();
     abstract public void effect(Being target, Being sender);

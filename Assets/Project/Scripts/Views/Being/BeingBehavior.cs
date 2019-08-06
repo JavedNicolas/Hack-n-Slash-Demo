@@ -116,30 +116,91 @@ public class BeingBehavior : MonoBehaviour
 
         if (skill.isSkillAvailable(being))
         {
-            // create projectile
-            GameObject projectile = Instantiate(skill.model);
-            projectile.transform.position = transform.position;
-
-            // get projectile direction
-            Vector3 direction = (targetPosition - transform.position).normalized;
-            direction.y = 0;
-
-            // Apply force to it
-            if (projectile.GetComponent<Rigidbody>() != null)
-                projectile.GetComponent<Rigidbody>().AddForce(direction * skill.proectileBaseSpeed, ForceMode.Impulse);
-
-            // set is collision effect
-            if (projectile.GetComponent<Projectile>() != null)
+            int numberOfProjectile = skill.getNumberOfProjectile(being);
+            for (int i = 0; i < numberOfProjectile; i++)
             {
-                projectile.GetComponent<Projectile>().sender = being;
-                projectile.GetComponent<Projectile>().projectileCollisionDelegate = skill.effect;
-            }
-            skill.skillHasBeenUsed();
+                // create projectile
+                GameObject projectile = Instantiate(skill.model);
+                projectile.transform.position = projectileStartPosition(skill, i, numberOfProjectile);
 
-            Destroy(projectile, 1f);
+                // get projectile direction
+                Vector3 direction = projectileDirection(skill, i, numberOfProjectile, targetPosition);
+                direction.y = 0;
+
+                // Apply force to it
+                if (projectile.GetComponent<Rigidbody>() != null)
+                {
+                    float projectileSpeed = skill.projectileBaseSpeed + (skill.projectileBaseSpeed * (being.projectileSpeed / 100));
+                    projectile.GetComponent<Rigidbody>().AddForce(direction * projectileSpeed, ForceMode.Impulse);
+                }
+
+
+                // set is collision effect
+                if (projectile.GetComponent<Projectile>() != null)
+                {
+                    projectile.GetComponent<Projectile>().sender = being;
+                    projectile.GetComponent<Projectile>().projectileCollisionDelegate = skill.effect;
+                }
+                skill.skillHasBeenUsed();
+
+                Destroy(projectile, 1f);
+            }
         }
-       
-        
+    }
+
+    /// <summary>
+    /// Set the projectile starting position
+    /// </summary>
+    /// <param name="projectile">The projectile Object</param>
+    /// <param name="skill">The skill sending the projectile</param>
+    /// <param name="projectileCurrentIndex">The current projectile begin sent</param>
+    /// <param name="numberOfProjectile">The number of project</param>
+    Vector3 projectileStartPosition(ProjectileSkill skill, int projectileCurrentIndex, int numberOfProjectile)
+    {
+        Vector3 position = new Vector3();
+
+
+        switch (skill.projectileFormType) {
+            case ProjectileFormType.Line:
+                float totalProjectileLineLength = skill.offsetBetweenProjectile * (numberOfProjectile - 1);
+                float currentProjectileOffset = -totalProjectileLineLength / 2 + skill.offsetBetweenProjectile * projectileCurrentIndex;
+                position = transform.position + (transform.right * currentProjectileOffset);
+                break;
+            case ProjectileFormType.Cone:
+                position = transform.position;
+                break;
+        }
+
+        return position;
+    }
+
+    /// <summary>
+    /// Set the projectile Direction
+    /// </summary>
+    /// <param name="skill">The skill sending the projectile</param>
+    /// <param name="projectileCurrentIndex">The current projectile being send</param>
+    /// <param name="numberOfProjectile"> The total number of projectile</param>
+    /// <param name="targetPosition"> The position where the projectile need to head to</param>
+    /// <returns></returns>
+    Vector3 projectileDirection(ProjectileSkill skill, int projectileCurrentIndex, int numberOfProjectile, Vector3 targetPosition)
+    {
+        Vector3 direction = new Vector3();
+
+        switch (skill.projectileFormType)
+        {
+            case ProjectileFormType.Cone:
+                float totalProjectileLineLength = skill.offsetBetweenProjectile * (numberOfProjectile - 1);
+                float currentProjectileOffset = -totalProjectileLineLength / 2 + skill.offsetBetweenProjectile * projectileCurrentIndex;
+
+                targetPosition = targetPosition + (transform.right * currentProjectileOffset);
+                direction = (targetPosition - transform.position).normalized;
+
+                break;
+            case ProjectileFormType.Line: direction = (targetPosition - transform.position).normalized; break;
+        }
+        direction.y = 0;
+
+        return direction;
     }
 
     protected void die()

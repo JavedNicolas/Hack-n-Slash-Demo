@@ -11,3 +11,8 @@ public enum SkillCoolDownType
 {
     Attack, Spell, CooldownSpell
 }
+
+public enum ProjectileFormType
+{
+    Cone, Line
+}

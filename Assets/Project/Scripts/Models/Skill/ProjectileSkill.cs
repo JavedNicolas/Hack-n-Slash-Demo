@@ -4,6 +4,14 @@ using UnityEngine;
 
 public abstract class ProjectileSkill : Skill
 {
-    public GameObject model { get; set; }
-    public float proectileBaseSpeed = 25;
+    public GameObject model;
+    public float projectileBaseSpeed = 25;
+    public int numberOfProjectile;
+    public ProjectileFormType projectileFormType;
+    public float offsetBetweenProjectile;
+
+    public int getNumberOfProjectile(Being sender)
+    {
+        return numberOfProjectile;
+    }
 }

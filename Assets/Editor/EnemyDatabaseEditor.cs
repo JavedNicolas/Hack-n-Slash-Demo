@@ -6,7 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(EnemyDatabase))]
 public class EnemyDatabaseEditor : Editor
 {
-    [SerializeField] EnemyDatabase enemyDatabase;
+    EnemyDatabase enemyDatabase;
 
     private void OnEnable()
     {

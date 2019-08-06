@@ -6,15 +6,13 @@ using UnityEngine;
 public class BasicAttack : Skill
 {
     public float damage;
-    public override SkillType skillType => SkillType.Regular;
-    public override SkillCoolDownType coolDownType => SkillCoolDownType.Attack;
 
     public BasicAttack(float damage)
     {
         this.damage = damage;
+        this.skillType = SkillType.Regular;
+        this.coolDownType = SkillCoolDownType.Attack;
     }
-
-
 
     public override void animation()
     {

@@ -18,7 +18,10 @@ public class Projectile : MonoBehaviour
             {
                 projectileCollisionDelegate(beingTouched, sender);
             }
-            
+        }else
+        {
+            if(other.CompareTag(Tags.Environment.ToString()))
+                Destroy(gameObject);
         }
     }
 }
