@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LifeUI : MonoBehaviour
 {
     public Image lifeFill;
-    public bool isEnemyBar;
+    public bool isSmallLifeBar;
+    public TextMeshProUGUI lifeAsText;
     Being being;
 
     private void Update()
     {
-        if(isEnemyBar)
+        if(isSmallLifeBar)
         {
             transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.back, Camera.main.transform.rotation * Vector3.up);
         }
@@ -21,7 +23,12 @@ public class LifeUI : MonoBehaviour
     public void updateLife()
     {
         if(being != null)
+        {
             lifeFill.fillAmount = being.currentLife / being.baseLife;
+            if (!isSmallLifeBar)
+                lifeAsText.text = being.currentLife.ToString() + "/" + being.baseLife.ToString();
+        }
+        
     }
 
     public void setBeing(Being being)

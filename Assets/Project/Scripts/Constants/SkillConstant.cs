@@ -6,7 +6,6 @@ public static class SkillConstant
 {
     public static string skillPrefabFolder = "Prefabs/Skills/";
     public static string projectilePrefabFolder = skillPrefabFolder + "Projectile/";
-
 }
 
 

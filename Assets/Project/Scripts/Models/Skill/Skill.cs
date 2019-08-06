@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Skill
 {
-    protected float lastTimeUsed = Time.time;
+    protected float lastTimeUsed = 0f;
 
     public abstract SkillType skillType { get; }
     public abstract SkillCoolDownType coolDownType { get; }

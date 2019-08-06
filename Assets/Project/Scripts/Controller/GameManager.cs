@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Database")]
     [SerializeField] EnemyDatabase enemyDatabase;
+    SkillDatabase skillDatabase;
 
     public static GameManager instance;
     GameObject player;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        skillDatabase = new SkillDatabase();
         instance = this;
         DontDestroyOnLoad(this);
         playerTMp = new Player("Test", 100, 100, 0, 10, 10, 0, new List<Skill>(), 50, playerPrefab, 100);
