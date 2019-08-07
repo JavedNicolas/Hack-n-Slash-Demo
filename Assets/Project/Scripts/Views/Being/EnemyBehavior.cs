@@ -20,7 +20,7 @@ public class EnemyBehavior : BeingBehavior
 
     void Start()
     {
-        being.skills.Add(new BasicAttack());
+        being.skills.Add(new LightningBall());
         players = FindObjectsOfType<PlayerBehavior>().ToList();
 
         lifeUI.setBeing(being);

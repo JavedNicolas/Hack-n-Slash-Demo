@@ -111,8 +111,8 @@ GameObject:
   - component: {fileID: 7699618545951562394}
   - component: {fileID: 7699618545951562395}
   - component: {fileID: 7699618545951562392}
-  - component: {fileID: 7699618545951562396}
   - component: {fileID: 7699618545951562399}
+  - component: {fileID: 67181495969369756}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -194,23 +194,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7699618545951562396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7699618545951562393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebefabd802ae6eb42b6dde65f891dcc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transformToMove: {fileID: 7699618545951562397}
-  gameObjectHeight: 2
-  dectetionRange: 30
-  attackRange: 10
-  lifeUI: {fileID: 528517487798713340}
 --- !u!54 &7699618545951562399
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -227,6 +210,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &67181495969369756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7699618545951562393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe3eceded1457e4291db49e16fade2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformToMove: {fileID: 7699618545951562397}
+  gameObjectHeight: 2
+  dectetionRange: 30
+  attackRange: 20
+  lifeUI: {fileID: 528517487798713340}
 --- !u!1001 &4063416995716116836
 PrefabInstance:
   m_ObjectHideFlags: 0

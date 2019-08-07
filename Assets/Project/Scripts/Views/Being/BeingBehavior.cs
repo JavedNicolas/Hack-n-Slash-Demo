@@ -138,7 +138,7 @@ public class BeingBehavior : MonoBehaviour
                 // set is collision effect
                 if (projectile.GetComponent<Projectile>() != null)
                 {
-                    projectile.GetComponent<Projectile>().sender = being;
+                    projectile.GetComponent<Projectile>().senderObject = this;
                     projectile.GetComponent<Projectile>().projectileCollisionDelegate = skill.effect;
                 }
                 skill.skillHasBeenUsed();

@@ -7,16 +7,16 @@ public class Projectile : MonoBehaviour
     public delegate void ProjectileCollision(Being target, Being sender);
     public ProjectileCollision projectileCollisionDelegate;
 
-    public Being sender;
+    public BeingBehavior senderObject;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<BeingBehavior>() != null)
         {
             Being beingTouched = other.GetComponent<BeingBehavior>().being;
-            if(beingTouched != sender)
+            if(!other.CompareTag(senderObject.tag))
             {
-                projectileCollisionDelegate(beingTouched, sender);
+                projectileCollisionDelegate(beingTouched, senderObject.being);
             }
         }else
         {
