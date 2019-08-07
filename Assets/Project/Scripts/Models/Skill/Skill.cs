@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Skill
 {
     protected float lastTimeUsed = 0f;
 
+    public abstract Sprite icon { get; }
     public abstract SkillType skillType { get; }
     public abstract SkillCoolDownType coolDownType { get; }
 

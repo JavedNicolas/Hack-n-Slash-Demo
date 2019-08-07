@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class PlayerBehavior : BeingBehavior
 {
@@ -21,6 +22,9 @@ public class PlayerBehavior : BeingBehavior
     {
         if (Input.GetButton("Fire1"))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit) && hit.transform.gameObject.layer == (int)LayersIndex.Ground)
@@ -32,37 +36,45 @@ public class PlayerBehavior : BeingBehavior
     {
         if (Input.GetButton("Fire2"))
         {
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit mousehit;
             if (Physics.Raycast(ray, out mousehit))
             {
-                if(Vector3.Distance(transform.position, mousehit.point) > being.attackRange)
+                if (Vector3.Distance(transform.position, mousehit.point) > being.attackRange)
                 {
                     moveTo(mousehit.point, being.attackRange);
                 }
                 else
                 {
-                    if (mousehit.transform.CompareTag("Enemy"))
+                    if (mousehit.transform.CompareTag(Tags.Enemy.ToString()))
                     {
-                        attack(being.skills[0], new Vector3(0, 0, 0), mousehit.transform.GetComponent<EnemyBehavior>());
+                        attack(being.skills[0], mousehit.point, mousehit.transform.GetComponent<EnemyBehavior>());
                     }
                 }
             }
         }
-        if (Input.GetKey(KeyCode.A))
-        {
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit mousehit;
-            if (Physics.Raycast(ray, out mousehit))
+        for (int i = 0; i < SkillBarUI.instance.getSkillSlotNumber(); i++)
+        {
+            SkillSlotUI skillSlot = SkillBarUI.instance.getSkillAtIndex(i);
+
+            if (Input.GetButton(skillSlot.inputName))
             {
-                if(being.skills[1].skillType == SkillType.Projectile)
+                if(skillSlot != null)
                 {
-                    
-                    attack(being.skills[1], mousehit.point);
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit mousehit;
+                    if (Physics.Raycast(ray, out mousehit))
+                    {
+                        EnemyBehavior enemyBehavior = null;
+                        // Check if there was an enemy under the mouse
+                        if (mousehit.transform.CompareTag(Tags.Enemy.ToString()))
+                            enemyBehavior = mousehit.transform.GetComponent<EnemyBehavior>();
+
+                        attack(skillSlot.skill, mousehit.point, enemyBehavior);
+                    }
+                        
                 }
-                
             }
         }
     }

@@ -9,6 +9,7 @@ public class LightningBall : ProjectileSkill
     public override float offsetBetweenProjectile => 3;
     public override SkillType skillType => SkillType.Projectile;
     public override SkillCoolDownType coolDownType => SkillCoolDownType.Spell;
+    public override Sprite icon => throw new System.NotImplementedException();
 
     public LightningBall()
     {

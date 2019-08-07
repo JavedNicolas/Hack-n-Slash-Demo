@@ -48,5 +48,5 @@ public class GameManager : MonoBehaviour
 
     // Getter
     public EnemyDatabase getEnemyDatabase() { return enemyDatabase; }
-    public Being getPlayer() { return player.GetComponentInChildren<PlayerBehavior>().being; }
+    public Player getPlayer() { return (Player)player.GetComponentInChildren<PlayerBehavior>().being; }
 }

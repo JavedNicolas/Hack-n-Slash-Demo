@@ -6,6 +6,7 @@ public class BasicAttack : Skill
 {
     public override SkillType skillType => SkillType.Regular;
     public override SkillCoolDownType coolDownType => SkillCoolDownType.Attack;
+    public override Sprite icon => throw new System.NotImplementedException();
 
     public override void animation()
     {
