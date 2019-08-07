@@ -13,7 +13,6 @@ public class SkillBarUI: MonoBehaviour
         instance = this;
     }
 
-
     /// <summary>
     /// Get the number of skill slot available
     /// </summary>
@@ -31,7 +30,7 @@ public class SkillBarUI: MonoBehaviour
     /// <returns></returns>
     public SkillSlotUI getSkillAtIndex(int index)
     {
-        if (index > numberOfSkillSlot.Count - 1)
+        if (index > numberOfSkillSlot.Count)
             return null;
 
         return numberOfSkillSlot[index];

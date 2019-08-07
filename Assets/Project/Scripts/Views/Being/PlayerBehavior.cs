@@ -60,7 +60,7 @@ public class PlayerBehavior : BeingBehavior
 
             if (Input.GetButton(skillSlot.inputName))
             {
-                if(skillSlot != null)
+                if(skillSlot.skill != null)
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit mousehit;
