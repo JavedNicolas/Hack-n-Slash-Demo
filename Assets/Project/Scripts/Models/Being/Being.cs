@@ -80,6 +80,11 @@ public class Being
         _currentLife = Mathf.Clamp(_currentLife - damage, 0, getCurrentMaxLife());
     }
 
+    public void heal(float life)
+    {
+        _currentLife = Mathf.Clamp(_currentLife + life, 0, getCurrentMaxLife());
+    }
+
     /// <summary>
     /// Get the attack per second value
     /// </summary>

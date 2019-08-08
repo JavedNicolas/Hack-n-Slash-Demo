@@ -8,7 +8,6 @@ public static class SkillConstant
     public static string projectilePrefabFolder = skillPrefabFolder + "Projectile/";
 }
 
-
 public enum SkillType 
 {
     Regular, Projectile, SelfArea, MousePosition, InFront, line, Self
@@ -23,4 +22,6 @@ public enum ProjectileFormType
 {
     Cone, Line
 }
+
+
 

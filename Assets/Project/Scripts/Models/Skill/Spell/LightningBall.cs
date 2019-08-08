@@ -5,7 +5,7 @@ using UnityEngine;
 public class LightningBall : ProjectileSkill
 {
     public override int numberOfProjectile => 3;
-    public override ProjectileFormType projectileFormType => ProjectileFormType.Cone;
+    public override ProjectileFormType projectileFormType => ProjectileFormType.Line;
     public override float offsetBetweenProjectile => 3;
     public override SkillType skillType => SkillType.Projectile;
     public override SkillCoolDownType coolDownType => SkillCoolDownType.Spell;

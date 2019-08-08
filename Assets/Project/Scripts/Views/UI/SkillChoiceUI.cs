@@ -10,7 +10,8 @@ public class SkillChoiceUI : MonoBehaviour
     // instance 
     public static SkillChoiceUI instance;
 
-    private SkillSlotUI skillSlotIcon;
+    private SkillSlotUI _skillSlotToChange;
+    public SkillSlotUI skillSlotToChange {  get { return _skillSlotToChange; } }
 
     public void Awake()
     {
@@ -23,7 +24,7 @@ public class SkillChoiceUI : MonoBehaviour
     /// </summary>
     public void displaySkills(SkillSlotUI forSkillSlot)
     {
-        this.skillSlotIcon = forSkillSlot;
+        this._skillSlotToChange = forSkillSlot;
 
         clearChild();
         Player player = GameManager.instance.getPlayer();
@@ -48,7 +49,7 @@ public class SkillChoiceUI : MonoBehaviour
     /// <param name="skill">The skill choosen</param>
     public void updateSkillWithChoice(Skill skill)
     {
-        skillSlotIcon.skill = skill;
+        _skillSlotToChange.skill = skill;
     }
 
     /// <summary>

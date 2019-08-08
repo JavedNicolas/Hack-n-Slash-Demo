@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum Tags
 {
-    Enemy, Environment, Ground, Player
+    Enemy, Environment, Ground, Player, PickableItem, ActivableItem
 }

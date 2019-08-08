@@ -29,6 +29,17 @@ public class PlayerBehavior : BeingBehavior
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit) && hit.transform.gameObject.layer == (int)LayersIndex.Ground)
                 moveTo(hit.point);
+
+            if(Physics.Raycast(ray, out hit) && hit.transform.CompareTag(Tags.PickableItem.ToString())){
+                Item itemToPickUP = hit.transform.GetComponent<ItemObject>().item;
+                if (!itemToPickUP.pickUP((Player)being))
+                {
+                    print("Inventory Full");
+                }
+                Player test = (Player)being;
+                test.inventory.slots[0].item.effect(test);
+                
+            }
         }
     }
 

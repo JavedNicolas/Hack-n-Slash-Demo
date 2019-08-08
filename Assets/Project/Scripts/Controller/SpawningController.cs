@@ -8,6 +8,8 @@ public class SpawningController : MonoBehaviour
     public static SpawningController instance;
     #endregion
 
+    public Transform beingParentObject;
+
     private void Awake()
     {
         instance = this;
@@ -20,6 +22,7 @@ public class SpawningController : MonoBehaviour
         GameObject enemyGO = Instantiate(newEnemy.prefab);
         enemyGO.GetComponent<EnemyBehavior>().being = newEnemy;
         enemyGO.transform.position = new Vector3(Random.Range(-90, -20), 2, 50);
+        enemyGO.transform.SetParent(beingParentObject);
         return enemyGO;
     }
 
@@ -28,6 +31,7 @@ public class SpawningController : MonoBehaviour
         GameObject playerGO = Instantiate(player.prefab);
         playerGO.GetComponentInChildren<PlayerBehavior>().being = player;
         playerGO.transform.position = new Vector3(-87, 2, 8);
+        playerGO.transform.SetParent(beingParentObject);
         return playerGO;
     }
 }

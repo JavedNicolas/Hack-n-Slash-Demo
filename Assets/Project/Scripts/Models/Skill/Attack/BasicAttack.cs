@@ -16,6 +16,5 @@ public class BasicAttack : Skill
     public override void effect(Being target, Being sender)
     {
        target.takeDamage(10);
-        Debug.Log(sender.name + " " + Time.time);
     }
 }

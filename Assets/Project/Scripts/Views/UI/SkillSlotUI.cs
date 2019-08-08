@@ -18,12 +18,19 @@ public class SkillSlotUI : MonoBehaviour
     }
 
     public bool isChoiceIcon = false;
+    public GameObject keyDisplayer;
     public string inputName;
 
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener(onClick);
         //GetComponentInChildren<TextMeshProUGUI>().text = 
+    }
+
+    private void Start()
+    {
+        if (isChoiceIcon)
+            keyDisplayer.SetActive(false);
     }
 
     /// <summary>
@@ -49,8 +56,16 @@ public class SkillSlotUI : MonoBehaviour
         else
         {
             GameObject choiceObject = SkillChoiceUI.instance.gameObject;
-            choiceObject.SetActive(!choiceObject.activeSelf);
-            SkillChoiceUI.instance.displaySkills(this);
+
+            if(SkillChoiceUI.instance.skillSlotToChange == this)
+                choiceObject.SetActive(!choiceObject.activeSelf);
+            else
+            {
+                SkillChoiceUI.instance.displaySkills(this);
+                choiceObject.SetActive(true);
+            }
+                
+
         }
 
     }
