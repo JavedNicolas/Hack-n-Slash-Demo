@@ -38,6 +38,7 @@ public class SkillChoiceUI : MonoBehaviour
                 skillIconUI.skill = player.skills[i];
                 skillIconUI.isChoiceIcon = true;
                 skillIcon.transform.SetParent(transform);
+                skillIconUI.transform.localScale = new Vector3(1, 1, 1);
             }
 
         }

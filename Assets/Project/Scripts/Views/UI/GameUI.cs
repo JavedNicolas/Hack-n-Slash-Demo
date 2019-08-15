@@ -9,18 +9,37 @@ public class GameUI : BaseUI
     public static GameUI instance;
 
     [Header("Base Screen UI")]
-    public GameObject lifeUI;
+    [SerializeField] GameObject lifeUI;
+
+    [Header("Openable UI")]
+    [SerializeField] InventoryUI inventoryUI;
 
     private void Awake()
     {
         instance = this;
         DontDestroyOnLoad(this);
-        
+    }
+
+    private void Update()
+    {
+        showInventory();
     }
 
     public void displayUI(Being player)
     {
         lifeUI.GetComponent<LifeUI>().setBeing(player);
+    }
+
+    void showInventory()
+    {
+        if (Input.GetButtonDown("Inventory"))
+        {
+            inventoryUI.showInventory(false);
+        }
+        if (Input.GetButtonDown("SmallInventory"))
+        {
+            inventoryUI.showInventory(true);
+        }
     }
 
     public void FixedUpdate()
