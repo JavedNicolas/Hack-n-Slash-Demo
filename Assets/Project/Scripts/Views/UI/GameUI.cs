@@ -20,6 +20,12 @@ public class GameUI : BaseUI
         DontDestroyOnLoad(this);
     }
 
+    private void Start()
+    {
+        GameManager.instance.getPlayer().inventory.inventoryChanged += inventoryUI.updateInventoryUI;
+        inventoryUI.itemHasBeenUsed = GameManager.instance.getPlayer().inventory.updateSlot;
+    }
+
     private void Update()
     {
         showInventory();

@@ -8,6 +8,7 @@ public class LifePotion : Item
     public LifePotion()
     {
         itemName = "Life Potion";
+        databaseID = 1;
     }
 
     public override void effect(Being sender = null, Item target = null)

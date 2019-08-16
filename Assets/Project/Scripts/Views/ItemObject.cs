@@ -25,6 +25,9 @@ public class ItemObject : MonoBehaviour
             itemNameLabel.text = item.itemName;
     }
 
+    /// <summary>
+    /// delete the item from the scene
+    /// </summary>
     void deleteItem()
     {
         item.itemHasBeenPickedUP = null;

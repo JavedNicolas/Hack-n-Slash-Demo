@@ -37,8 +37,6 @@ public class PlayerBehavior : BeingBehavior
                     print("Inventory Full");
                 }
                 Player test = (Player)being;
-                test.inventory.slots[0].item.effect(test);
-                
             }
         }
     }
