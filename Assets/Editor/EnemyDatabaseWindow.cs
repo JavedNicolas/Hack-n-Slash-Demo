@@ -87,7 +87,10 @@ public class EnemyDatabaseWindow : EditorWindow
     void updateEnemy(Enemy enemyToEdit = null)
     {
         if(enemyToEdit == null)
+        {
             enemy = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Skill>(), movementSpeedBonus, prefab, 0);
+            enemy.Interactibletype = InteractableObjectType.Enemy;
+        }
         else
         {
             enemyName = enemyToEdit.name;

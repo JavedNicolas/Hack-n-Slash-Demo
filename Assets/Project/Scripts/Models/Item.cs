@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Item : Interactable
@@ -18,8 +20,18 @@ public class Item : Interactable
     public ItemHasBeenPickedUP itemHasBeenPickedUP;
     #endregion
 
+    public Item()
+    {
+        setDistanceToInteraction(2f);
+    }
+
     public virtual void effect(Being sender = null, Item target = null)
     {
+    }
+
+    public override bool interact(PlayerBehavior player)
+    {
+        return pickUP((Player)player.being);
     }
 
     /// <summary>
@@ -27,12 +39,12 @@ public class Item : Interactable
     /// </summary>
     /// <param name="sender">The sender where the target inventory is</param>
     /// <returns>return true if the item has been picked</returns>
-    public virtual bool pickUP(Player sender)
+    public virtual bool pickUP(Player player)
     {
-        bool success = sender.inventory.addToInventory(this);
-        if(success)
-            itemHasBeenPickedUP();
+        bool success = player.inventory.addToInventory(this);
+        itemHasBeenPickedUP();
 
         return success;
     }
+    
 }

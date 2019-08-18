@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Tags
+public enum InteractableObjectType
 {
-    Enemy, Environment, Ground, Player, Interactable
+    Enemy, PickableObject, NPC, Player
 }

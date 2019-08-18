@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         skillDatabase = new SkillDatabase();
         instance = this;
         DontDestroyOnLoad(this);
-        playerTMp = new Player("Test", 100, 100, 0, 10, 10, 0, new List<Skill>(), 50, playerPrefab, 100);
+        playerTMp = new Player("Player Test", 100, 100, 0, 10, 11, 0, new List<Skill>(), 50, playerPrefab, 100);
         playerTMp.skills.Add(new BasicAttack());
         playerTMp.skills.Add(new LightningBall());
     }

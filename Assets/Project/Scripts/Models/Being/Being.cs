@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Being
+public class Being : Interactable
 {
     #region being attributs
     [Header("Name")]
@@ -12,11 +12,11 @@ public class Being
 
     [Header("Health")]
     private float _currentLife;
-    public float currentLife {  get { return _currentLife; } }
+    public float currentLife { get { return _currentLife; } }
     private float _baseLife;
-    public float baseLife {  get { return _baseLife; } }
+    public float baseLife { get { return _baseLife; } }
     private float _shield;
-    public float shield {  get { return _shield; } }
+    public float shield { get { return _shield; } }
 
     [Header("Damage")]
     private float _bonusAttackSpeed;
@@ -30,15 +30,20 @@ public class Being
 
     [Header("Stats")]
     private int _strength;
-    public int strength {  get { return _strength; } }
+    public int strength { get { return _strength; } }
 
     [Header("Projectiles")]
     private float _projectileSpeed;
-    public float projectileSpeed {  get { return _projectileSpeed; } }
+    public float projectileSpeed { get { return _projectileSpeed; } }
 
     [Header("Skills")]
     private List<Skill> _skills = new List<Skill>();
-    public List<Skill> skills {  get { return _skills; } }
+    public List<Skill> skills { get { return _skills; } }
+
+
+    private BasicAttack _basicAttack = new BasicAttack();
+    public BasicAttack basicAttack{ get { return _basicAttack;}}
+
 
     [Header("Game Object")]
     private GameObject _prefab;
@@ -109,6 +114,9 @@ public class Being
         return _baseLife;
     }
 
-
-
+    public override bool interact(PlayerBehavior player)
+    {
+        player.attack(player.being.basicAttack, new Vector3(), this);
+        return true;
+    }
 }

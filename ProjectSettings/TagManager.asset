@@ -7,7 +7,7 @@ TagManager:
   - Enemy
   - Ground
   - Environment
-  - PickableItem
+  - Interactable
   layers:
   - Default
   - TransparentFX

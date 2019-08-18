@@ -8,17 +8,22 @@ using UnityEngine.EventSystems;
 public class PlayerBehavior : BeingBehavior
 {
     public float cameraRotation = 30f;
+    public InteractableObject interactionTarget;
+
+    // TEMPORARY
+    public bool autoAttack = true;
 
     void Update()
     {
-        move();
-        attack();
+        LeftClick();
+        RightClick();
+        interactWithCurrentInteractionTarget();
     }
 
     /// <summary>
     /// Start the movements function if the player use the left mouse click
     /// </summary>
-    void move()
+    void LeftClick()
     {
         if (Input.GetButton("Fire1"))
         {
@@ -28,39 +33,25 @@ public class PlayerBehavior : BeingBehavior
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit) && hit.transform.gameObject.layer == (int)LayersIndex.Ground)
+            {
                 moveTo(hit.point);
-
-            if(Physics.Raycast(ray, out hit) && hit.transform.CompareTag(Tags.PickableItem.ToString())){
-                Item itemToPickUP = hit.transform.GetComponent<ItemObject>().item;
-                if (!itemToPickUP.pickUP((Player)being))
-                {
-                    print("Inventory Full");
-                }
-                Player test = (Player)being;
+                interactionTarget = null;
             }
+               
         }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            moveToInteractibleTarget();
+        }
+
+       
     }
 
-    void attack()
+    void RightClick()
     {
         if (Input.GetButton("Fire2"))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit mousehit;
-            if (Physics.Raycast(ray, out mousehit))
-            {
-                if (Vector3.Distance(transform.position, mousehit.point) > being.attackRange)
-                {
-                    moveTo(mousehit.point, being.attackRange);
-                }
-                else
-                {
-                    if (mousehit.transform.CompareTag(Tags.Enemy.ToString()))
-                    {
-                        attack(being.skills[0], mousehit.point, mousehit.transform.GetComponent<EnemyBehavior>());
-                    }
-                }
-            }
+            moveToInteractibleTarget();
         }
 
         for (int i = 0; i < SkillBarUI.instance.getSkillSlotNumber(); i++)
@@ -69,7 +60,7 @@ public class PlayerBehavior : BeingBehavior
 
             if (Input.GetButton(skillSlot.inputName))
             {
-                if(skillSlot.skill != null)
+                if (skillSlot.skill != null)
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit mousehit;
@@ -80,13 +71,43 @@ public class PlayerBehavior : BeingBehavior
                         if (mousehit.transform.CompareTag(Tags.Enemy.ToString()))
                             enemyBehavior = mousehit.transform.GetComponent<EnemyBehavior>();
 
-                        attack(skillSlot.skill, mousehit.point, enemyBehavior);
+                        attack(skillSlot.skill, mousehit.point, enemyBehavior.being);
                     }
-                        
+
                 }
             }
         }
     }
 
+    void moveToInteractibleTarget()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit) && hit.transform.GetComponent<InteractableObject>() != null)
+        {
+            InteractableObject interactableObject = hit.transform.GetComponent<InteractableObject>();
+            interactionTarget = interactableObject;
+        }
+    }
+
+    void interactWithCurrentInteractionTarget()
+    {
+        if (interactionTarget != null)
+        {
+            float interactionDistance = interactionTarget.interactable.getInteractionDistance();
+            if (interactionTarget.interactable.Interactibletype == InteractableObjectType.Enemy)
+                interactionDistance = being.attackRange;
+
+            if (Vector3.Distance(transform.position, interactionTarget.transform.position) <= interactionDistance)
+            {
+                if (interactionTarget.interactable.interact(this) && !autoAttack)
+                    interactionTarget = null;
+                stopMoving();
+            }else
+            {
+                moveTo(interactionTarget.transform.position, interactionDistance);
+            }
+        }
+    }
    
 }

@@ -46,7 +46,6 @@ public class Inventory
 
         if (slotAvailable)
         {
-            Debug.Log(_slots[firstAvailableStackForThisItem].quantity);
             InventorySlot slot = _slots[firstAvailableStackForThisItem];
             slot.AddItem(itemToAdd);
             _slots[firstAvailableStackForThisItem] = slot;

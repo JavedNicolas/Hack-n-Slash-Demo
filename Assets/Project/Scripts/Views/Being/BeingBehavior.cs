@@ -4,10 +4,19 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 
-public class BeingBehavior : MonoBehaviour
+public class BeingBehavior : InteractableObject
 {
     public Transform transformToMove;
-    public Being being;
+    private Being _being;
+    public Being being
+    {
+        get { return _being; }
+        set {
+            _being = value;
+            interactable = value;
+        }
+
+    }
 
     [Header("Speed")]
     public float gameObjectHeight;
@@ -36,7 +45,7 @@ public class BeingBehavior : MonoBehaviour
     /// </summary>
     /// <param name="destination">The destination to reach</param>
     /// <param name="distanceToStop">Distance from which the move need to be stopped</param>
-    protected void moveTo(Vector3 destination, float distanceToStop = 0.1f)
+    public void moveTo(Vector3 destination, float distanceToStop = 0.1f)
     {
         NavMesh.CalculatePath(transformToMove.position, destination, NavMesh.AllAreas, navMeshPath);
         this.distanceToStop = distanceToStop;
@@ -85,7 +94,7 @@ public class BeingBehavior : MonoBehaviour
     /// <param name="skill"> The skill to launch</param>
     /// <param name="targetedPosition"> The targeted position (can be an enemy, the position of the mouse or else).</param>
     /// <param name="target"> The target of the spell if there is one, null if not</param>
-    protected void attack(Skill skill, Vector3 targetedPosition, BeingBehavior target = null)
+    public void attack(Skill skill, Vector3 targetedPosition, Being target = null)
     {
         lookAtStraight(targetedPosition);
         switch (skill.skillType)
@@ -100,11 +109,11 @@ public class BeingBehavior : MonoBehaviour
         }
     }
 
-    void attackRegular(BeingBehavior target, Skill skill)
+    void attackRegular(Being target, Skill skill)
     {
         if(target != null && skill.isSkillAvailable(being))
         {
-            skill.effect(target.being, being);
+            skill.effect(target, being);
             skill.skillHasBeenUsed();
         }
             
@@ -201,6 +210,22 @@ public class BeingBehavior : MonoBehaviour
         direction.y = 0;
 
         return direction;
+    }
+
+    /// <summary>
+    /// Check if the player is moving toward a position
+    /// </summary>
+    /// <param name="position">The position to check</param>
+    /// <returns>True if the player is moving toward this position, else false</returns>
+    public bool isMovingToward(Vector3 position)
+    {
+        if (path.Count == 0)
+            return false;
+
+        if (path[path.Count - 1].x == position.x && path[path.Count - 1].z == position.z)
+            return true;
+
+        return false;
     }
 
     protected void die()

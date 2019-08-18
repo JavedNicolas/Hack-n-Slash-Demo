@@ -74,7 +74,7 @@ public class EnemyBehavior : BeingBehavior
     {
         if (closestPlayerDistance < attackRange)
         {
-            attack(being.skills[0], closestPlayerPosition, players[closestPlayerIndex]);
+            attack(being.skills[0], closestPlayerPosition, players[closestPlayerIndex].being);
         }
     }
 }

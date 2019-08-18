@@ -3,34 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ItemObject : MonoBehaviour
+public class ItemObject : InteractableObject
 {
     public Item item = new LifePotion();
 
-    // Private var
-    TextMeshProUGUI itemNameLabel;
-    MeshRenderer renderer;
-
-    private void Awake()
-    {
-        itemNameLabel = GetComponentInChildren<TextMeshProUGUI>(); ;
-        renderer = GetComponent<MeshRenderer>();
-        item.itemHasBeenPickedUP = deleteItem;
-    }
+    protected TextMeshProUGUI itemNameLabel;
 
     private void Start()
     {
-        print(item.itemName);
-        if (itemNameLabel != null && item != null)
-            itemNameLabel.text = item.itemName;
-    }
+        itemNameLabel = GetComponentInChildren<TextMeshProUGUI>();
 
-    /// <summary>
-    /// delete the item from the scene
-    /// </summary>
-    void deleteItem()
-    {
-        item.itemHasBeenPickedUP = null;
-        Destroy(this.gameObject);
+        if (item != null)
+        {
+            interactable = item;
+            item.itemHasBeenPickedUP += deleteItem;
+        }
+
+        if (itemNameLabel != null && item != null)
+        {
+            itemNameLabel.text = item.itemName;
+        }   
     }
 }
