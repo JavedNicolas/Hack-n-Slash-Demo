@@ -25,7 +25,7 @@ public class Item : Interactable
         setDistanceToInteraction(2f);
     }
 
-    public virtual void effect(Being sender = null, Item target = null)
+    public virtual void use(Being sender = null, Item target = null)
     {
     }
 

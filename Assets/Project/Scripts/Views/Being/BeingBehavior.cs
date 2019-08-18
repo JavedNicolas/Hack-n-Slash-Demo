@@ -88,6 +88,14 @@ public class BeingBehavior : InteractableObject
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
+
+    public void attack(Skill skill, Vector3 targetedPosition)
+    {
+        attack(skill, targetedPosition, null);
+    }
+
+
+
     /// <summary>
     /// Launch the skill effect based on his type
     /// </summary>
@@ -96,7 +104,8 @@ public class BeingBehavior : InteractableObject
     /// <param name="target"> The target of the spell if there is one, null if not</param>
     public void attack(Skill skill, Vector3 targetedPosition, Being target = null)
     {
-        lookAtStraight(targetedPosition);
+        if(targetedPosition != new Vector3())
+            lookAtStraight(targetedPosition);
         switch (skill.skillType)
         {
             case SkillType.Self: break;

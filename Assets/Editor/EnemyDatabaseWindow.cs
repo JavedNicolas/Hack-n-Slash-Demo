@@ -89,7 +89,7 @@ public class EnemyDatabaseWindow : EditorWindow
         if(enemyToEdit == null)
         {
             enemy = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Skill>(), movementSpeedBonus, prefab, 0);
-            enemy.Interactibletype = InteractableObjectType.Enemy;
+            enemy.interactibleType = InteractableObjectType.Enemy;
         }
         else
         {

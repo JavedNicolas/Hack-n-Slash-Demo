@@ -7,7 +7,7 @@ public abstract class Interactable
 
     // true if the movement has been initiated
     bool moveHasStarted = false;
-    public InteractableObjectType Interactibletype;
+    public InteractableObjectType interactibleType;
 
     public virtual float getInteractionDistance()
     {

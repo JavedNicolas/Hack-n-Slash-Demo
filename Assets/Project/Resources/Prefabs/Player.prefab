@@ -110,6 +110,10 @@ MonoBehaviour:
   transformToMove: {fileID: 1832822816280725536}
   gameObjectHeight: 2
   cameraRotation: 30
+  movementMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  autoAttack: 1
 --- !u!1 &8251357967158934505
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,12 @@ public class LifePotion : Item
     {
         itemName = "Life Potion";
         databaseID = 1;
+        interactibleType = InteractableObjectType.PickableObject;
     }
 
-    public override void effect(Being sender = null, Item target = null)
+    public override void use(Being sender = null, Item target = null)
     {
-        base.effect(sender, target);
+        base.use(sender, target);
         sender.heal(10);
     }
 }
