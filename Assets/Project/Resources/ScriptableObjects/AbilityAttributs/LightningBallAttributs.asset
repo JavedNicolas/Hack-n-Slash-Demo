@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac89b1a413550704698b7c5d888f085b, type: 3}
+  m_Name: LightningBall
+  m_EditorClassIdentifier: 
+  _name: Lighning Ball
+  _description: Launch a lightning in front of you
+  _icon: {fileID: 0}
+  _coolDownType: 1
+  _needTarget: 0
+  _canBeCastedOnSelf: 0
+  _ballGameObject: {fileID: 233050881289928282, guid: 28560739714ed0e4d9bd0383c2431c85,
+    type: 3}
+  _numberOfBaseProjectile: 3
+  _projectileBaseSpeed: 25
+  _formType: 0
+  _offsetBetweenProjectile: 10
+  _projectileLife: 1

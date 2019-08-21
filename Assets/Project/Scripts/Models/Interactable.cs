@@ -22,8 +22,8 @@ public abstract class Interactable
     /// <summary>
     /// Move to the player interacting with the object to the interaction range
     /// </summary>
-    /// <param name="player">The player interacting</param>
+    /// <param name="interactionBeing">The player interacting</param>
     /// <returns>Return true when the movement to the object is over. This movement can be interacted and the result found in the interactionResult attribut</returns>
-    public abstract bool interact(PlayerBehavior player);
+    public abstract bool interact(BeingBehavior interactionBeing, GameObject objectToInteractWith);
 
 }

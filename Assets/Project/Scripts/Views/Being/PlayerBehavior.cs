@@ -13,17 +13,19 @@ public class PlayerBehavior : BeingBehavior
     [Header("Movement Mask")]
     public LayerMask movementMask;
 
-    InteractableObject interactionTarget;
-
     // TEMPORARY
     public bool autoAttack = true;
 
+
+    private void Start()
+    {
+        interactOnce = !autoAttack;
+    }
 
     void Update()
     {
         LeftClick();
         RightClick();
-        interactWithCurrentInteractionTarget();
     }
 
     /// <summary>
@@ -64,72 +66,21 @@ public class PlayerBehavior : BeingBehavior
             SkillSlotUI skillSlot = SkillBarUI.instance.getSkillAtIndex(i);
 
             if (Input.GetButton(skillSlot.inputName))
-            {
-                if (skillSlot.skill != null)
+                if (skillSlot.ability != null)
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit mousehit;
-                    if (Physics.Raycast(ray, out mousehit))
-                    {
-                        EnemyBehavior enemyBehavior = null;
-                        // Check if there was an enemy under the mouse
-                        if (mousehit.transform.CompareTag(Tags.Enemy.ToString()))
+                    RaycastHit mouseHit;
+                    if (Physics.Raycast(ray, out mouseHit))
+                        if (AbilityManager.instance.tryToPerformAbility(mouseHit, skillSlot.ability, this))
                         {
-                            enemyBehavior = mousehit.transform.GetComponent<EnemyBehavior>();
-                            attack(skillSlot.skill, mousehit.point, enemyBehavior.being);
+                            BeingBehavior target = null;
+                            if (skillSlot.ability.getAttributs().needTarget)
+                                target = mouseHit.transform.GetComponent<BeingBehavior>();
+
+                            abilityUsed(mouseHit.point, target, skillSlot.ability);
                         }
                             
-                        attack(skillSlot.skill, mousehit.point);
-                    }
-
                 }
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Move the player to the interactible object
-    /// </summary>
-    /// <param name="fromRightClick">If the call comes from the right mouse click</param>
-    void moveToInteractibleTarget(bool fromRightClick = false)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit) && hit.transform.GetComponent<InteractableObject>() != null)
-        {
-            InteractableObject interactableObject = hit.transform.GetComponent<InteractableObject>();
-            if ((fromRightClick && interactableObject.interactable.interactibleType == InteractableObjectType.Enemy) 
-                || (!fromRightClick && interactableObject.interactable.interactibleType != InteractableObjectType.Enemy))
-            {
-                
-                interactionTarget = interactableObject;
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Move to the interactable object and interact with it when in range
-    /// </summary>
-    void interactWithCurrentInteractionTarget()
-    {
-        if (interactionTarget != null)
-        {
-            float interactionDistance = interactionTarget.interactable.getInteractionDistance();
-            if (interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
-                interactionDistance = being.attackRange;
-
-            if (Vector3.Distance(transform.position, interactionTarget.transform.position) <= interactionDistance)
-            {
-                lookAtStraight(interactionTarget.transform.position);
-                if (interactionTarget.interactable.interact(this) && !autoAttack)
-                    interactionTarget = null;
-                stopMoving();
-            }else
-            {
-                moveTo(interactionTarget.transform.position, interactionDistance);
-            }
         }
     }
    

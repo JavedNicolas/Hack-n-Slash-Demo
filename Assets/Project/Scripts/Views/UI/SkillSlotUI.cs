@@ -7,8 +7,8 @@ using TMPro;
 [RequireComponent(typeof(Button))]
 public class SkillSlotUI : MonoBehaviour
 {
-    Skill _skill;
-    public Skill skill
+    Ability _skill;
+    public Ability ability
     {
         get { return _skill; }
         set {
@@ -37,10 +37,10 @@ public class SkillSlotUI : MonoBehaviour
     /// Set the icon of the skill
     /// </summary>
     /// <param name="skill"></param>
-    void setIcon(Skill skill)
+    void setIcon(Ability skill)
     {
         if(isChoiceIcon)
-            GetComponent<Image>().sprite = skill.icon;
+            GetComponent<Image>().sprite = skill.getIcon();
     }
 
     /// <summary>

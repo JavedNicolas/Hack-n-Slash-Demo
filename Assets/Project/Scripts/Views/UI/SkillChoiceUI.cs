@@ -35,7 +35,7 @@ public class SkillChoiceUI : MonoBehaviour
             SkillSlotUI skillIconUI = skillIcon.GetComponent<SkillSlotUI>();
             if (skillIconUI != null)
             {
-                skillIconUI.skill = player.skills[i];
+                skillIconUI.ability = player.skills[i];
                 skillIconUI.isChoiceIcon = true;
                 skillIcon.transform.SetParent(transform);
                 skillIconUI.transform.localScale = new Vector3(1, 1, 1);
@@ -48,9 +48,9 @@ public class SkillChoiceUI : MonoBehaviour
     /// Update the skill which was at the origin of the choice pop up by the user choice
     /// </summary>
     /// <param name="skill">The skill choosen</param>
-    public void updateSkillWithChoice(Skill skill)
+    public void updateSkillWithChoice(Ability skill)
     {
-        _skillSlotToChange.skill = skill;
+        _skillSlotToChange.ability = skill;
     }
 
     /// <summary>

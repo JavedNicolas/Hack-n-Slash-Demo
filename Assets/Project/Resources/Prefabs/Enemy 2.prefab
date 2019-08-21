@@ -224,6 +224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformToMove: {fileID: 7699618545951562397}
   gameObjectHeight: 2
+  teamID: 2
   dectetionRange: 10
   attackRange: 2
   lifeUI: {fileID: 8404993513805362487}

@@ -19,16 +19,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        skillDatabase = new SkillDatabase();
         instance = this;
         DontDestroyOnLoad(this);
-        playerTMp = new Player("Player Test", 100, 100, 0, 10, 11, 0, new List<Skill>(), 50, playerPrefab, 100);
+        playerTMp = new Player("Player Test", 100, 100, 0, 10, 11, 0, new List<Ability>(), 50, playerPrefab, 100);
         playerTMp.skills.Add(new LightningBall());
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        skillDatabase = new SkillDatabase();
         CurrentMapInstanceController.instance.loadZone();
         spawnPlayer();
         GameUI.instance.displayUI(player.GetComponentInChildren<PlayerBehavior>().being);

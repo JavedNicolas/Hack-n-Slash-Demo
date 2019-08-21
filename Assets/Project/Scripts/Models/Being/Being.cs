@@ -37,11 +37,11 @@ public class Being : Interactable
     public float projectileSpeed { get { return _projectileSpeed; } }
 
     [Header("Skills")]
-    private List<Skill> _skills = new List<Skill>();
-    public List<Skill> skills { get { return _skills; } }
+    private List<Ability> _skills = new List<Ability>();
+    public List<Ability> skills { get { return _skills; } }
 
 
-    private BasicAttack _basicAttack = new BasicAttack();
+    private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}
 
 
@@ -56,7 +56,7 @@ public class Being : Interactable
     #endregion
 
     #region init
-    public Being(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Skill> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
+    public Being(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
     {
         this._name = name;
         this._currentLife = currentLife;
@@ -69,7 +69,7 @@ public class Being : Interactable
         this._movementSpeedBonus = movementSpeedPercentage;
         this._prefab = prefab;
         this._projectileSpeed = projectileSpeed;
-
+        this._basicAttack = new BasicAttack();
     }
 
     public Being() { }
@@ -114,9 +114,14 @@ public class Being : Interactable
         return _baseLife;
     }
 
-    public override bool interact(PlayerBehavior player)
+    public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)
     {
-        player.attack(player.being.basicAttack, new Vector3(), this);
-        return true;
+        if (objectToInteractWith.GetComponent<BeingBehavior>() != null && objectToInteractWith.GetComponent<BeingBehavior>().teamID != sender.teamID)
+        {
+            sender.useAbility(basicAttack, objectToInteractWith.transform.position, objectToInteractWith.GetComponent<BeingBehavior>());
+            return true;
+        }
+
+        return false ;
     }
 }

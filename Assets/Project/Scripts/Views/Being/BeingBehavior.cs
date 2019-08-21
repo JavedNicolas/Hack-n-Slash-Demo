@@ -6,7 +6,21 @@ using System.Linq;
 
 public class BeingBehavior : InteractableObject
 {
+    [Header("Being model")]
     public Transform transformToMove;
+
+    [Header("Speed")]
+    public float gameObjectHeight;
+
+    [Header("Team")]
+    public int teamID;
+
+    // Path variable
+    protected List<Vector3> path = new List<Vector3>();
+    protected NavMeshPath navMeshPath;
+    protected Vector3 yOffset;
+
+    // being
     private Being _being;
     public Being being
     {
@@ -18,16 +32,12 @@ public class BeingBehavior : InteractableObject
 
     }
 
-    [Header("Speed")]
-    public float gameObjectHeight;
-    Vector3 yOffset;
-
-    // Path variable
-    private List<Vector3> path = new List<Vector3>();
-    NavMeshPath navMeshPath;
-
     // distance stop
-    float distanceToStop = 0.1f;
+    protected float distanceToStop = 0.1f;
+
+    // Interaction
+    protected InteractableObject interactionTarget;// interactible current target
+    protected bool interactOnce = false;
 
     void Awake()
     {
@@ -38,6 +48,7 @@ public class BeingBehavior : InteractableObject
     void FixedUpdate()
     {
         getToNextPathNode();
+        interactWithCurrentInteractionTarget();
     }
 
     /// <summary>
@@ -88,137 +99,88 @@ public class BeingBehavior : InteractableObject
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
-
-    public void attack(Skill skill, Vector3 targetedPosition)
+    /// <summary>
+    /// Use the being ability
+    /// </summary>
+    /// <param name="ability">ability to use</param>
+    /// <param name="targetedPosition">the targeted position for the ability (use for ability which do not need target but target point)</param>
+    /// <param name="target">The targeted being behavior</param>
+    public void useAbility(Ability ability, Vector3 targetedPosition, BeingBehavior target)
     {
-        attack(skill, targetedPosition, null);
+        if(AbilityManager.instance.tryToPerformAbility(target, targetedPosition, ability, this))
+        {
+            abilityUsed(targetedPosition, target, ability);
+        }
+    }
+
+    /// <summary>
+    /// Set the lookAt, stop the sender and set the ability has used when the ability has been used
+    /// </summary>
+    /// <param name="mouseHit"></param>
+    /// <param name="ability"></param>
+    protected void abilityUsed(Vector3 position, BeingBehavior target,Ability ability)
+    {
+        if (ability.getAttributs().needTarget)
+        {
+            lookAtStraight(target.transform.position);
+            stopMoving();
+            ability.abilityHasBeenUsed();
+        }
+        else
+        {
+            lookAtStraight(position);
+            stopMoving();
+            ability.abilityHasBeenUsed();
+        }
     }
 
 
 
     /// <summary>
-    /// Launch the skill effect based on his type
+    /// Move the player to the interactible object
     /// </summary>
-    /// <param name="skill"> The skill to launch</param>
-    /// <param name="targetedPosition"> The targeted position (can be an enemy, the position of the mouse or else).</param>
-    /// <param name="target"> The target of the spell if there is one, null if not</param>
-    public void attack(Skill skill, Vector3 targetedPosition, Being target = null)
+    /// <param name="fromRightClick">If the call comes from the right mouse click</param>
+    protected void moveToInteractibleTarget(bool fromRightClick = false)
     {
-        if(targetedPosition != new Vector3())
-            lookAtStraight(targetedPosition);
-        switch (skill.skillType)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit) && hit.transform.GetComponent<InteractableObject>() != null)
         {
-            case SkillType.Self: break;
-            case SkillType.InFront: break;
-            case SkillType.SelfArea: break;
-            case SkillType.MousePosition: break;
-            case SkillType.Projectile: projectile((ProjectileSkill)skill, targetedPosition); break;
-            case SkillType.Regular: attackRegular(target, skill); break;
-            case SkillType.line: break;
-        }
-    }
+            InteractableObject interactableObject = hit.transform.GetComponent<InteractableObject>();
 
-    void attackRegular(Being target, Skill skill)
-    {
-        if(target != null && skill.isSkillAvailable(being))
-        {
-            skill.effect(target, being);
-            skill.skillHasBeenUsed();
-        }
-            
-    }
-
-    void projectile(ProjectileSkill skill, Vector3 targetPosition)
-    {
-        stopMoving();
-
-        if (skill.isSkillAvailable(being))
-        {
-            int numberOfProjectile = skill.getNumberOfProjectile(being);
-            for (int i = 0; i < numberOfProjectile; i++)
+            if ((fromRightClick && interactableObject.interactable.interactibleType == InteractableObjectType.Enemy)
+            || (!fromRightClick && interactableObject.interactable.interactibleType != InteractableObjectType.Enemy))
             {
-                // create projectile
-                GameObject projectile = Instantiate(skill.model);
-                projectile.transform.position = projectileStartPosition(skill, i, numberOfProjectile);
 
-                // get projectile direction
-                Vector3 direction = projectileDirection(skill, i, numberOfProjectile, targetPosition);
-                direction.y = 0;
-
-                // Apply force to it
-                if (projectile.GetComponent<Rigidbody>() != null)
-                {
-                    float projectileSpeed = skill.projectileBaseSpeed + (skill.projectileBaseSpeed * (being.projectileSpeed / 100));
-                    projectile.GetComponent<Rigidbody>().AddForce(direction * projectileSpeed, ForceMode.Impulse);
-                }
-
-
-                // set is collision effect
-                if (projectile.GetComponent<Projectile>() != null)
-                {
-                    projectile.GetComponent<Projectile>().senderObject = this;
-                    projectile.GetComponent<Projectile>().projectileCollisionDelegate = skill.effect;
-                }
-                skill.skillHasBeenUsed();
-
-                Destroy(projectile, 1f);
+                interactionTarget = interactableObject;
             }
         }
     }
 
-    /// <summary>
-    /// Set the projectile starting position
-    /// </summary>
-    /// <param name="projectile">The projectile Object</param>
-    /// <param name="skill">The skill sending the projectile</param>
-    /// <param name="projectileCurrentIndex">The current projectile begin sent</param>
-    /// <param name="numberOfProjectile">The number of project</param>
-    Vector3 projectileStartPosition(ProjectileSkill skill, int projectileCurrentIndex, int numberOfProjectile)
-    {
-        Vector3 position = new Vector3();
-
-
-        switch (skill.projectileFormType) {
-            case ProjectileFormType.Line:
-                float totalProjectileLineLength = skill.offsetBetweenProjectile * (numberOfProjectile - 1);
-                float currentProjectileOffset = -totalProjectileLineLength / 2 + skill.offsetBetweenProjectile * projectileCurrentIndex;
-                position = transform.position + (transform.right * currentProjectileOffset);
-                break;
-            case ProjectileFormType.Cone:
-                position = transform.position;
-                break;
-        }
-
-        return position;
-    }
 
     /// <summary>
-    /// Set the projectile Direction
+    /// Move to the interactable object and interact with it when in range
     /// </summary>
-    /// <param name="skill">The skill sending the projectile</param>
-    /// <param name="projectileCurrentIndex">The current projectile being send</param>
-    /// <param name="numberOfProjectile"> The total number of projectile</param>
-    /// <param name="targetPosition"> The position where the projectile need to head to</param>
-    /// <returns></returns>
-    Vector3 projectileDirection(ProjectileSkill skill, int projectileCurrentIndex, int numberOfProjectile, Vector3 targetPosition)
+    void interactWithCurrentInteractionTarget()
     {
-        Vector3 direction = new Vector3();
-
-        switch (skill.projectileFormType)
+        if (interactionTarget != null)
         {
-            case ProjectileFormType.Cone:
-                float totalProjectileLineLength = skill.offsetBetweenProjectile * (numberOfProjectile - 1);
-                float currentProjectileOffset = -totalProjectileLineLength / 2 + skill.offsetBetweenProjectile * projectileCurrentIndex;
+            float interactionDistance = interactionTarget.interactable.getInteractionDistance();
+            if (interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
+                interactionDistance = being.attackRange;
 
-                targetPosition = targetPosition + (transform.right * currentProjectileOffset);
-                direction = (targetPosition - transform.position).normalized;
-
-                break;
-            case ProjectileFormType.Line: direction = (targetPosition - transform.position).normalized; break;
+            if (Vector3.Distance(transform.position, interactionTarget.transform.position) <= interactionDistance)
+            {
+                lookAtStraight(interactionTarget.transform.position);
+                if (interactionTarget.interactable.interact(this, interactionTarget.gameObject) && interactOnce)
+                    interactionTarget = null;
+                stopMoving();
+            }
+            else
+            {
+                moveTo(interactionTarget.transform.position, interactionDistance);
+            }
         }
-        direction.y = 0;
-
-        return direction;
     }
 
     /// <summary>

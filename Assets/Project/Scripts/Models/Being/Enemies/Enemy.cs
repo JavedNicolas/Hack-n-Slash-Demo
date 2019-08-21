@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Enemy : Being
 { 
-    public Enemy(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Skill> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed) : base(name, currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
+    public Enemy(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed) : base(name, currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
     {
     }
 

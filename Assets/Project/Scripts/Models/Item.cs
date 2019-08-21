@@ -29,9 +29,9 @@ public class Item : Interactable
     {
     }
 
-    public override bool interact(PlayerBehavior player)
+    public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)
     {
-        return pickUP((Player)player.being);
+        return pickUP((Player)sender.being);
     }
 
     /// <summary>
@@ -46,5 +46,6 @@ public class Item : Interactable
 
         return success;
     }
-    
+
+
 }

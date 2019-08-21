@@ -1079,6 +1079,7 @@ GameObject:
   - component: {fileID: 969577948}
   - component: {fileID: 969577947}
   - component: {fileID: 969577949}
+  - component: {fileID: 969577950}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -1130,6 +1131,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beingParentObject: {fileID: 1952291598}
+--- !u!114 &969577950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969577946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9562967307e26846809c4f1f8efce0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1036239155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,17 +1582,17 @@ PrefabInstance:
     - target: {fileID: 2707660322483852864, guid: 6342c2e676e182b4996f5eb7dd8627cf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -75.99
+      value: -94.84
       objectReference: {fileID: 0}
     - target: {fileID: 2707660322483852864, guid: 6342c2e676e182b4996f5eb7dd8627cf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.2
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 2707660322483852864, guid: 6342c2e676e182b4996f5eb7dd8627cf,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 8.24
       objectReference: {fileID: 0}
     - target: {fileID: 2707660322483852864, guid: 6342c2e676e182b4996f5eb7dd8627cf,
         type: 3}
@@ -2037,7 +2050,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 860337237433258917, guid: 17a0325e5036817459ed6d190390b019, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 17a0325e5036817459ed6d190390b019, type: 3}
 --- !u!1001 &8901576039707048365
 PrefabInstance:
