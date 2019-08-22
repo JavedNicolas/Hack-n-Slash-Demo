@@ -167,6 +167,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -394,8 +395,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0.0000000037252903, y: -Infinity, z: 6.462348e-27,
-    w: 2.3509887e-38}
+  m_BoundingSphereOverride: {x: 0, y: -8.799982e+25, z: 7.17e-43, w: 3.8e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1189,6 +1189,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1305,6 +1306,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1707,6 +1709,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1799,6 +1802,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1855,7 +1859,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1892695549}
   m_Layer: 0
-  m_Name: '--------- Environment'
+  m_Name: --------- Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1902,7 +1906,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1952291598}
   m_Layer: 0
-  m_Name: '--------- Player & Enemies'
+  m_Name: --------- Player & Enemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1935,11 +1939,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 715244492}
     m_Modifications:
-    - target: {fileID: 860337237433258923, guid: 17a0325e5036817459ed6d190390b019,
-        type: 3}
-      propertyPath: m_Name
-      value: InventoryUI
-      objectReference: {fileID: 0}
     - target: {fileID: 860337237433258922, guid: 17a0325e5036817459ed6d190390b019,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2044,6 +2043,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 860337237433258923, guid: 17a0325e5036817459ed6d190390b019,
+        type: 3}
+      propertyPath: m_Name
+      value: InventoryUI
       objectReference: {fileID: 0}
     - target: {fileID: 860337236857056586, guid: 17a0325e5036817459ed6d190390b019,
         type: 3}

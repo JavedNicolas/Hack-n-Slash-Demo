@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class EnemyDatabaseWindow : EditorWindow
+public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
 {
-    EnemyDatabase database;
-    bool edit = false;
-    Enemy enemy;
-    int databaseIndex;
+    // database
+    protected override string databasePath { get => "Databases/EnemyDatabase"; }
 
     // Enemy Field
     string enemyName;
@@ -17,87 +15,64 @@ public class EnemyDatabaseWindow : EditorWindow
     GameObject prefab;
     float movementSpeedBonus;
 
-
-    public void showWindows(EnemyDatabase database, Enemy enemy = null, bool edit = false, int index = -1)
+    [MenuItem("Database/Enemy")]
+    public static void init()
     {
-        this.Show();
-        this.database = database;
-        this.edit = edit;
-        this.databaseIndex = index;
-        updateEnemy(enemy);
+        EnemyDatabaseWindow windows = new EnemyDatabaseWindow();
+        windows.showWindows();
     }
 
-    void OnGUI()
-    { 
+    #region Right panel (The form)
+    protected override void displayForm()
+    {
         EditorGUILayout.BeginVertical();
         enemyName = EditorGUILayout.TextField("Name : ", enemyName);
         baseLife = EditorGUILayout.FloatField("baseLife : ", baseLife);
         attackSpeedBonus = EditorGUILayout.FloatField("Attack Speed Bonus :", attackSpeedBonus);
         prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", prefab, typeof(GameObject), false);
         movementSpeedBonus = EditorGUILayout.FloatField("Movement Speed Bonus : ", movementSpeedBonus);
-
+        displayFormButtons();
         EditorGUILayout.EndVertical();
-        displayButtons();
+    }
+    #endregion
+
+
+    protected override void setFieldWithElementValues()
+    { 
+        if(element != null)
+        {
+            enemyName = element.name;
+            baseLife = element.baseLife;
+            attackSpeedBonus = element.bonusAttackSpeed;
+            movementSpeedBonus = element.movementSpeedBonus;
+            prefab = element.prefab;
+        }
     }
 
-    void displayButtons()
+    protected override void updateElementWithFormValues()
     {
-        EditorGUILayout.BeginHorizontal();
-        if (edit)
-        {
-            if (GUILayout.Button("Update"))
-            {
-                updateEnemy();
-                database.updateElement(enemy, databaseIndex);
-                EditorUtility.SetDirty(database);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-                this.Close();
-            }
-        }
-        else
-        {
-            if (GUILayout.Button("Add"))
-            {
-                updateEnemy();
-                database.addElement(enemy);
-                EditorUtility.SetDirty(database);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-                this.Close();
-            }
-            if (GUILayout.Button("Add & continue"))
-            {
-                updateEnemy();
-                database.addElement(enemy);
-                EditorUtility.SetDirty(database);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-                enemy = new Enemy();
-            }
-        }
-       
-        if (GUILayout.Button("Cancel"))
-        {
-            this.Close();
-        }
-        EditorGUILayout.EndHorizontal();
+        element = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0);
+        element.interactibleType = InteractableObjectType.Enemy;
     }
 
-    void updateEnemy(Enemy enemyToEdit = null)
+    protected override void clearForm()
     {
-        if(enemyToEdit == null)
-        {
-            enemy = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0);
-            enemy.interactibleType = InteractableObjectType.Enemy;
-        }
-        else
-        {
-            enemyName = enemyToEdit.name;
-            baseLife = enemyToEdit.baseLife;
-            attackSpeedBonus = enemyToEdit.bonusAttackSpeed;
-            movementSpeedBonus = enemyToEdit.movementSpeedBonus;
-            prefab = enemyToEdit.prefab;
-        }
+        base.clearForm();
+        element = new Enemy();
+        enemyName = "";
+        baseLife = 0;
+        attackSpeedBonus = 0;
+        movementSpeedBonus = 0;
+        prefab = null;
+    }
+
+
+    protected override string getNameAtIndex(int index)
+    {
+        Enemy enemy = database.getElementAt(index);
+        if (enemy != null)
+            return enemy.name;
+
+        return "";
     }
 }

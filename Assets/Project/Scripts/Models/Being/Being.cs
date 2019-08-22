@@ -6,9 +6,6 @@ using UnityEngine;
 public class Being : Interactable
 {
     #region being attributs
-    [Header("Name")]
-    private string _name;
-    public string name { get { return _name; } }
 
     [Header("Health")]
     private float _currentLife;
@@ -40,10 +37,8 @@ public class Being : Interactable
     private List<Ability> _skills = new List<Ability>();
     public List<Ability> skills { get { return _skills; } }
 
-
     private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}
-
 
     [Header("Game Object")]
     private GameObject _prefab;
@@ -58,7 +53,7 @@ public class Being : Interactable
     #region init
     public Being(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
     {
-        this._name = name;
+        this.name = name;
         this._currentLife = currentLife;
         this._baseLife = baseLife;
         this._shield = shield;

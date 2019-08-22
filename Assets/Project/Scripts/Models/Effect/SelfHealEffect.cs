@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = ScriptableObjectConstant.effectMenuName + "Heal Effect", fileName = "Heal Effect")]
-public class HealEffect : Effect
+[CreateAssetMenu(menuName = ScriptableObjectConstant.effectMenuName + "Self Heal Effect", fileName = "self Heal Effect")]
+public class SelfHealEffect : Effect
 {
     public override void effect(BeingBehavior sender, GameObject target, float value)
     {

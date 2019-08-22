@@ -18,35 +18,12 @@ public class EnemyDatabaseEditor : Editor
 
     override public void OnInspectorGUI()
     {
-        if (GUILayout.Button("Add an enemy")){
-            EnemyDatabaseWindow windows = new EnemyDatabaseWindow();
-            windows.showWindows(enemyDatabase);
-        }
 
-        for (int i =0; i < enemyDatabase.getDatabaseSize(); i++)
-        {
-            EditorGUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(enemyDatabase.getElementAt(i).name);
-            displayEnemyButton(i);
-
-            EditorGUILayout.EndVertical();
+        if (GUILayout.Button("Show Database")){
+            new EnemyDatabaseWindow().showWindows();
         }
     }
 
-    void displayEnemyButton(int i)
-    {
-
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Edit"))
-        {
-            EnemyDatabaseWindow windows = new EnemyDatabaseWindow();
-            windows.showWindows(enemyDatabase, enemyDatabase.getElementAt(i), true, i);
-        }
-        if (GUILayout.Button("Remove"))
-        {
-            enemyDatabase.removeElement(enemyDatabase.getElementAt(i));
-        }
-        EditorGUILayout.EndHorizontal();
-    }
+   
 
 }

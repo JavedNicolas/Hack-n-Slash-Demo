@@ -10,11 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac89b1a413550704698b7c5d888f085b, type: 3}
-  m_Name: LightningBall
+  m_Name: LightningBallAttributs
   m_EditorClassIdentifier: 
   _name: Lighning Ball
   _description: Launch a lightning in front of you
   _icon: {fileID: 0}
+  _type: 1
+  _effectAndValues:
+    _effectsValues:
+    - 10
+    - 25
+    _effects:
+    - {fileID: 11400000, guid: c76e19be310ff324ba336ede7954d6ea, type: 2}
+    - {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
   _coolDownType: 1
   _needTarget: 0
   _canBeCastedOnSelf: 0
@@ -24,4 +32,4 @@ MonoBehaviour:
   _projectileBaseSpeed: 25
   _formType: 0
   _offsetBetweenProjectile: 10
-  _projectileLife: 1
+  _projectileLife: 10

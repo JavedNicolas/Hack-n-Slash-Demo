@@ -13,8 +13,6 @@ public class Item : Interactable
     public bool isStackable = true;
     public int maxStackableSize = 10;
 
-    public string itemName;
-
     #region delegate
     public delegate void ItemHasBeenPickedUP();
     public ItemHasBeenPickedUP itemHasBeenPickedUP;

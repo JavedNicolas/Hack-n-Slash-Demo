@@ -14,7 +14,7 @@ public class InventoryUI : MonoBehaviour
     [Header("Settings")]
     [SerializeField] float numberOfSlotPerLine = 7;
 
-    private int numberOfSlot = Inventory.numberOfSlot;
+    private int numberOfSlot;
 
     public delegate void ItemHasBeenUsed(int inventorySlotIndex, InventorySlot slot);
     public ItemHasBeenUsed itemHasBeenUsed;
@@ -25,6 +25,11 @@ public class InventoryUI : MonoBehaviour
         setInventorySizes(smallInventory);
         addInventorySlots(fullInventory);
         addInventorySlots(smallInventory);
+    }
+
+    private void Start()
+    {
+        numberOfSlot = GameManager.instance.getPlayerInventory().numberOfSlot;
     }
 
     /// <summary>

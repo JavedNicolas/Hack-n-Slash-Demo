@@ -21,7 +21,7 @@ public class ItemObject : InteractableObject
 
         if (itemNameLabel != null && item != null)
         {
-            itemNameLabel.text = item.itemName;
+            itemNameLabel.text = item.name;
         }   
     }
 }

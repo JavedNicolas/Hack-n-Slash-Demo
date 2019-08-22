@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: EnemyDatabase
   m_EditorClassIdentifier: 
   elements:
-  - interactibleType: 0
+  - name: test
+    interactibleType: 0
+  - name: okok
+    interactibleType: 0

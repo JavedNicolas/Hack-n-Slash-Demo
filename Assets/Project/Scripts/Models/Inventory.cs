@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory
 {
-    public static int numberOfSlot = 10;
+    public int numberOfSlot = 10;
     List<InventorySlot> _slots = new List<InventorySlot>();
     public List<InventorySlot> slots {  get { return _slots; } }
 

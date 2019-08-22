@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class Interactable
+public abstract class Interactable : DatabaseElement
 {
     float distanceToInteract;
 

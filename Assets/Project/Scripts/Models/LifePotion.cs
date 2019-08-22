@@ -7,7 +7,7 @@ public class LifePotion : Item
 
     public LifePotion()
     {
-        itemName = "Life Potion";
+        name = "Life Potion";
         databaseID = 1;
         interactibleType = InteractableObjectType.PickableObject;
     }
