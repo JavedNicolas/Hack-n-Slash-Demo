@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class LightningBall : Ability
 {
-    public LightningBall() : base(Resources.Load<LightningBallAttributs>(AbilityConstant.attributsFolder + "LightningBallAttributs"))
+    /*public LightningBall() : base(Resources.Load<LightningBallAttributs>(AbilityConstant.attributsFolder + "LightningBallAttributs"))
     {
-    }
+    }*/
 
     public override void animation()
     {
@@ -21,11 +21,11 @@ public class LightningBall : Ability
 
     public override void performAbility(BeingBehavior sender, Vector3 targetedPosition, BeingBehavior senderGameObject)
     {
-        LightningBallAttributs attributs = (LightningBallAttributs)abilityAttributs;
+        LightningBallAttributs attributs = (LightningBallAttributs)_abilityAttributs;
 
         useEffect(EffectStartingTime.AbilityStart, sender, null);
 
         AbilityManager.instance.launchProjectile(attributs.ballGameObject, attributs.numberOfBaseProjectile, attributs.offsetBetweenProjectile, attributs.projectileBaseSpeed, attributs.projectileLife, targetedPosition,
-            attributs.formType, senderGameObject, abilityAttributs.effectAndValues);
+            attributs.formType, senderGameObject, _abilityAttributs.effectAndValues);
     }
 }

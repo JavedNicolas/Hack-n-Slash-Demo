@@ -42,7 +42,7 @@ public struct InventorySlot
     /// <param name="item">The item to add</param>
     public void AddItem(Item item)
     {
-        if(this.item != null && this.item.isStackable)
+        if(this.item != null && this.item.isConsomable)
         {
             quantity++;
         }

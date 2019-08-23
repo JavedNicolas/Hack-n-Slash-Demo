@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Lighning Ball
   _description: Launch a lightning in front of you
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 6d254a407afa0b1498389ee33e5649d6, type: 3}
   _type: 1
   _effectAndValues:
     _effectsValues:

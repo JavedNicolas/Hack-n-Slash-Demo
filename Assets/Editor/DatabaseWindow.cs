@@ -2,11 +2,13 @@
 using UnityEditor;
 using System;
 
-public abstract class DatabaseWindows<DatabaseElement
-    > : EditorWindow
+public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
 {
+    // windows 
+    protected static DatabaseWindows<DatabaseElement> windows;
+
     // database
-    protected abstract string databasePath { get;}
+    protected abstract string databasePath { get; }
 
     // scroll position
     Vector2 scrollPos;
@@ -55,7 +57,7 @@ public abstract class DatabaseWindows<DatabaseElement
         EditorGUILayout.EndVertical();
     }
 
-    void displayContentListButtons(int i)
+    protected virtual void displayContentListButtons(int i)
     {
 
         EditorGUILayout.BeginHorizontal();
@@ -82,11 +84,8 @@ public abstract class DatabaseWindows<DatabaseElement
             if (GUILayout.Button("Update"))
             {
                 updateElementWithFormValues();
-                database.updateElement(element, databaseIndex);
+                database.updateElementAt(element, databaseIndex);
                 clearForm();
-                EditorUtility.SetDirty(database);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
             }
         }
         else
@@ -96,18 +95,6 @@ public abstract class DatabaseWindows<DatabaseElement
                 updateElementWithFormValues();
                 database.addElement(element);
                 clearForm();
-                EditorUtility.SetDirty(database);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
-            if (GUILayout.Button("Add & continue"))
-            {
-                updateElementWithFormValues();
-                database.addElement(element);
-                clearForm();
-                EditorUtility.SetDirty(database);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
             }
         }
 
@@ -130,6 +117,9 @@ public abstract class DatabaseWindows<DatabaseElement
     {
         EditorGUI.FocusTextInControl("");
         databaseIndex = -1;
+        EditorUtility.SetDirty(database);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     #endregion

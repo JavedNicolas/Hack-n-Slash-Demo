@@ -24,6 +24,7 @@ public class GameUI : BaseUI
     {
         GameManager.instance.getPlayer().inventory.inventoryChanged += inventoryUI.updateInventoryUI;
         inventoryUI.itemHasBeenUsed = GameManager.instance.getPlayer().inventory.updateSlot;
+        inventoryUI.loadInventory();
     }
 
     private void Update()

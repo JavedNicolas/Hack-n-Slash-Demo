@@ -23,13 +23,13 @@ public class AbilityManager : MonoBehaviour
     {
         if (ability.isAbilityAvailable(senderScript.being))
         {
-            if(ability.getAttributs().needTarget)
+            if(ability.abilityAttributs.needTarget)
             {
                 BeingBehavior targetScript = mouseHit.transform.GetComponent<BeingBehavior>();
                 if (targetScript != null)
                 {
                     bool canBeUsed = false;
-                    if (targetScript.being == senderScript.being && ability.getAttributs().canBeCastedOnSelf)
+                    if (targetScript.being == senderScript.being && ability.abilityAttributs.canBeCastedOnSelf)
                         canBeUsed = true;
 
                     if (canBeUsed)
@@ -61,12 +61,12 @@ public class AbilityManager : MonoBehaviour
     {
         if (ability.isAbilityAvailable(senderScript.being))
         {
-            if (ability.getAttributs().needTarget)
+            if (ability.abilityAttributs.needTarget)
             {
                 if (targetScript != null)
                 {
                     bool canBeUsed = false;
-                    if (targetScript.being == senderScript.being && ability.getAttributs().canBeCastedOnSelf)
+                    if (targetScript.being == senderScript.being && ability.abilityAttributs.canBeCastedOnSelf)
                         canBeUsed = true;
                     else if (targetScript.being != senderScript.being)
                         canBeUsed = true;

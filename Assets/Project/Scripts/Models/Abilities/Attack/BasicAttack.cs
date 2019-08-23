@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BasicAttack : Ability
 {
-    public BasicAttack() : base(Resources.Load<BasicAttackAttributs>(AbilityConstant.attributsFolder + "BasicAttackAttributs"))
+    /*public BasicAttack() : base(Resources.Load<BasicAttackAttributs>(AbilityConstant.attributsFolder + "BasicAttackAttributs"))
     {
-    }
+    }*/
 
     public override void animation()
     {
@@ -15,7 +15,7 @@ public class BasicAttack : Ability
 
     public override void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
     {
-        BasicAttackAttributs attributs = (BasicAttackAttributs)abilityAttributs;
+        BasicAttackAttributs attributs = (BasicAttackAttributs)_abilityAttributs;
         //targetGameObject.being.takeDamage(attributs.value);
     }
 

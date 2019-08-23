@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class CustomAttributs : System.Attribute
+[System.Serializable]
+public class DatabaseElement
 {
-    public string name;
-}
-
-[CustomAttributs(name = "")]
-public class DatabaseElement 
-{
-    public string name;
+    string _name;
+    [SerializeField] public string name { get => _name; set => _name = value; }
+    public int _databaseID;
+    public int databaseID { get => _databaseID; set => _databaseID = value; }
 }

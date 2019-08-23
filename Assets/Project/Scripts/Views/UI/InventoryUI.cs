@@ -27,7 +27,7 @@ public class InventoryUI : MonoBehaviour
         addInventorySlots(smallInventory);
     }
 
-    private void Start()
+    public void loadInventory()
     {
         numberOfSlot = GameManager.instance.getPlayerInventory().numberOfSlot;
     }

@@ -74,7 +74,7 @@ public class PlayerBehavior : BeingBehavior
                         if (AbilityManager.instance.tryToPerformAbility(mouseHit, skillSlot.ability, this))
                         {
                             BeingBehavior target = null;
-                            if (skillSlot.ability.getAttributs().needTarget)
+                            if (skillSlot.ability.abilityAttributs.needTarget)
                                 target = mouseHit.transform.GetComponent<BeingBehavior>();
 
                             abilityUsed(mouseHit.point, target, skillSlot.ability);

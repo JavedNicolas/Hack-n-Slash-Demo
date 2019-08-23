@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Database<T> : ScriptableObject
 {
-    [SerializeField] protected List<T> elements = new List<T>();
+    protected List<T> elements = new List<T>();
 
     public T getElementAt(int index)
     {
@@ -35,7 +35,7 @@ public class Database<T> : ScriptableObject
         elements.Remove(element);
     }
 
-    public void updateElement(T element, int index)
+    public void updateElementAt(T element, int index)
     {
         elements[index] = element;
     }

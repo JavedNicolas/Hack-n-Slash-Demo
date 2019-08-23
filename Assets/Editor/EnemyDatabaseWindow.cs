@@ -14,11 +14,12 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     float attackSpeedBonus;
     GameObject prefab;
     float movementSpeedBonus;
+    InteractableObjectType interactableType;
 
     [MenuItem("Database/Enemy")]
-    public static void init()
+    public static void databadeMenuFunction()
     {
-        EnemyDatabaseWindow windows = new EnemyDatabaseWindow();
+        windows = new EnemyDatabaseWindow();
         windows.showWindows();
     }
 
@@ -31,6 +32,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         attackSpeedBonus = EditorGUILayout.FloatField("Attack Speed Bonus :", attackSpeedBonus);
         prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", prefab, typeof(GameObject), false);
         movementSpeedBonus = EditorGUILayout.FloatField("Movement Speed Bonus : ", movementSpeedBonus);
+        interactableType = (InteractableObjectType)EditorGUILayout.EnumPopup("Interactible type : ", interactableType);
         displayFormButtons();
         EditorGUILayout.EndVertical();
     }
@@ -52,7 +54,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     protected override void updateElementWithFormValues()
     {
         element = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0);
-        element.interactibleType = InteractableObjectType.Enemy;
+        element.interactibleType = interactableType;
     }
 
     protected override void clearForm()
@@ -65,7 +67,6 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         movementSpeedBonus = 0;
         prefab = null;
     }
-
 
     protected override string getNameAtIndex(int index)
     {

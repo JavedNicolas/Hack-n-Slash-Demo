@@ -45,7 +45,7 @@ public class Being : Interactable
     public GameObject prefab {  get { return _prefab; } }
 
     [Header("Misc")]
-    private float _movementSpeedBonus = 100;
+    private float _movementSpeedBonus;
     public float movementSpeedBonus {  get { return _movementSpeedBonus; } }
 
     #endregion

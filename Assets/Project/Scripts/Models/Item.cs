@@ -4,14 +4,21 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+[System.Serializable]
 public class Item : Interactable
 {
-    public int databaseID;
-    public Sprite itemIcon;
-    public GameObject itemModel;
-    public bool isConsomable = true;
-    public bool isStackable = true;
-    public int maxStackableSize = 10;
+    public const float interactionDistance = 2f;
+
+    Sprite _itemIcon;
+    public Sprite itemIcon { get => _itemIcon; }
+    GameObject _itemModel;
+    public GameObject itemModel { get => _itemModel; }
+    bool _isConsomable = true;
+    public bool isConsomable { get => _isConsomable; }
+    bool _isStackable = true;
+    public bool isStackable { get => _isStackable; }
+    int _maxStackableSize = 10;
+    public int maxStackableSize { get => _maxStackableSize; }
 
     #region delegate
     public delegate void ItemHasBeenPickedUP();
@@ -20,7 +27,18 @@ public class Item : Interactable
 
     public Item()
     {
-        setDistanceToInteraction(2f);
+        setDistanceToInteraction(interactionDistance);
+    }
+
+    public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize)
+    {
+        this.name = name;
+        this._itemIcon = itemIcon;
+        this._itemModel = itemModel;
+        this._isConsomable = isConsomable;
+        this._isStackable = isStackable;
+        this._maxStackableSize = maxStackableSize;
+        setDistanceToInteraction(interactionDistance);
     }
 
     public virtual void use(Being sender = null, Item target = null)

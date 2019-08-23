@@ -120,7 +120,7 @@ public class BeingBehavior : InteractableObject
     /// <param name="ability"></param>
     protected void abilityUsed(Vector3 position, BeingBehavior target,Ability ability)
     {
-        if (ability.getAttributs().needTarget)
+        if (ability.abilityAttributs.needTarget)
         {
             lookAtStraight(target.transform.position);
             stopMoving();

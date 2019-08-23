@@ -34,13 +34,12 @@ public class SkillSlotUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Set the icon of the skill
+    /// Set the icon of the ability
     /// </summary>
-    /// <param name="skill"></param>
-    void setIcon(Ability skill)
+    /// <param name="ability"></param>
+    void setIcon(Ability ability)
     {
-        if(isChoiceIcon)
-            GetComponent<Image>().sprite = skill.getIcon();
+        GetComponent<Image>().sprite = ability.getIcon();
     }
 
     /// <summary>

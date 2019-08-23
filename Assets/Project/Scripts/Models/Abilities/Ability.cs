@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public abstract class Ability
 {
     // attributs
     protected float lastTimeUsed = 0f;
-    protected AbilityAttributs abilityAttributs;
+    protected AbilityAttributs _abilityAttributs;
+    public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
+
 
     // functions
-    public Ability(AbilityAttributs abilityAttributs)
+    /*public Ability(AbilityAttributs abilityAttributs)
     {
-        this.abilityAttributs = abilityAttributs;
-    }
+        this._abilityAttributs = abilityAttributs;
+    }*/
 
     /// <summary>
     /// Start the sender animation for this ability
@@ -43,17 +46,17 @@ public abstract class Ability
     /// <param name="target">The target of the ability</param>
     protected void useEffect(EffectStartingTime startingType, BeingBehavior sender, GameObject target)
     {
-        List<Effect> effects = abilityAttributs.effectAndValues.effects;
+        List<Effect> effects = _abilityAttributs.effectAndValues.effects;
         for (int i =0; i < effects.Count; i++)
         {
             if (effects[i].startingType == startingType)
-                effects[i].effect(sender, target, abilityAttributs.effectAndValues.effectValues[i]);
+                effects[i].effect(sender, target, _abilityAttributs.effectAndValues.effectValues[i]);
         }
     }
 
     public bool isAbilityAvailable(Being sender)
     {
-        switch (abilityAttributs.coolDownType)
+        switch (_abilityAttributs.coolDownType)
         {
             case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.getASPD()) ? true : false; 
             case AbilityCoolDownType.Cooldown: break;
@@ -69,16 +72,12 @@ public abstract class Ability
     /// <returns>A sprite of the icon</returns>
     public Sprite getIcon()
     {
-        return abilityAttributs.icon;
+        return _abilityAttributs.icon;
     }
 
-    /// <summary>
-    /// Get the ability Attributs
-    /// </summary>
-    /// <returns></returns>
-    public AbilityAttributs getAttributs()
+    public void setAttributs(AbilityAttributs attributs)
     {
-        return abilityAttributs;
+        _abilityAttributs = attributs;
     }
 
     /// <summary>
