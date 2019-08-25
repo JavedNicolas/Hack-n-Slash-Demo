@@ -18,9 +18,11 @@ public class EnemyBehavior : BeingBehavior
     Vector3 closestPlayerPosition;
     float closestPlayerDistance;
 
+    LightningBall ability;
+
     void Start()
     {
-        being.skills.Add(new LightningBall());
+        being.skills.Add(GameManager.instance.getAbilityOfType(typeof(LightningBall)));
         players = FindObjectsOfType<PlayerBehavior>().ToList();
 
         lifeUI.setBeing(being);

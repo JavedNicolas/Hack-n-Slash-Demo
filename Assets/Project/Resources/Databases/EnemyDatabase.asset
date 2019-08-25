@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e189dde40a143854aab697413c5d2153, type: 3}
   m_Name: EnemyDatabase
   m_EditorClassIdentifier: 
+  elements:
+  - _name: test
+    _databaseID: 0
+    interactibleType: 0
+    _baseLife: 100
+    _prefab: {fileID: 7699618545951562393, guid: 539abc4bc8423374ea56e4d48393cccc,
+      type: 3}

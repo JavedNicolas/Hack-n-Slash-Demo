@@ -8,15 +8,9 @@ public abstract class Ability
 {
     // attributs
     protected float lastTimeUsed = 0f;
-    protected AbilityAttributs _abilityAttributs;
+    [SerializeField] protected AbilityAttributs _abilityAttributs;
     public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
 
-
-    // functions
-    /*public Ability(AbilityAttributs abilityAttributs)
-    {
-        this._abilityAttributs = abilityAttributs;
-    }*/
 
     /// <summary>
     /// Start the sender animation for this ability

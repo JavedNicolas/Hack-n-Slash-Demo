@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Database")]
     [SerializeField] EnemyDatabase enemyDatabase;
-    [SerializeField] AbilityDatabase skillDatabase;
+    [SerializeField] AbilityDatabase abilityDatabase;
     [SerializeField] ItemDatabase itemDatabase;
 
     public static GameManager instance;
@@ -17,13 +18,12 @@ public class GameManager : MonoBehaviour
     public GameObject projectilePrefab;
     Player playerTMp;
 
-
     private void Awake()
     {
         instance = this;
         DontDestroyOnLoad(this);
         playerTMp = new Player("Player Test", 100, 100, 0, 10, 11, 0, new List<Ability>(), 50, playerPrefab, 100);
-        playerTMp.skills.Add(skillDatabase.getElementAt(1));
+        playerTMp.skills.Add(getAbilityOfType(typeof(LightningBall)));
     }
 
     // Start is called before the first frame update
@@ -48,6 +48,6 @@ public class GameManager : MonoBehaviour
     // Getter
     public EnemyDatabase getEnemyDatabase() { return enemyDatabase; }
     public Player getPlayer() { return (Player)player.GetComponentInChildren<PlayerBehavior>().being; }
-
     public Inventory getPlayerInventory() { return getPlayer().inventory; }
+    public Ability getAbilityOfType(Type abilityType) { return abilityDatabase.getAbilityOfType(abilityType); }
 }

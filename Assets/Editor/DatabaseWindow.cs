@@ -19,6 +19,12 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     protected DatabaseElement element;
     protected int databaseIndex = -1;
 
+    private void OnDisable()
+    {
+        saveDB();
+    }
+
+
     /// <summary>
     /// Display windows
     /// </summary>
@@ -27,6 +33,7 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
         this.Show();
         this.minSize = new Vector2(contentListWidth * 3, contentListWidth);
         database = Resources.Load<Database<DatabaseElement>>(databasePath);
+        saveDB();
     }
 
     void OnGUI()
@@ -117,9 +124,7 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     {
         EditorGUI.FocusTextInControl("");
         databaseIndex = -1;
-        EditorUtility.SetDirty(database);
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        saveDB();
     }
 
     #endregion
@@ -130,4 +135,11 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     /// <param name="index">the index of the element</param>
     /// <returns>The name</returns>
     protected abstract string getNameAtIndex(int index);
+
+    void saveDB()
+    {
+        EditorUtility.SetDirty(database);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
 }

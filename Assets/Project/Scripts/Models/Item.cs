@@ -10,15 +10,15 @@ public class Item : Interactable
     public const float interactionDistance = 2f;
 
     Sprite _itemIcon;
-    public Sprite itemIcon { get => _itemIcon; }
+    [SerializeField] public Sprite itemIcon { get => _itemIcon; }
     GameObject _itemModel;
-    public GameObject itemModel { get => _itemModel; }
+    [SerializeField] public GameObject itemModel { get => _itemModel; }
     bool _isConsomable = true;
-    public bool isConsomable { get => _isConsomable; }
+    [SerializeField] public bool isConsomable { get => _isConsomable; }
     bool _isStackable = true;
-    public bool isStackable { get => _isStackable; }
+    [SerializeField] public bool isStackable { get => _isStackable; }
     int _maxStackableSize = 10;
-    public int maxStackableSize { get => _maxStackableSize; }
+    [SerializeField] public int maxStackableSize { get => _maxStackableSize; }
 
     #region delegate
     public delegate void ItemHasBeenPickedUP();

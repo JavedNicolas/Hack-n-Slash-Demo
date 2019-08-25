@@ -10,7 +10,7 @@ public class Being : Interactable
     [Header("Health")]
     private float _currentLife;
     public float currentLife { get { return _currentLife; } }
-    private float _baseLife;
+    [SerializeField] private float _baseLife;
     public float baseLife { get { return _baseLife; } }
     private float _shield;
     public float shield { get { return _shield; } }
@@ -34,14 +34,14 @@ public class Being : Interactable
     public float projectileSpeed { get { return _projectileSpeed; } }
 
     [Header("Skills")]
-    private List<Ability> _skills = new List<Ability>();
+    [SerializeField] private List<Ability> _skills = new List<Ability>();
     public List<Ability> skills { get { return _skills; } }
 
     private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}
 
     [Header("Game Object")]
-    private GameObject _prefab;
+    [SerializeField] private GameObject _prefab;
     public GameObject prefab {  get { return _prefab; } }
 
     [Header("Misc")]

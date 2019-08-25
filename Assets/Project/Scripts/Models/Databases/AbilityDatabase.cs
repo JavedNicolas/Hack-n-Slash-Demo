@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [CreateAssetMenu(menuName = "Database/Ability", fileName = "AbilityDatabase")]
 public class AbilityDatabase : Database<Ability>
 {
-    List<AbilityAttributs> attributs = new List<AbilityAttributs>();
+    [SerializeField] List<AbilityAttributs> attributs = new List<AbilityAttributs>();
 
     private void OnEnable()
     {
         elements = new List<Ability>()
         {
-            new BasicAttack(),
             new LightningBall()
         };
         setAbilitiesAttributs();
@@ -30,6 +30,19 @@ public class AbilityDatabase : Database<Ability>
         {
             elements[i].setAttributs(attributs[i]);
         }
+    }
+
+    public Ability getAbilityOfType(Type abilityType)
+    {
+        for(int i =0; i < getDatabaseSize(); i++)
+        {
+            Ability ability = getElementAt(i);
+            if(abilityType == ability.GetType())
+            {
+                return getElementAt(i);
+            }
+        }
+        return null;
     }
 
     public void updateAbilityAttribut(AbilityAttributs attribut, int index)

@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58354cc3c4dad54c9668f0cfc924bc0, type: 3}
   m_Name: ItemDatabase
   m_EditorClassIdentifier: 
+  elements:
+  - _name: life pot
+    _databaseID: 0
+    interactibleType: 1

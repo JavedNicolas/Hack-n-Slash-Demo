@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class Interactable : DatabaseElement
 {
     float distanceToInteract;
 
     // true if the movement has been initiated
     bool moveHasStarted = false;
-    public InteractableObjectType interactibleType;
+    [SerializeField] public InteractableObjectType interactibleType;
 
     public virtual float getInteractionDistance()
     {

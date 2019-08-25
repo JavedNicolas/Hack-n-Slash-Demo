@@ -32,4 +32,4 @@ MonoBehaviour:
   _projectileBaseSpeed: 25
   _formType: 0
   _offsetBetweenProjectile: 10
-  _projectileLife: 10
+  _projectileLife: 1

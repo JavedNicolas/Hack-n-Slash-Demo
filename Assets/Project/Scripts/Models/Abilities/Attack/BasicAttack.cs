@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BasicAttack : Ability
 {
-    /*public BasicAttack() : base(Resources.Load<BasicAttackAttributs>(AbilityConstant.attributsFolder + "BasicAttackAttributs"))
+    public BasicAttack()
     {
-    }*/
+        setAttributs(Resources.Load<BasicAttackAttributs>(AbilityConstant.attributsFolder + "BasicAttackAttributs"));
+    }
 
     public override void animation()
     {
