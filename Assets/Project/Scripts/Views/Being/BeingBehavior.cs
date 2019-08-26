@@ -140,7 +140,8 @@ public class BeingBehavior : InteractableObject
     /// Move the player to the interactible object
     /// </summary>
     /// <param name="fromRightClick">If the call comes from the right mouse click</param>
-    protected void moveToInteractibleTarget(bool fromRightClick = false)
+    /// <returns>return true if the interaction is possible</returns>
+    protected bool moveToInteractibleTarget(bool fromRightClick = false)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -151,10 +152,11 @@ public class BeingBehavior : InteractableObject
             if ((fromRightClick && interactableObject.interactable.interactibleType == InteractableObjectType.Enemy)
             || (!fromRightClick && interactableObject.interactable.interactibleType != InteractableObjectType.Enemy))
             {
-
                 interactionTarget = interactableObject;
+                return true;
             }
         }
+        return false;
     }
 
 

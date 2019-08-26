@@ -7,7 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class Item : Interactable
 {
-    public const float interactionDistance = 2f;
+    public const float interactionDistance = 6f;
 
     Sprite _itemIcon;
     [SerializeField] public Sprite itemIcon { get => _itemIcon; }
@@ -20,6 +20,9 @@ public class Item : Interactable
     int _maxStackableSize = 10;
     [SerializeField] public int maxStackableSize { get => _maxStackableSize; }
 
+    [SerializeField] EffectAndValues _effects;
+    public EffectAndValues effects { get => _effects; }
+
     #region delegate
     public delegate void ItemHasBeenPickedUP();
     public ItemHasBeenPickedUP itemHasBeenPickedUP;
@@ -30,7 +33,7 @@ public class Item : Interactable
         setDistanceToInteraction(interactionDistance);
     }
 
-    public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize)
+    public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize, EffectAndValues effects)
     {
         this.name = name;
         this._itemIcon = itemIcon;
@@ -38,11 +41,15 @@ public class Item : Interactable
         this._isConsomable = isConsomable;
         this._isStackable = isStackable;
         this._maxStackableSize = maxStackableSize;
+        this._effects = effects;
         setDistanceToInteraction(interactionDistance);
     }
 
-    public virtual void use(Being sender = null, Item target = null)
+    public virtual void use(BeingBehavior sender, GameObject target = null)
     {
+        for (int i = 0; i < _effects.effects.Count; i++)
+            effects.effects[i].effect(sender, target, effects.effectValues[i]);
+            
     }
 
     public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)

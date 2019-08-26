@@ -17,6 +17,8 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     bool isStackable = true;
     int maxStackableSize = 10;
     InteractableObjectType interactableType;
+    int numberOfEffect;
+    EffectAndValues effects = new EffectAndValues();
 
     [MenuItem("Database/Item")]
     public static void databadeMenuFunction()
@@ -36,12 +38,52 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         isStackable = EditorGUILayout.Toggle("Is Stackable : ", isStackable);
         maxStackableSize = EditorGUILayout.IntField("Max stack size : ", maxStackableSize);
         interactableType = (InteractableObjectType)EditorGUILayout.EnumPopup("Interactible type : ", interactableType);
+        numberOfEffect = EditorGUILayout.IntField("Number Of effect :", numberOfEffect);
+        updateEffectsListsSize(numberOfEffect);
+        if(numberOfEffect != 0)
+        {
+            EditorGUILayout.LabelField("Effects : ");
+            for (int i = 0; i < numberOfEffect; i++)
+            {
+                effects.effects[i] = (Effect)EditorGUILayout.ObjectField("Effect n°" + i + " :", effects.effects[i], typeof(Effect), true);
+            }
+
+            EditorGUILayout.LabelField("Values");
+            for (int i = 0; i < numberOfEffect; i++)
+            {
+                effects.effectValues[i] = EditorGUILayout.FloatField("Value for Effect n°" + i + " :", effects.effectValues[i]);
+            }
+        }
+        
+
 
         displayFormButtons();
         EditorGUILayout.EndVertical();
     }
     #endregion
 
+    void updateEffectsListsSize(int size)
+    {
+        while(effects.effects.Count != size && effects.effectValues.Count != size)
+        {
+            if(effects.effects.Count < size)
+            {
+                effects.effects.Add(null);
+            }else if(effects.effects.Count > size)
+            {
+                effects.effects.RemoveAt(effects.effects.Count - 1);
+            }
+            if (effects.effectValues.Count < size)
+            {
+                effects.effectValues.Add(0);
+            }
+            else if (effects.effectValues.Count > size)
+            {
+                effects.effectValues.RemoveAt(effects.effectValues.Count - 1);
+            }
+        }
+
+    }
 
     protected override void setFieldWithElementValues()
     {
@@ -53,12 +95,14 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
             isConsomable = element.isConsomable;
             isStackable = element.isStackable;
             maxStackableSize = element.maxStackableSize;
+            numberOfEffect = element.effects.effects.Count;
+            effects = element.effects;
         }
     }
 
     protected override void updateElementWithFormValues()
     {
-        element = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize);
+        element = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, effects);
         element.interactibleType = interactableType;
     }
 
@@ -72,6 +116,8 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         isConsomable = false;
         isStackable = false;
         maxStackableSize = 0;
+        numberOfEffect = 0;
+        effects = new EffectAndValues();
     }
 
     protected override string getNameAtIndex(int index)

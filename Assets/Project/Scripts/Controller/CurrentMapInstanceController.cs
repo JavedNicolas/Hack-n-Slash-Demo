@@ -26,7 +26,7 @@ public class CurrentMapInstanceController
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Enemy enemy = GameManager.instance.getEnemyDatabase().getRandomElement();
+            Enemy enemy = GameManager.instance.enemyDatabase.getRandomElement();
             GameObject enemyGO = SpawningController.instance.spawnEnemy(enemy);
             enemies.Add(enemyGO);
         }

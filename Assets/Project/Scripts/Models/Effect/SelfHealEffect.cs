@@ -7,10 +7,6 @@ public class SelfHealEffect : Effect
 {
     public override void effect(BeingBehavior sender, GameObject target, float value)
     {
-        BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
-        if (targetScript != null && isCorrectTarget(sender, target))
-        {
-            sender.being.heal(value);
-        }
+        sender.being.heal(value);
     }
 }

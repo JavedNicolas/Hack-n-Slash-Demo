@@ -5,13 +5,15 @@ using TMPro;
 
 public class ItemObject : InteractableObject
 {
-    public Item item = new LifePotion();
+    [SerializeField] Item item;
 
     protected TextMeshProUGUI itemNameLabel;
 
     private void Start()
     {
         itemNameLabel = GetComponentInChildren<TextMeshProUGUI>();
+
+        item = GameManager.instance.itemDatabase.getElementAt(0);
 
         if (item != null)
         {

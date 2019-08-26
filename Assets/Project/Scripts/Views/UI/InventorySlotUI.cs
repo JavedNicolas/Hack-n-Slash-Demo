@@ -58,7 +58,7 @@ public class InventorySlotUI : MonoBehaviour
     /// </summary>
     void useItem()
     {
-        inventorySlot.item.use(GameManager.instance.getPlayer());
+        inventorySlot.item.use(GameManager.instance.GetPlayerBehavior());
         if (inventorySlot.item.isConsomable)
         {
             inventorySlot.removeItem();

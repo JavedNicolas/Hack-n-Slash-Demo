@@ -16,3 +16,8 @@ MonoBehaviour:
   - _name: life pot
     _databaseID: 0
     interactibleType: 1
+    _effects:
+      _effectsValues:
+      - 20
+      _effects:
+      - {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}

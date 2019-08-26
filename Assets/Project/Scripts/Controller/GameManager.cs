@@ -6,9 +6,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("Database")]
-    [SerializeField] EnemyDatabase enemyDatabase;
-    [SerializeField] AbilityDatabase abilityDatabase;
-    [SerializeField] ItemDatabase itemDatabase;
+    [SerializeField] EnemyDatabase _enemyDatabase;
+    public EnemyDatabase enemyDatabase { get => _enemyDatabase; }
+    [SerializeField] AbilityDatabase _abilityDatabase;
+    public AbilityDatabase abilityDatabase { get => _abilityDatabase; }
+    [SerializeField] ItemDatabase _itemDatabase;
+    public ItemDatabase itemDatabase { get => _itemDatabase; }
 
     public static GameManager instance;
     GameObject player;
@@ -46,8 +49,13 @@ public class GameManager : MonoBehaviour
     }
 
     // Getter
-    public EnemyDatabase getEnemyDatabase() { return enemyDatabase; }
-    public Player getPlayer() { return (Player)player.GetComponentInChildren<PlayerBehavior>().being; }
+    public Player getPlayer() {
+        if(GetPlayerBehavior() != null)
+            return (Player)player.GetComponentInChildren<PlayerBehavior>().being;
+
+        return null;
+    }
+    public PlayerBehavior GetPlayerBehavior() { return player.GetComponentInChildren<PlayerBehavior>(); }
     public Inventory getPlayerInventory() { return getPlayer().inventory; }
-    public Ability getAbilityOfType(Type abilityType) { return abilityDatabase.getAbilityOfType(abilityType); }
+    public Ability getAbilityOfType(Type abilityType) { return _abilityDatabase.getAbilityOfType(abilityType); }
 }

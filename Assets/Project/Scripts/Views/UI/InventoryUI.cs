@@ -19,17 +19,13 @@ public class InventoryUI : MonoBehaviour
     public delegate void ItemHasBeenUsed(int inventorySlotIndex, InventorySlot slot);
     public ItemHasBeenUsed itemHasBeenUsed;
 
-    private void Awake()
+    public void loadInventory()
     {
+        numberOfSlot = GameManager.instance.getPlayerInventory().numberOfSlot;
         setInventorySizes(fullInventory);
         setInventorySizes(smallInventory);
         addInventorySlots(fullInventory);
         addInventorySlots(smallInventory);
-    }
-
-    public void loadInventory()
-    {
-        numberOfSlot = GameManager.instance.getPlayerInventory().numberOfSlot;
     }
 
     /// <summary>
