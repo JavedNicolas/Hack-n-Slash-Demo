@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -15,9 +16,6 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] float numberOfSlotPerLine = 7;
 
     private int numberOfSlot;
-
-    public delegate void ItemHasBeenUsed(int inventorySlotIndex, InventorySlot slot);
-    public ItemHasBeenUsed itemHasBeenUsed;
 
     public void loadInventory()
     {
@@ -64,7 +62,7 @@ public class InventoryUI : MonoBehaviour
         List<InventorySlotUI> itemSlots = inventoryToFill.GetComponentsInChildren<InventorySlotUI>().ToList();
         for (int i = 0; i < inventory.slots.Count; i++)
         {
-            itemSlots[i].inventorySlot = inventory.slots[i];
+            itemSlots[i].initSlot(inventory.slots[i]);
         }
     }
 
@@ -95,12 +93,8 @@ public class InventoryUI : MonoBehaviour
         {
             GameObject newSlot = Instantiate(inventorySlotPrefab);
             newSlot.transform.SetParent(inventoryToFill.GetComponentInChildren<GridLayoutGroup>().transform);
-            newSlot.GetComponent<InventorySlotUI>().itemUsed = itemUsed;
+            newSlot.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
-    void itemUsed(int slotIndex, InventorySlot slot)
-    {
-        itemHasBeenUsed(slotIndex, slot);
-    }
 }

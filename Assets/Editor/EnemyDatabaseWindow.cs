@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
 {
@@ -27,6 +28,10 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     protected override void displayForm()
     {
         EditorGUILayout.BeginVertical();
+        GUI.enabled = false;
+        databaseID = EditorGUILayout.IntField("Database ID : ", databaseID);
+        GUI.enabled = true;
+        databaseID = database.getFreeId();
         enemyName = EditorGUILayout.TextField("Name : ", enemyName);
         baseLife = EditorGUILayout.FloatField("baseLife : ", baseLife);
         attackSpeedBonus = EditorGUILayout.FloatField("Attack Speed Bonus :", attackSpeedBonus);
@@ -43,6 +48,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     { 
         if(element != null)
         {
+            databaseID = element.databaseID;
             enemyName = element.name;
             baseLife = element.baseLife;
             attackSpeedBonus = element.bonusAttackSpeed;
@@ -55,12 +61,14 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     {
         element = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0);
         element.interactibleType = interactableType;
+        element.databaseID = databaseID;
     }
 
     protected override void clearForm()
     {
         base.clearForm();
         element = new Enemy();
+        databaseID = database.getFreeId();
         enemyName = "";
         baseLife = 0;
         attackSpeedBonus = 0;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class ItemDatabaseWindow : DatabaseWindows<Item>
 {
@@ -10,12 +11,12 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
 
     // item Field
     string itemName;
-    int databaseID;
     Sprite itemIcon;
     GameObject itemModel;
     bool isConsomable = true;
     bool isStackable = true;
     int maxStackableSize = 10;
+    TargetType targetType;
     InteractableObjectType interactableType;
     int numberOfEffect;
     EffectAndValues effects = new EffectAndValues();
@@ -31,6 +32,9 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     protected override void displayForm()
     {
         EditorGUILayout.BeginVertical();
+        GUI.enabled = false;
+        databaseID = EditorGUILayout.IntField("Database ID : ", databaseID);
+        GUI.enabled = true;
         itemName = EditorGUILayout.TextField("Name : ", itemName);
         itemIcon = (Sprite)EditorGUILayout.ObjectField("Icon : ", itemIcon, typeof(Sprite), false);
         itemModel = (GameObject)EditorGUILayout.ObjectField("Model : ", itemModel, typeof(GameObject), false);
@@ -38,6 +42,7 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         isStackable = EditorGUILayout.Toggle("Is Stackable : ", isStackable);
         maxStackableSize = EditorGUILayout.IntField("Max stack size : ", maxStackableSize);
         interactableType = (InteractableObjectType)EditorGUILayout.EnumPopup("Interactible type : ", interactableType);
+        targetType = (TargetType)EditorGUILayout.EnumPopup("Target type : ", targetType);
         numberOfEffect = EditorGUILayout.IntField("Number Of effect :", numberOfEffect);
         updateEffectsListsSize(numberOfEffect);
         if(numberOfEffect != 0)
@@ -89,12 +94,15 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     {
         if (element != null)
         {
+            databaseID = element.databaseID;
             itemName = element.name;
             itemIcon = element.itemIcon;
             itemModel = element.itemModel;
             isConsomable = element.isConsomable;
             isStackable = element.isStackable;
             maxStackableSize = element.maxStackableSize;
+            interactableType = element.interactibleType;
+            targetType = element.targetType;
             numberOfEffect = element.effects.effects.Count;
             effects = element.effects;
         }
@@ -102,14 +110,16 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
 
     protected override void updateElementWithFormValues()
     {
-        element = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, effects);
+        element = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, targetType,effects);
         element.interactibleType = interactableType;
+        element.databaseID = databaseID;
     }
 
     protected override void clearForm()
     {
         base.clearForm();
         element = new Item();
+        databaseID = database.getFreeId();
         itemName = "";
         itemIcon = null;
         itemModel = null;
@@ -117,6 +127,8 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         isStackable = false;
         maxStackableSize = 0;
         numberOfEffect = 0;
+        interactableType = default;
+        targetType = default;
         effects = new EffectAndValues();
     }
 

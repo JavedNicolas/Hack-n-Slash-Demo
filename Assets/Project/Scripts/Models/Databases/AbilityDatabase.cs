@@ -9,26 +9,39 @@ public class AbilityDatabase : Database<Ability>
 
     private void OnEnable()
     {
-        elements = new List<Ability>()
+        _elements = new List<Ability>()
         {
             new LightningBall()
         };
         setAbilitiesAttributs();
     }
 
+    public override int getFreeId()
+    {
+        int lastID = -1;
+        for (int i = 0; i < _elements.Count; i++)
+        {
+            int currentID = _elements[i].databaseID;
+            if (lastID != -1 && currentID - lastID > 1)
+                return lastID + 1;
+        }
+
+        return _elements.Count;
+    }
+
     void setAbilitiesAttributs()
     {
-        while(attributs.Count != elements.Count)
+        while(attributs.Count != _elements.Count)
         {
-            if (attributs.Count < elements.Count)
+            if (attributs.Count < _elements.Count)
                 attributs.Add(null);
-            if (attributs.Count > elements.Count)
+            if (attributs.Count > _elements.Count)
                 attributs.RemoveAt(attributs.Count - 1);
         }
 
-        for(int i = 0; i < elements.Count; i++)
+        for(int i = 0; i < _elements.Count; i++)
         {
-            elements[i].setAttributs(attributs[i]);
+            _elements[i].setAttributs(attributs[i]);
         }
     }
 
@@ -47,10 +60,12 @@ public class AbilityDatabase : Database<Ability>
 
     public void updateAbilityAttribut(AbilityAttributs attribut, int index)
     {
-        if(index < elements.Count)
+        if(index < _elements.Count)
         {
             attributs[index] = attribut;
             setAbilitiesAttributs();
         }
     }
+
+
 }

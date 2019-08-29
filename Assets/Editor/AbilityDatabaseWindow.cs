@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class AbilityDatabaseWindow : DatabaseWindows<Ability>
 {
@@ -21,7 +22,7 @@ public class AbilityDatabaseWindow : DatabaseWindows<Ability>
     #region Right panel (The form)
     protected override void displayForm()
     {
-        if(databaseIndex != -1)
+        if (databaseIndex != -1)
         {
             EditorGUILayout.BeginVertical();
 

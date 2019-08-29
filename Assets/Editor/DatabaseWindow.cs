@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
 {
@@ -18,12 +19,12 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
 
     protected DatabaseElement element;
     protected int databaseIndex = -1;
+    protected int databaseID;
 
     private void OnDisable()
     {
         saveDB();
     }
-
 
     /// <summary>
     /// Display windows
@@ -33,6 +34,7 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
         this.Show();
         this.minSize = new Vector2(contentListWidth * 3, contentListWidth);
         database = Resources.Load<Database<DatabaseElement>>(databasePath);
+        databaseID = database.getFreeId();
         saveDB();
     }
 

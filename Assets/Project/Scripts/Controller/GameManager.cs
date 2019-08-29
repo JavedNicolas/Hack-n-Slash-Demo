@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,14 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject projectilePrefab;
     Player playerTMp;
+
+    #region clicks
+    public delegate void LeftClickDelegate(bool overInterface);
+    public LeftClickDelegate leftClickDelegate;
+
+    public delegate void RightClickDelegate(bool overInterface);
+    public RightClickDelegate rightClickDelegate;
+    #endregion
 
     private void Awake()
     {
@@ -40,7 +49,23 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        getMouseClick();
+    }
 
+    public void getMouseClick()
+    {
+        bool overInterface;
+        if (Input.GetButton(InputConstant.leftMouseButtonName))
+        {
+            overInterface = EventSystem.current.IsPointerOverGameObject();
+            leftClickDelegate(overInterface);
+        }
+
+        if (Input.GetButton(InputConstant.rightMouseButtonName))
+        {
+            overInterface = EventSystem.current.IsPointerOverGameObject();
+            rightClickDelegate(overInterface);
+        }
     }
 
     public void spawnPlayer()

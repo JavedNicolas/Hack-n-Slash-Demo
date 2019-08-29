@@ -8,7 +8,8 @@ public abstract class Interactable : DatabaseElement
 
     // true if the movement has been initiated
     bool moveHasStarted = false;
-    [SerializeField] public InteractableObjectType interactibleType;
+    [SerializeField] protected InteractableObjectType _interactibleType;
+    public InteractableObjectType interactibleType { get => _interactibleType; set => _interactibleType = value; }
 
     public virtual float getInteractionDistance()
     {
@@ -26,5 +27,6 @@ public abstract class Interactable : DatabaseElement
     /// <param name="interactionBeing">The player interacting</param>
     /// <returns>Return true when the movement to the object is over. This movement can be interacted and the result found in the interactionResult attribut</returns>
     public abstract bool interact(BeingBehavior interactionBeing, GameObject objectToInteractWith);
+
 
 }

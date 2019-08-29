@@ -6,3 +6,8 @@ public enum InteractableObjectType
 {
     Enemy, PickableObject, NPC, Player
 }
+
+public enum TargetType
+{
+    None, AnyItem, Equipment
+}

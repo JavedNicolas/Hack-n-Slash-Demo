@@ -1,42 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
-public class Database<T> : ScriptableObject
+public class Database<DatabaseElement> : ScriptableObject
 {
-    [SerializeField] protected List<T> elements = new List<T>();
+    [SerializeField] protected List<DatabaseElement> _elements = new List<DatabaseElement>();
+    public List<DatabaseElement> elements { get => _elements; }
 
-    public T getElementAt(int index)
+    public DatabaseElement getElementAt(int index)
     {
-        if (index >= elements.Count)
-            return default(T);
+        if (index >= _elements.Count)
+            return default(DatabaseElement);
         else
-            return elements[index];
+            return _elements[index];
     }
 
-    public T getRandomElement()
+    public DatabaseElement getRandomElement()
     {
-        return elements[Random.Range(0, elements.Count)];
+        return _elements[Random.Range(0, _elements.Count)];
     }
 
     public int getDatabaseSize()
     {
-        return elements.Count;
+        return _elements.Count;
     }
 
-    public void addElement(T element)
+    public void addElement(DatabaseElement element)
     {
-        elements.Add(element);
+        _elements.Add(element);
     }
 
-    public void removeElement(T element)
+    public void removeElement(DatabaseElement element)
     {
-        elements.Remove(element);
+        _elements.Remove(element);
     }
 
-    public void updateElementAt(T element, int index)
+    public void updateElementAt(DatabaseElement element, int index)
     {
-        elements[index] = element;
+        _elements[index] = element;
     }
+
+    public virtual int getFreeId()
+    {
+        return _elements.Count;
+    }
+
+
+
 }

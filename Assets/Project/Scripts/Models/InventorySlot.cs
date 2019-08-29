@@ -16,6 +16,41 @@ public struct InventorySlot
         this.quantity = -1;
     }
 
+    public void emptySlot()
+    {
+        item = null;
+        quantity = -1;
+    }
+
+
+    /// <summary>
+    /// Copy the slot into the current one 
+    /// </summary>
+    /// <param name="slot">The slot to copy</param>
+    public void copySlot(InventorySlot slot)
+    {
+        item = slot.item;
+        quantity = slot.quantity;
+    }
+
+
+    /// <summary>
+    /// Compare the current slot to an other slot
+    /// </summary>
+    /// <param name="slot">slot to compare</param>
+    /// <returns>false if different and true if not</returns>
+    public bool isEqualTo(InventorySlot slot)
+    {
+        if (slot.item != item)
+            return false;
+        if (slot.quantity != quantity)
+            return false;
+        if (slot.index != index)
+            return false;
+
+        return true;
+    }
+
     /// <summary>
     /// Remove the item from the slot, if the item is stackable then remove quantity from it except if the quantity is zero
     /// </summary>

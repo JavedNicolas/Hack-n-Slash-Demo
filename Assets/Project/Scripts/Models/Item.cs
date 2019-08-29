@@ -19,6 +19,8 @@ public class Item : Interactable
     [SerializeField] public bool isStackable { get => _isStackable; }
     int _maxStackableSize = 10;
     [SerializeField] public int maxStackableSize { get => _maxStackableSize; }
+    TargetType _targetType;
+    [SerializeField] public TargetType targetType { get => _targetType; }
 
     [SerializeField] EffectAndValues _effects;
     public EffectAndValues effects { get => _effects; }
@@ -33,7 +35,22 @@ public class Item : Interactable
         setDistanceToInteraction(interactionDistance);
     }
 
-    public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize, EffectAndValues effects)
+    public Item(Item item)
+    {
+        this._databaseID = item.databaseID;
+        this.name = item.name;
+        this._itemIcon = item.itemIcon;
+        this._itemModel = item.itemModel;
+        this._isConsomable = item.isConsomable;
+        this._isStackable = item.isStackable;
+        this._maxStackableSize = item.maxStackableSize;
+        this._targetType = item.targetType;
+        this._effects = item.effects;
+        this._interactibleType = item.interactibleType;
+        setDistanceToInteraction(interactionDistance);
+    }
+
+    public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize,TargetType targetType,EffectAndValues effects)
     {
         this.name = name;
         this._itemIcon = itemIcon;
@@ -41,15 +58,18 @@ public class Item : Interactable
         this._isConsomable = isConsomable;
         this._isStackable = isStackable;
         this._maxStackableSize = maxStackableSize;
+        this._targetType = targetType;
         this._effects = effects;
         setDistanceToInteraction(interactionDistance);
     }
 
     public virtual void use(BeingBehavior sender, GameObject target = null)
     {
-        for (int i = 0; i < _effects.effects.Count; i++)
-            effects.effects[i].effect(sender, target, effects.effectValues[i]);
-            
+        if ((targetType != TargetType.None && target != null) || targetType == TargetType.None)
+        {
+            for (int i = 0; i < _effects.effects.Count; i++)
+                effects.effects[i].effect(sender, target, effects.effectValues[i]);
+        }   
     }
 
     public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)

@@ -20,44 +20,37 @@ public class PlayerBehavior : BeingBehavior
     private void Start()
     {
         interactOnce = !autoAttack;
-    }
-
-    void Update()
-    {
-        LeftClick();
-        RightClick();
+        GameManager.instance.leftClickDelegate += LeftClick;
+        GameManager.instance.rightClickDelegate += RightClick;
     }
 
     /// <summary>
     /// Start the movements function if the player use the left mouse click
     /// </summary>
-    void LeftClick()
+    void LeftClick(bool overInterface)
     {
-        if (Input.GetButton("Fire1"))
+        if (overInterface)
+            return;
+
+        if (moveToInteractibleTarget())
+            return;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementMask))
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            if (moveToInteractibleTarget())
-                return;
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementMask))
-            {
-                moveTo(hit.point);
-                interactionTarget = null;
-            }
+            moveTo(hit.point);
+            interactionTarget = null;
         }
     }
 
-    void RightClick()
+    void RightClick(bool overInterface)
     {
-        if (Input.GetButton("Fire2"))
-        {
-            moveToInteractibleTarget(true);
-        }
+        if (overInterface)
+            return;
 
+        moveToInteractibleTarget(true);
+       
         for (int i = 0; i < SkillBarUI.instance.getSkillSlotNumber(); i++)
         {
             SkillSlotUI skillSlot = SkillBarUI.instance.getSkillAtIndex(i);

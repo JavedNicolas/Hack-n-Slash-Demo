@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e189dde40a143854aab697413c5d2153, type: 3}
-  m_Name: EnemyDatabase
+  m_Script: {fileID: 11500000, guid: 887a824b9ed051b4b9dc93522540f27f, type: 3}
+  m_Name: Recycle Effect
   m_EditorClassIdentifier: 
-  _elements:
-  - _name: test
-    _databaseID: 0
-    _interactibleType: 0
-    _baseLife: 100
-    _prefab: {fileID: 7699618545951562393, guid: 539abc4bc8423374ea56e4d48393cccc,
-      type: 3}
+  _startingType: 0
+  _effectTargetType: 0

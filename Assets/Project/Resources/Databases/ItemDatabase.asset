@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58354cc3c4dad54c9668f0cfc924bc0, type: 3}
   m_Name: ItemDatabase
   m_EditorClassIdentifier: 
-  elements:
-  - _name: life pot
+  _elements:
+  - _name: Life potion
     _databaseID: 0
-    interactibleType: 1
+    _interactibleType: 1
     _effects:
       _effectsValues:
-      - 20
+      - 10
       _effects:
       - {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
+  - _name: testItem
+    _databaseID: 1
+    _interactibleType: 1
+    _effects:
+      _effectsValues:
+      - 0
+      _effects:
+      - {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}

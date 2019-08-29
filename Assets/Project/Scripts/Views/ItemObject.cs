@@ -13,7 +13,7 @@ public class ItemObject : InteractableObject
     {
         itemNameLabel = GetComponentInChildren<TextMeshProUGUI>();
 
-        item = GameManager.instance.itemDatabase.getElementAt(0);
+        item = new Item(GameManager.instance.itemDatabase.getRandomElement());
 
         if (item != null)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public abstract class Ability
+public abstract class Ability : DatabaseElement
 {
     // attributs
     protected float lastTimeUsed = 0f;

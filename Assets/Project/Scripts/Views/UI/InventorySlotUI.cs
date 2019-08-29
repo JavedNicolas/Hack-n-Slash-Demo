@@ -3,68 +3,233 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class InventorySlotUI : MonoBehaviour
+public class InventorySlotUI : BaseUI, IPointerEnterHandler
 {
+    [Header("Targeting and moving object")]
+    [SerializeField] Vector3 movingOffset = new Vector3(0, -15, 0);
+    [SerializeField] Vector3 itemScaleWhileHandling = new Vector3(0.3f, 0.3f, 0.3f);
+
     // The ui slot
-    public InventorySlot inventorySlot;
-    [SerializeField] GameObject itemSlot;
+    private InventorySlot _inventorySlot;
+    public InventorySlot inventorySlot { get => _inventorySlot; }
 
     // Components
     Image itemImage;
-    Button itemButton;
     TextMeshProUGUI itemQuantityText;
 
-    public delegate void ItemUsed(int inventoryIndex, InventorySlot slot);
-    public ItemUsed itemUsed;
+    // Object handling
+    // targeted Object
+    static bool targeting = false;
+    static InventorySlotUI targetingSourceSlot;
+    static GameObject targetingCursorItem;
+
+    // Moving object
+    static bool moving = false;
+    static InventorySlotUI movingSourceSlot;
 
     private void Awake()
     {
-        if(itemSlot != null)
-        {
-            itemImage = itemSlot.GetComponent<Image>();
-            itemButton = itemSlot.GetComponent<Button>();
-            itemQuantityText = itemSlot.GetComponentInChildren<TextMeshProUGUI>();
+        itemImage = GetComponent<Image>();
+        itemQuantityText = GetComponentInChildren<TextMeshProUGUI>();
+    }
 
-            if(itemButton != null)
-                itemButton.onClick.AddListener(() => useItem());
-        }
-
+    // Deselect slot on hovering
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void Update()
     {
-        updateInventorySlot();
+        displayTargetingObject();
+        displayObjectMoving();
     }
 
     /// <summary>
     /// Update the slot with his content
     /// </summary>
-    void updateInventorySlot()
+    public void initSlot(InventorySlot updatedslot)
     {
-        if (inventorySlot.item != null)
+        if (updatedslot.item != null)
         {
-            itemSlot.gameObject.SetActive(true);
-            itemImage.sprite = inventorySlot.item.itemIcon;
-            if (inventorySlot.item.isStackable)
-                itemQuantityText.text = inventorySlot.quantity.ToString();
+            Color color = itemImage.color;
+            color.a = 1;
+            itemImage.color = color;
+            itemImage.sprite = updatedslot.item.itemIcon;
+            if (updatedslot.item.isStackable)
+                itemQuantityText.text = updatedslot.quantity.ToString();
         }
         else
-            itemSlot.gameObject.SetActive(false);
+        {
+            _inventorySlot.emptySlot();
+            itemQuantityText.text = "";
+            itemImage.sprite = null;
+            Color color = itemImage.color;
+            color.a = 0;
+            itemImage.color = color;
+        }
+
+        _inventorySlot = updatedslot;
     }
+
+    #region moving
+    void displayObjectMoving()
+    {
+        if(moving && movingSourceSlot == this)
+        {
+            itemImage.transform.localScale = itemScaleWhileHandling;
+            itemImage.transform.position = Input.mousePosition + movingOffset;
+
+            if (Input.GetButtonDown(InputConstant.rightMouseButtonName))
+                stopMovingObject();
+        }
+    }
+
+    void tryMovingTarget()
+    {
+        if (!hasItem() && this != movingSourceSlot)
+        {
+            // set this inventory slot
+            _inventorySlot.copySlot(movingSourceSlot.inventorySlot);
+            movingSourceSlot._inventorySlot.emptySlot();
+
+            // clean the old inventory slot
+            updateInventory(new List<InventorySlot>() { _inventorySlot, movingSourceSlot.inventorySlot });
+            stopMovingObject();
+        }
+        else if (hasItem() && this != movingSourceSlot)
+        {
+            InventorySlot bufferSlot = this.inventorySlot;
+            _inventorySlot.copySlot(movingSourceSlot.inventorySlot);
+            movingSourceSlot._inventorySlot.copySlot(bufferSlot);
+
+            updateInventory(new List<InventorySlot>() { _inventorySlot, movingSourceSlot.inventorySlot });
+            stopMovingObject();
+        }
+        else if (this == movingSourceSlot)
+        {
+            stopMovingObject();
+        }
+    }
+
+    void stopMovingObject()
+    {
+        moving = false;
+        movingSourceSlot.GetComponent<RectTransform>().localPosition = Vector3.zero; 
+        movingSourceSlot.itemImage.transform.localScale = Vector3.one;
+        movingSourceSlot = null;
+    }
+    #endregion
+
+    #region targeting
+    void displayTargetingObject()
+    {
+        if (targeting && targetingSourceSlot == this)
+        {
+            if (targetingCursorItem == null)
+            {
+                targetingCursorItem = new GameObject();
+                targetingCursorItem.transform.parent = transform.parent;
+                targetingCursorItem.AddComponent<Image>();
+                targetingCursorItem.GetComponent<Image>().sprite = itemImage.sprite;
+                targetingCursorItem.transform.localScale = itemScaleWhileHandling;
+            }
+                
+            targetingCursorItem.transform.position = Input.mousePosition + movingOffset;
+            if (Input.GetButtonDown(InputConstant.leftMouseButtonName))
+                stopTargeting();
+        }
+    }
+
+    void tryUsingTargetItem()
+    {
+        if (hasItem() && _inventorySlot.item.databaseID != targetingSourceSlot.inventorySlot.item.databaseID)
+        {
+            targetingSourceSlot.inventorySlot.item.use(GameManager.instance.GetPlayerBehavior(), transform.gameObject);
+            targetingSourceSlot.removeItem();
+            updateInventory(targetingSourceSlot._inventorySlot);
+            stopTargeting();
+        }else
+        {
+            stopTargeting();
+        }
+    }
+
+    void stopTargeting()
+    {
+        targeting = false;
+        Destroy(targetingCursorItem);
+    }
+    #endregion
 
     /// <summary>
     /// Use the item when clicked
     /// </summary>
-    void useItem()
+    void useItem(GameObject target = null)
     {
-        inventorySlot.item.use(GameManager.instance.GetPlayerBehavior());
-        if (inventorySlot.item.isConsomable)
+        _inventorySlot.item.use(GameManager.instance.GetPlayerBehavior());
+        if (_inventorySlot.item.isConsomable)
         {
-            inventorySlot.removeItem();
-            itemUsed(inventorySlot.index, inventorySlot);
-        }
-            
+            if(_inventorySlot.item.targetType == TargetType.None)
+            {
+                _inventorySlot.removeItem();
+                updateInventory(_inventorySlot);
+            }
+        } 
     }
 
+    public void removeItem()
+    {
+        _inventorySlot.removeItem();
+    }
+
+    protected override void leftClickOnUI()
+    {
+        if (!moving && hasItem() && !targeting)
+        {
+            moving = true;
+            movingSourceSlot = this;
+        }
+        else if(moving)
+        {
+            tryMovingTarget();
+        }
+    }
+
+    protected override void rightClickOnUI()
+    {
+        if (!targeting && _inventorySlot.item != null && !moving)
+        {
+            if(_inventorySlot.item.isConsomable && _inventorySlot.item.targetType != TargetType.None)
+            {
+                targeting = true;
+                targetingSourceSlot = this;
+            }
+            else if (_inventorySlot.item.isConsomable && _inventorySlot.item.targetType == TargetType.None)
+            {
+                useItem();
+            }
+                
+        }
+        if (targeting && targetingSourceSlot != this)
+        {
+            tryUsingTargetItem();
+        }
+    }
+
+    public void updateInventory(List<InventorySlot> slots)
+    {
+        GameUI.instance.updateInventorySlots(slots);
+    }
+
+    public void updateInventory(InventorySlot slot)
+    {
+        GameUI.instance.updateInventorySlots(new List<InventorySlot>() { slot });
+    }
+
+    //getter
+    public bool hasItem() { return _inventorySlot.item != null ? true : false; }
+    public InventorySlot getInventorySlot() { return _inventorySlot; }
 }

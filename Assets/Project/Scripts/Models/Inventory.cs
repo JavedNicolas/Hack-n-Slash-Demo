@@ -8,9 +8,6 @@ public class Inventory
     List<InventorySlot> _slots = new List<InventorySlot>();
     public List<InventorySlot> slots {  get { return _slots; } }
 
-    public delegate void InventoryChanged(Inventory inventory);
-    public InventoryChanged inventoryChanged;
-
     public Inventory()
     {
         for(int i = 0; i < numberOfSlot; i++)
@@ -28,7 +25,6 @@ public class Inventory
     {
         // find if there is currently a non full stack of this item
         int firstAvailableStackForThisItem = _slots.FindIndex(x => (x.item != null && x.item.databaseID == itemToAdd.databaseID && x.item.isStackable && x.quantity < itemToAdd.maxStackableSize));
-
         bool slotAvailable = false;
 
         if (firstAvailableStackForThisItem != -1)
@@ -49,7 +45,7 @@ public class Inventory
             InventorySlot slot = _slots[firstAvailableStackForThisItem];
             slot.AddItem(itemToAdd);
             _slots[firstAvailableStackForThisItem] = slot;
-            inventoryChanged(this);
+            inventoryChanged();
         }
 
         return slotAvailable;
@@ -60,8 +56,18 @@ public class Inventory
     /// </summary>
     /// <param name="slotIndex">the slot index to update</param>
     /// <param name="slot">The slot to put instead of the current one</param>
-    public void updateSlot(int slotIndex, InventorySlot slot)
+    public void updateSlots(List<InventorySlot> updatedSlots)
     {
-        _slots[slotIndex] = slot;
+        for(int i = 0; i < updatedSlots.Count; i++)
+        {
+            _slots[updatedSlots[i].index] = updatedSlots[i];
+        }
+        
+        inventoryChanged();
+    }
+
+    public void inventoryChanged()
+    {
+        GameUI.instance.updateInventoryUI(this);
     }
 }

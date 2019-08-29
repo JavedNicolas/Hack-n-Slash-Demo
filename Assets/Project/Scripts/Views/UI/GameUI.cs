@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUI : BaseUI
+public class GameUI : MonoBehaviour
 {
     // instance
     public static GameUI instance;
@@ -22,14 +22,23 @@ public class GameUI : BaseUI
 
     private void Start()
     {
-        GameManager.instance.getPlayer().inventory.inventoryChanged += inventoryUI.updateInventoryUI;
-        inventoryUI.itemHasBeenUsed = GameManager.instance.getPlayer().inventory.updateSlot;
         inventoryUI.loadInventory();
+        GameManager.instance.getPlayer().inventory.inventoryChanged();
     }
 
     private void Update()
     {
         showInventory();
+    }
+
+    public void updateInventoryUI(Inventory inventory)
+    {
+        inventoryUI.updateInventoryUI(inventory);
+    }
+
+    public void updateInventorySlots(List<InventorySlot> slots)
+    {
+        GameManager.instance.getPlayer().inventory.updateSlots(slots);
     }
 
     public void displayUI(Being player)
