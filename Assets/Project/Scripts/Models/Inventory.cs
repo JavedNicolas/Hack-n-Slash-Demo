@@ -21,10 +21,10 @@ public class Inventory
     /// </summary>
     /// <param name="itemToAdd">The item to Add</param>
     /// <returns>return true if added to the inventory, return false if the inventory is full</returns>
-    public bool addToInventory(Item itemToAdd)
+    public bool addToInventory(Item itemToAdd, int quantityToAdd = 1)
     {
         // find if there is currently a non full stack of this item
-        int firstAvailableStackForThisItem = _slots.FindIndex(x => (x.item != null && x.item.databaseID == itemToAdd.databaseID && x.item.isStackable && x.quantity < itemToAdd.maxStackableSize));
+        int firstAvailableStackForThisItem = _slots.FindIndex(x => (x.item != null && x.item.databaseID == itemToAdd.databaseID && x.item.isStackable && x.quantity + quantityToAdd < itemToAdd.maxStackableSize));
         bool slotAvailable = false;
 
         if (firstAvailableStackForThisItem != -1)
@@ -43,7 +43,7 @@ public class Inventory
         if (slotAvailable)
         {
             InventorySlot slot = _slots[firstAvailableStackForThisItem];
-            slot.AddItem(itemToAdd);
+            slot.AddItem(itemToAdd, quantityToAdd);
             _slots[firstAvailableStackForThisItem] = slot;
             inventoryChanged();
         }

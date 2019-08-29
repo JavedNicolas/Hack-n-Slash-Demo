@@ -16,13 +16,6 @@ public class AbilityAttributsEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-
-        if (attributs.effectAndValues.effects.Count > attributs.effectAndValues.effectValues.Count)
-            while (attributs.effectAndValues.effectValues.Count < attributs.effectAndValues.effects.Count)
-                attributs.effectAndValues.effectValues.Add(0);
-        else if (attributs.effectAndValues.effects.Count < attributs.effectAndValues.effectValues.Count)
-            while (attributs.effectAndValues.effectValues.Count > attributs.effectAndValues.effects.Count)
-                attributs.effectAndValues.effectValues.RemoveAt(attributs.effectAndValues.effects.Count - 1);
     }
 
 }

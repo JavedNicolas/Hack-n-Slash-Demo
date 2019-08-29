@@ -40,11 +40,11 @@ public abstract class Ability : DatabaseElement
     /// <param name="target">The target of the ability</param>
     protected void useEffect(EffectStartingTime startingType, BeingBehavior sender, GameObject target)
     {
-        List<Effect> effects = _abilityAttributs.effectAndValues.effects;
+        List<EffectAndValue> effects = _abilityAttributs.effectAndValues;
         for (int i =0; i < effects.Count; i++)
         {
-            if (effects[i].startingType == startingType)
-                effects[i].effect(sender, target, _abilityAttributs.effectAndValues.effectValues[i]);
+            if (effects[i].effect.startingType == startingType)
+                effects[i].effect.use(sender, target, _abilityAttributs.effectAndValues[i].value);
         }
     }
 

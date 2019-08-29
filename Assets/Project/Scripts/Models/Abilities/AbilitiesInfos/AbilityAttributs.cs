@@ -12,7 +12,7 @@ public class AbilityAttributs : ScriptableObject
 
     [Header("Ability")]
     [SerializeField] private AbilityType _type;
-    [SerializeField] private EffectAndValues _effectAndValues = new EffectAndValues();
+    [SerializeField] private List<EffectAndValue> _effectAndValues = new List<EffectAndValue>();
     [SerializeField] private AbilityCoolDownType _coolDownType;
     [SerializeField] private bool _needTarget;
     [SerializeField] private bool _canBeCastedOnSelf;
@@ -24,24 +24,24 @@ public class AbilityAttributs : ScriptableObject
     public bool needTarget { get => _needTarget;}
     public bool canBeCastedOnSelf { get => _canBeCastedOnSelf; }
     public AbilityType type { get => _type; }
-    public EffectAndValues effectAndValues { get => _effectAndValues; set => _effectAndValues = value; }
+    public List<EffectAndValue> effectAndValues { get => _effectAndValues; set => _effectAndValues = value; }
 
 }
 
 [System.Serializable]
-public class EffectAndValues
+public class EffectAndValue
 {
-    [SerializeField] private List<float> _effectsValues = new List<float>();
-    [SerializeField] private List<Effect> _effects = new List<Effect>();
+    [SerializeField] private float _value;
+    [SerializeField] private Effect _effect;
+    public float value { get => _value; set => _value = value; }
+    public Effect effect { get => _effect; set => _effect = value; }
 
-    public EffectAndValues() { }
+    public EffectAndValue() { }
 
     public void addEffectAndValue(Effect effect, float value)
     {
-        _effects.Add(effect);
-        _effectsValues.Add(value);
+        _effect = effect;
+        _value = value;
     } 
 
-    public List<float> effectValues { get => _effectsValues; set => _effectsValues = value; }
-    public List<Effect> effects { get => _effects; set => _effects = value; }
 }

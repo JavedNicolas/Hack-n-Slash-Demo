@@ -8,9 +8,9 @@ public class Projectile : MonoBehaviour
     public ProjectileCollision projectileCollisionDelegate;
 
     BeingBehavior _senderObject;
-    EffectAndValues _effectValues;
+    List<EffectAndValue> _effectValues;
 
-    public void setProjectile(BeingBehavior sender, EffectAndValues effectAndValues)
+    public void setProjectile(BeingBehavior sender, List<EffectAndValue> effectAndValues)
     {
         this._senderObject = sender;
         this._effectValues = effectAndValues;
@@ -20,8 +20,8 @@ public class Projectile : MonoBehaviour
     {
         if (other.GetComponent<BeingBehavior>() != null)
         {
-            for (int i = 0; i < _effectValues.effects.Count; i++)
-                _effectValues.effects[i].effect(_senderObject, other.gameObject, _effectValues.effectValues[i]);
+            for (int i = 0; i < _effectValues.Count; i++)
+                _effectValues[i].effect.use(_senderObject, other.gameObject, _effectValues[i].value);
         }
         else if (other.CompareTag(Tags.Environment.ToString()))
         {

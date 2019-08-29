@@ -5,25 +5,52 @@ using TMPro;
 
 public class ItemObject : InteractableObject
 {
-    [SerializeField] Item item;
+    [Header("The loot")]
+    [SerializeField] Loot _loot;
+    public Loot loot { get => _loot; }
 
+    // TMP
+    bool randomItem = true;
+
+    // attributs
     protected TextMeshProUGUI itemNameLabel;
 
     private void Start()
     {
+        setObjet();
+    }
+
+    private void setObjet()
+    {
         itemNameLabel = GetComponentInChildren<TextMeshProUGUI>();
 
-        item = new Item(GameManager.instance.itemDatabase.getRandomElement());
-
-        if (item != null)
+        if (randomItem)
         {
-            interactable = item;
-            item.itemHasBeenPickedUP += deleteItem;
+            _loot.item = new Item(GameManager.instance.itemDatabase.getRandomElement());
+            _loot.quantity = 1;
         }
 
-        if (itemNameLabel != null && item != null)
+        if (_loot.item != null)
         {
-            itemNameLabel.text = item.name;
+            interactable = _loot.item;
+            _loot.item.itemHasBeenPickedUP = deleteItem;
+        }
+
+        if (itemNameLabel != null && _loot.item != null)
+        {
+            string itemNameDisplay = "";
+            if (_loot.quantity > 1)
+                itemNameDisplay = _loot.quantity.ToString() + " x ";
+            itemNameDisplay += _loot.item.name;
+            itemNameLabel.text = itemNameDisplay;
         }   
     }
+
+    public void setLoot(Loot loot)
+    {
+        this._loot = loot;
+        randomItem = false;
+        setObjet();
+    }
+
 }

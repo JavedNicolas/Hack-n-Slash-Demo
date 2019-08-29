@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] ItemDatabase _itemDatabase;
     public ItemDatabase itemDatabase { get => _itemDatabase; }
 
+    [SerializeField] GameObject _itemObject;
+    public GameObject itemObjet { get => _itemObject; }
+
     public static GameManager instance;
     GameObject player;
 

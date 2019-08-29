@@ -82,8 +82,7 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
             itemImage.transform.localScale = itemScaleWhileHandling;
             itemImage.transform.position = Input.mousePosition + movingOffset;
 
-            if (Input.GetButtonDown(InputConstant.rightMouseButtonName))
-                stopMovingObject();
+            
         }
     }
 
@@ -147,9 +146,11 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
     {
         if (hasItem() && _inventorySlot.item.databaseID != targetingSourceSlot.inventorySlot.item.databaseID)
         {
-            targetingSourceSlot.inventorySlot.item.use(GameManager.instance.GetPlayerBehavior(), transform.gameObject);
-            targetingSourceSlot.removeItem();
-            updateInventory(targetingSourceSlot._inventorySlot);
+            if(targetingSourceSlot.inventorySlot.item.use(GameManager.instance.GetPlayerBehavior(), transform.gameObject))
+            {
+                targetingSourceSlot.removeItem();
+                updateInventory(targetingSourceSlot._inventorySlot);
+            }
             stopTargeting();
         }else
         {
@@ -169,15 +170,13 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
     /// </summary>
     void useItem(GameObject target = null)
     {
-        _inventorySlot.item.use(GameManager.instance.GetPlayerBehavior());
-        if (_inventorySlot.item.isConsomable)
-        {
-            if(_inventorySlot.item.targetType == TargetType.None)
-            {
-                _inventorySlot.removeItem();
-                updateInventory(_inventorySlot);
-            }
-        } 
+        if(_inventorySlot.item.use(GameManager.instance.GetPlayerBehavior()))
+            if (_inventorySlot.item.isConsomable)
+                if(_inventorySlot.item.targetType == TargetType.None)
+                {
+                    _inventorySlot.removeItem();
+                    updateInventory(_inventorySlot);
+                }
     }
 
     public void removeItem()
@@ -185,6 +184,8 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
         _inventorySlot.removeItem();
     }
 
+
+    #region clicks
     protected override void leftClickOnUI()
     {
         if (!moving && hasItem() && !targeting)
@@ -196,6 +197,40 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
         {
             tryMovingTarget();
         }
+    }
+
+    public void leftClick(bool overInterface)
+    {
+        if (!overInterface)
+        {
+            if (moving && movingSourceSlot == this)
+            {
+                if (dropItem()){
+                    _inventorySlot.emptySlot();
+                    updateInventory(_inventorySlot);
+                }
+                stopMovingObject();
+            }else if (targeting && targetingSourceSlot == this)
+            {
+                stopTargeting();
+            }
+        }
+    }
+
+    bool dropItem()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit) && hit.transform.CompareTag(Tags.Ground.ToString()))
+        {
+            GameObject itemObject = Instantiate(GameManager.instance.itemObjet);
+            Loot loot = new Loot(_inventorySlot.item, 0, _inventorySlot.quantity);
+            itemObject.GetComponent<ItemObject>().setLoot(loot);
+            itemObject.transform.position = hit.point;
+            return true;
+        }
+        return false;
     }
 
     protected override void rightClickOnUI()
@@ -218,6 +253,24 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
             tryUsingTargetItem();
         }
     }
+
+    public void rightCLick(bool overInterface)
+    {
+        if (!overInterface)
+        {
+            if (moving && movingSourceSlot == this)
+                stopMovingObject();
+            else if (targeting && targetingSourceSlot == this)
+                stopTargeting();
+        }
+        else
+        {
+            if (moving && movingSourceSlot == this)
+                stopMovingObject();
+        }
+    }
+
+    #endregion
 
     public void updateInventory(List<InventorySlot> slots)
     {

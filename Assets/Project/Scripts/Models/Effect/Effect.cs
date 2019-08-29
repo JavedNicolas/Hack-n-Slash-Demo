@@ -17,7 +17,13 @@ public abstract class Effect : ScriptableObject
     /// <param name="sender">The seffect sender</param>
     /// <param name="target">The effect target game object</param>
     /// <param name="value">The effect value</param>
-    public abstract void effect(BeingBehavior sender, GameObject target, float value);
+    public abstract void use(BeingBehavior sender, GameObject target, float value);
+
+    /// <summary>
+    /// Check if the effect can be used
+    /// </summary>
+    /// <returns>Return true if the effect can be used</returns>
+    public abstract bool canBeUsed(BeingBehavior sender, GameObject target, float value);
 
     protected bool isCorrectTarget(BeingBehavior sender, GameObject target)
     {

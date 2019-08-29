@@ -94,6 +94,11 @@ public class InventoryUI : MonoBehaviour
             GameObject newSlot = Instantiate(inventorySlotPrefab);
             newSlot.transform.SetParent(inventoryToFill.GetComponentInChildren<GridLayoutGroup>().transform);
             newSlot.transform.localScale = new Vector3(1, 1, 1);
+            if (newSlot.GetComponentInChildren<InventorySlotUI>())
+            {
+                GameManager.instance.leftClickDelegate += newSlot.GetComponentInChildren<InventorySlotUI>().leftClick;
+                GameManager.instance.rightClickDelegate += newSlot.GetComponentInChildren<InventorySlotUI>().rightCLick;
+            }
         }
     }
 

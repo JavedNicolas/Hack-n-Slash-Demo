@@ -24,15 +24,17 @@ public class PlayerBehavior : BeingBehavior
         GameManager.instance.rightClickDelegate += RightClick;
     }
 
+    private void Update()
+    {
+        skillBarKeyDown();
+    }
+
     /// <summary>
     /// Start the movements function if the player use the left mouse click
     /// </summary>
     void LeftClick(bool overInterface)
     {
         if (overInterface)
-            return;
-
-        if (moveToInteractibleTarget())
             return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -49,8 +51,12 @@ public class PlayerBehavior : BeingBehavior
         if (overInterface)
             return;
 
-        moveToInteractibleTarget(true);
-       
+        moveToInteractibleTarget();
+
+    }
+
+    void skillBarKeyDown()
+    {
         for (int i = 0; i < SkillBarUI.instance.getSkillSlotNumber(); i++)
         {
             SkillSlotUI skillSlot = SkillBarUI.instance.getSkillAtIndex(i);
@@ -69,7 +75,7 @@ public class PlayerBehavior : BeingBehavior
 
                             abilityUsed(mouseHit.point, target, skillSlot.ability);
                         }
-                            
+
                 }
         }
     }

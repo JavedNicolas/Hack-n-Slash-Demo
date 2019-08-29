@@ -17,10 +17,8 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _type: 0
   _effectAndValues:
-    _effectsValues:
-    - 50
-    _effects:
-    - {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
+  - _value: 50
+    _effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
   _coolDownType: 0
   _needTarget: 1
   _canBeCastedOnSelf: 0

@@ -89,7 +89,7 @@ public class AbilityManager : MonoBehaviour
     }
 
     public void launchProjectile(GameObject projectilePrefab, int numberOfProjectile, float projectileOffset, float projectileBaseSpeed, float projectileLife, 
-        Vector3 targetedPosition, ProjectileFormType formType, BeingBehavior sender, EffectAndValues effectAndValues)
+        Vector3 targetedPosition, ProjectileFormType formType, BeingBehavior sender, List<EffectAndValue> effectAndValues)
     {
         for (int i = 0; i < numberOfProjectile; i++)
         {
@@ -112,10 +112,10 @@ public class AbilityManager : MonoBehaviour
             // set is collision effect
             if (projectile.GetComponent<Projectile>() != null)
             {
-                EffectAndValues effectAndValuesToUse = new EffectAndValues();
-                for (int e = 0; e < effectAndValues.effects.Count; e++)
-                    if (effectAndValues.effects[e].startingType == EffectStartingTime.Hit)
-                        effectAndValuesToUse.addEffectAndValue(effectAndValues.effects[e], effectAndValues.effectValues[e]);
+                List<EffectAndValue> effectAndValuesToUse = new List<EffectAndValue>();
+                for (int e = 0; e < effectAndValues.Count; e++)
+                    if (effectAndValues[e].effect.startingType == EffectStartingTime.Hit)
+                        effectAndValuesToUse[e].addEffectAndValue(effectAndValues[e].effect, effectAndValues[e].value);
 
                 projectile.GetComponent<Projectile>().setProjectile(sender, effectAndValuesToUse);
             }

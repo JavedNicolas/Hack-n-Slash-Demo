@@ -5,11 +5,20 @@ using UnityEngine;
 [CreateAssetMenu(menuName = ScriptableObjectConstant.effectMenuName + "Damage Effect", fileName = "Damage Effect")]
 public class DamageEffect : Effect
 {
-    public override void effect(BeingBehavior sender, GameObject target, float value)
+    public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
-        BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
-        if(targetScript != null && isCorrectTarget(sender, target))
+        if (target.GetComponent<BeingBehavior>() != null && isCorrectTarget(sender, target))
+            return true;
+
+        return false;
+    }
+
+    public override void use(BeingBehavior sender, GameObject target, float value)
+    {
+
+        if(canBeUsed(sender, target, value))
         {
+            BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
             targetScript.being.takeDamage(value);
         }
     }

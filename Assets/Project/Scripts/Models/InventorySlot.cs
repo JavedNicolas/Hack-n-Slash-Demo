@@ -7,7 +7,7 @@ public struct InventorySlot
     private int _index;
     public int index { get { return _index; } }
     public Item item;
-    public float quantity;
+    public int quantity;
 
     public InventorySlot(int index)
     {
@@ -75,17 +75,17 @@ public struct InventorySlot
     /// Add an item to the slot, except if the item is stackable then add quantity
     /// </summary>
     /// <param name="item">The item to add</param>
-    public void AddItem(Item item)
+    public void AddItem(Item item, int quantity)
     {
         if(this.item != null && this.item.isConsomable)
         {
-            quantity++;
+            this.quantity += quantity;
         }
         else
         {
             this.item = item;
             if (item.isStackable)
-                quantity = 1;
+                this.quantity = quantity;
         }
     }
 }
