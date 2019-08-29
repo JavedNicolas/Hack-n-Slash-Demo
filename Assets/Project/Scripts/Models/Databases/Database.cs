@@ -4,20 +4,31 @@ using UnityEngine;
 using System.Linq;
 
 [System.Serializable]
-public class Database<DatabaseElement> : ScriptableObject
+public class Database<T> : ScriptableObject where T : DatabaseElement
 {
-    [SerializeField] protected List<DatabaseElement> _elements = new List<DatabaseElement>();
-    public List<DatabaseElement> elements { get => _elements; }
+    [SerializeField] protected List<T> _elements = new List<T>();
+    public List<T> elements { get => _elements; }
 
-    public DatabaseElement getElementAt(int index)
+    private void OnEnable()
     {
+        orderDB();
+    }
+
+    private void orderDB()
+    {
+        _elements = _elements.OrderBy(x => x.databaseID).ToList();
+    }
+
+    public T getElementAt(int index)
+    {
+        orderDB();
         if (index >= _elements.Count)
-            return default(DatabaseElement);
+            return default(T);
         else
             return _elements[index];
     }
 
-    public DatabaseElement getRandomElement()
+    public T getRandomElement()
     {
         return _elements[Random.Range(0, _elements.Count)];
     }
@@ -27,23 +38,35 @@ public class Database<DatabaseElement> : ScriptableObject
         return _elements.Count;
     }
 
-    public void addElement(DatabaseElement element)
+    public void addElement(T element)
     {
         _elements.Add(element);
     }
 
-    public void removeElement(DatabaseElement element)
+    public void removeElement(T element)
     {
+        orderDB();
         _elements.Remove(element);
     }
 
-    public void updateElementAt(DatabaseElement element, int index)
+    public void updateElementAt(T element, int index)
     {
+        orderDB();
         _elements[index] = element;
     }
 
     public virtual int getFreeId()
     {
+        orderDB();
+        int lastID = -1;
+        for (int i = 0; i < _elements.Count; i++)
+        {
+            int currentID = _elements[i].databaseID;
+            if (lastID != -1 && currentID - lastID > 1)
+                return lastID + 1;
+            lastID = currentID;
+        }
+
         return _elements.Count;
     }
 

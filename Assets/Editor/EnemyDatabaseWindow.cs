@@ -75,13 +75,4 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         movementSpeedBonus = 0;
         prefab = null;
     }
-
-    protected override string getNameAtIndex(int index)
-    {
-        Enemy enemy = database.getElementAt(index);
-        if (enemy != null)
-            return enemy.name;
-
-        return "";
-    }
 }

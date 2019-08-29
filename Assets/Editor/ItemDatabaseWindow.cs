@@ -123,21 +123,12 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         itemName = "";
         itemIcon = null;
         itemModel = null;
-        isConsomable = false;
-        isStackable = false;
-        maxStackableSize = 0;
+        isConsomable = true;
+        isStackable = true;
+        maxStackableSize = 10;
         numberOfEffect = 0;
         interactableType = default;
         targetType = default;
         effects = new EffectAndValues();
-    }
-
-    protected override string getNameAtIndex(int index)
-    {
-        DatabaseElement item = database.getElementAt(index);
-        if (item != null)
-            return item.name;
-
-        return "";
     }
 }

@@ -2,11 +2,12 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
-public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
+public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElement
 {
     // windows 
-    protected static DatabaseWindows<DatabaseElement> windows;
+    protected static DatabaseWindows<T> windows;
 
     // database
     protected abstract string databasePath { get; }
@@ -14,12 +15,23 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     // scroll position
     Vector2 scrollPos;
 
-    protected Database<DatabaseElement> database;
+    protected Database<T> database;
     protected float contentListWidth = 300;
 
-    protected DatabaseElement element;
+    protected T element;
     protected int databaseIndex = -1;
     protected int databaseID;
+
+    struct DBElements
+    {
+        public int index;
+        public T element;
+        public DBElements(int index, T element)
+        {
+            this.index = index;
+            this.element = element;
+        }
+    }
 
     private void OnDisable()
     {
@@ -33,7 +45,7 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     {
         this.Show();
         this.minSize = new Vector2(contentListWidth * 3, contentListWidth);
-        database = Resources.Load<Database<DatabaseElement>>(databasePath);
+        database = Resources.Load<Database<T>>(databasePath);
         databaseID = database.getFreeId();
         saveDB();
     }
@@ -55,13 +67,14 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(contentListWidth));
         for (int i = 0; i < database.getDatabaseSize(); i++)
         {
-            DatabaseElement element = database.getElementAt(i);
+            T element = database.getElementAt(i);
             EditorGUILayout.BeginHorizontal("Box");
             EditorGUILayout.LabelField(getNameAtIndex(i));
             displayContentListButtons(i);
 
             EditorGUILayout.EndHorizontal();
         }
+
         EditorGUILayout.EndScrollView();
         EditorGUILayout.EndVertical();
     }
@@ -79,6 +92,7 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
         if (GUILayout.Button("X"))
         {
             database.removeElement(database.getElementAt(i));
+            clearForm();
         }
         EditorGUILayout.EndHorizontal();
     }
@@ -126,6 +140,7 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     {
         EditorGUI.FocusTextInControl("");
         databaseIndex = -1;
+        databaseID = database.getFreeId();
         saveDB();
     }
 
@@ -136,7 +151,10 @@ public abstract class DatabaseWindows<DatabaseElement> : EditorWindow
     /// </summary>
     /// <param name="index">the index of the element</param>
     /// <returns>The name</returns>
-    protected abstract string getNameAtIndex(int index);
+    protected virtual string getNameAtIndex(int index)
+    {
+        return database.elements[index].name;
+    }
 
     void saveDB()
     {

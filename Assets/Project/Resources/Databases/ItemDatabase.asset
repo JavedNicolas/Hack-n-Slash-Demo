@@ -21,8 +21,16 @@ MonoBehaviour:
       - 10
       _effects:
       - {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
-  - _name: testItem
+  - _name: test item
     _databaseID: 1
+    _interactibleType: 1
+    _effects:
+      _effectsValues:
+      - 0
+      _effects:
+      - {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
+  - _name: testItem2
+    _databaseID: 2
     _interactibleType: 1
     _effects:
       _effectsValues:
