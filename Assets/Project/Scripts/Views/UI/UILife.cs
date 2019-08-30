@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class LifeUI : MonoBehaviour
+public class UILife : MonoBehaviour
 {
     public Image lifeFill;
     public bool isSmallLifeBar;

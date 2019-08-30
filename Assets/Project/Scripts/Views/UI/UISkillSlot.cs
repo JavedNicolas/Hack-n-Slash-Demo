@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 [RequireComponent(typeof(Button))]
-public class SkillSlotUI : MonoBehaviour
+public class UISkillSlot : MonoBehaviour
 {
     Ability _skill;
     public Ability ability
@@ -49,18 +49,18 @@ public class SkillSlotUI : MonoBehaviour
     {
         if (isChoiceIcon)
         {
-            SkillChoiceUI.instance.updateSkillWithChoice(_skill);
-            SkillChoiceUI.instance.gameObject.SetActive(false);
+            UISkillChoice.instance.updateSkillWithChoice(_skill);
+            UISkillChoice.instance.gameObject.SetActive(false);
         }
         else
         {
-            GameObject choiceObject = SkillChoiceUI.instance.gameObject;
+            GameObject choiceObject = UISkillChoice.instance.gameObject;
 
-            if(SkillChoiceUI.instance.skillSlotToChange == this)
+            if(UISkillChoice.instance.skillSlotToChange == this)
                 choiceObject.SetActive(!choiceObject.activeSelf);
             else
             {
-                SkillChoiceUI.instance.displaySkills(this);
+                UISkillChoice.instance.displaySkills(this);
                 choiceObject.SetActive(true);
             }
                 

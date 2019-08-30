@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillBarUI: MonoBehaviour
+public class UISkillBar: MonoBehaviour
 {
-    public static SkillBarUI instance;
+    public static UISkillBar instance;
 
-    public List<SkillSlotUI> numberOfSkillSlot = new List<SkillSlotUI>();
+    public List<UISkillSlot> numberOfSkillSlot = new List<UISkillSlot>();
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class SkillBarUI: MonoBehaviour
     /// </summary>
     /// <param name="inputName">The name of the key in the input table</param>
     /// <returns></returns>
-    public SkillSlotUI getSkillAtIndex(int index)
+    public UISkillSlot getSkillAtIndex(int index)
     {
         if (index > numberOfSkillSlot.Count)
             return null;

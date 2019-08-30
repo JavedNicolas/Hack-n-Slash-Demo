@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -26,6 +25,12 @@ public class GameManager : MonoBehaviour
     Player playerTMp;
 
     #region clicks
+    bool _canLeftClick = true;
+    public bool canLeftClick { get => _canLeftClick; }
+
+    bool _canRightClick = true;
+    public bool canRightClick { get => _canRightClick; }
+
     public delegate void LeftClickDelegate(bool overInterface);
     public LeftClickDelegate leftClickDelegate;
 
@@ -55,6 +60,9 @@ public class GameManager : MonoBehaviour
         getMouseClick();
     }
 
+    /// <summary>
+    /// Get mouse click and fire the delegate
+    /// </summary>
     public void getMouseClick()
     {
         bool overInterface;
@@ -69,6 +77,18 @@ public class GameManager : MonoBehaviour
             overInterface = EventSystem.current.IsPointerOverGameObject();
             rightClickDelegate(overInterface);
         }
+    }
+
+    /// <summary>
+    /// Block the click possibility
+    /// </summary>
+    /// <param name="lockClick"></param>
+    public void lockClick(bool lockClick, bool leftClick)
+    {
+        if (leftClick)
+            _canLeftClick = !lockClick;
+        else if (!leftClick)
+            _canRightClick = !lockClick;
     }
 
     public void spawnPlayer()

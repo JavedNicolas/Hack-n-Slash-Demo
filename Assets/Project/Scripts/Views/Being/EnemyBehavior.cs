@@ -10,7 +10,7 @@ public class EnemyBehavior : BeingBehavior
     public float attackRange = 2f;
 
     [Header("EnemyUI")]
-    public LifeUI lifeUI;
+    public UILife lifeUI;
 
     List<PlayerBehavior> players = new List<PlayerBehavior>();
 

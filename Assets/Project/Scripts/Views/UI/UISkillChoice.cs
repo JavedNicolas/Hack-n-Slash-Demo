@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillChoiceUI : MonoBehaviour
+public class UISkillChoice : MonoBehaviour
 {
     [Header("Skill icon prefab")]
     public GameObject skillIconUIPrefab;
 
     // instance 
-    public static SkillChoiceUI instance;
+    public static UISkillChoice instance;
 
-    private SkillSlotUI _skillSlotToChange;
-    public SkillSlotUI skillSlotToChange {  get { return _skillSlotToChange; } }
+    private UISkillSlot _skillSlotToChange;
+    public UISkillSlot skillSlotToChange {  get { return _skillSlotToChange; } }
 
     public void Awake()
     {
@@ -22,7 +22,7 @@ public class SkillChoiceUI : MonoBehaviour
     /// <summary>
     /// Show all the skill the player have
     /// </summary>
-    public void displaySkills(SkillSlotUI forSkillSlot)
+    public void displaySkills(UISkillSlot forSkillSlot)
     {
         this._skillSlotToChange = forSkillSlot;
 
@@ -32,7 +32,7 @@ public class SkillChoiceUI : MonoBehaviour
         for (int i = 0; i < player.skills.Count; i++)
         {
             GameObject skillIcon = Instantiate(skillIconUIPrefab);
-            SkillSlotUI skillIconUI = skillIcon.GetComponent<SkillSlotUI>();
+            UISkillSlot skillIconUI = skillIcon.GetComponent<UISkillSlot>();
             if (skillIconUI != null)
             {
                 skillIconUI.ability = player.skills[i];

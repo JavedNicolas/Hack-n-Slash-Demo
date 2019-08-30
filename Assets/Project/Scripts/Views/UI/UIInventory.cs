@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
 
-public class InventoryUI : MonoBehaviour
+public class UIInventory : MonoBehaviour
 {
     [Header("GameObjects")]
     [SerializeField] GameObject fullInventory;
@@ -59,7 +59,7 @@ public class InventoryUI : MonoBehaviour
 
     void updateSlotsContent(Inventory inventory, GameObject inventoryToFill)
     {
-        List<InventorySlotUI> itemSlots = inventoryToFill.GetComponentsInChildren<InventorySlotUI>().ToList();
+        List<UIInventorySlot> itemSlots = inventoryToFill.GetComponentsInChildren<UIInventorySlot>().ToList();
         for (int i = 0; i < inventory.slots.Count; i++)
         {
             itemSlots[i].initSlot(inventory.slots[i]);
@@ -87,17 +87,17 @@ public class InventoryUI : MonoBehaviour
     /// <param name="inventoryToFill">Inventory to update (full or small)</param>
     void addInventorySlots(GameObject inventoryToFill)
     {
-        int numberOfSlotToAdd = this.numberOfSlot - inventoryToFill.GetComponentsInChildren<InventorySlotUI>().Count();
+        int numberOfSlotToAdd = this.numberOfSlot - inventoryToFill.GetComponentsInChildren<UIInventorySlot>().Count();
 
         for(int i = 0; i < numberOfSlotToAdd; i++)
         {
             GameObject newSlot = Instantiate(inventorySlotPrefab);
             newSlot.transform.SetParent(inventoryToFill.GetComponentInChildren<GridLayoutGroup>().transform);
             newSlot.transform.localScale = new Vector3(1, 1, 1);
-            if (newSlot.GetComponentInChildren<InventorySlotUI>())
+            if (newSlot.GetComponentInChildren<UIInventorySlot>())
             {
-                GameManager.instance.leftClickDelegate += newSlot.GetComponentInChildren<InventorySlotUI>().leftClick;
-                GameManager.instance.rightClickDelegate += newSlot.GetComponentInChildren<InventorySlotUI>().rightCLick;
+                GameManager.instance.leftClickDelegate += newSlot.GetComponentInChildren<UIInventorySlot>().leftClick;
+                GameManager.instance.rightClickDelegate += newSlot.GetComponentInChildren<UIInventorySlot>().rightCLick;
             }
         }
     }

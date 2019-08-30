@@ -7,7 +7,7 @@ public class RecycleEffect : Effect
 {
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
-        InventorySlotUI inventorySlotUI = target.GetComponent<InventorySlotUI>();
+        UIInventorySlot inventorySlotUI = target.GetComponent<UIInventorySlot>();
         if (inventorySlotUI != null && inventorySlotUI.hasItem())
             if (inventorySlotUI.inventorySlot.item.canBeRecycle)
                 return true;
@@ -19,7 +19,7 @@ public class RecycleEffect : Effect
     {
         if (canBeUsed(sender, target, value))
         {
-            InventorySlotUI inventorySlotUI = target.GetComponent<InventorySlotUI>();
+            UIInventorySlot inventorySlotUI = target.GetComponent<UIInventorySlot>();
             InventorySlot slot = inventorySlotUI.getInventorySlot();
             slot.removeItem();
             GameUI.instance.updateInventorySlots(new List<InventorySlot>() { slot });

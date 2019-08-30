@@ -13,6 +13,9 @@ public class PlayerBehavior : BeingBehavior
     [Header("Movement Mask")]
     public LayerMask movementMask;
 
+    [Header("Clicks")]
+    [SerializeField] float clickDelay = 3f;
+
     // TEMPORARY
     public bool autoAttack = true;
 
@@ -37,6 +40,12 @@ public class PlayerBehavior : BeingBehavior
         if (overInterface)
             return;
 
+        if (!GameManager.instance.canLeftClick)
+        {
+            return;
+        }
+            
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementMask))
@@ -51,15 +60,19 @@ public class PlayerBehavior : BeingBehavior
         if (overInterface)
             return;
 
+        if (!GameManager.instance.canRightClick)
+            return;
+
+
         moveToInteractibleTarget();
 
     }
 
     void skillBarKeyDown()
     {
-        for (int i = 0; i < SkillBarUI.instance.getSkillSlotNumber(); i++)
+        for (int i = 0; i < UISkillBar.instance.getSkillSlotNumber(); i++)
         {
-            SkillSlotUI skillSlot = SkillBarUI.instance.getSkillAtIndex(i);
+            UISkillSlot skillSlot = UISkillBar.instance.getSkillAtIndex(i);
 
             if (Input.GetButton(skillSlot.inputName))
                 if (skillSlot.ability != null)

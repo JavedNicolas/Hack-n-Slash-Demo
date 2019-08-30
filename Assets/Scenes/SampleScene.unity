@@ -1359,6 +1359,8 @@ MonoBehaviour:
   _enemyDatabase: {fileID: 11400000, guid: 602fbb039ee3676468f7eb2e1ec43368, type: 2}
   _abilityDatabase: {fileID: 11400000, guid: 95c7dc8af2745834297a52bb88bb0d43, type: 2}
   _itemDatabase: {fileID: 11400000, guid: d108b0d828df51945b5e6f3d79081a3f, type: 2}
+  _itemObject: {fileID: 4611060930209723367, guid: 6342c2e676e182b4996f5eb7dd8627cf,
+    type: 3}
   playerPrefab: {fileID: 3138151307034735218, guid: 9c8236eea2857624599120dc6218573d,
     type: 3}
   projectilePrefab: {fileID: 233050881289928282, guid: 28560739714ed0e4d9bd0383c2431c85,

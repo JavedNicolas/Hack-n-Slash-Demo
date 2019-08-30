@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class InventorySlotUI : BaseUI, IPointerEnterHandler
+public class UIInventorySlot : BaseUI, IPointerEnterHandler
 {
     [Header("Targeting and moving object")]
     [SerializeField] Vector3 movingOffset = new Vector3(0, -15, 0);
@@ -21,13 +21,13 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
 
     // Object handling
     // targeted Object
-    static bool targeting = false;
-    static InventorySlotUI targetingSourceSlot;
+    public static bool targeting = false;
+    static UIInventorySlot targetingSourceSlot;
     static GameObject targetingCursorItem;
 
     // Moving object
-    static bool moving = false;
-    static InventorySlotUI movingSourceSlot;
+    public static bool moving = false;
+    static UIInventorySlot movingSourceSlot;
 
     private void Awake()
     {
@@ -81,8 +81,6 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
         {
             itemImage.transform.localScale = itemScaleWhileHandling;
             itemImage.transform.position = Input.mousePosition + movingOffset;
-
-            
         }
     }
 
@@ -210,7 +208,8 @@ public class InventorySlotUI : BaseUI, IPointerEnterHandler
                     updateInventory(_inventorySlot);
                 }
                 stopMovingObject();
-            }else if (targeting && targetingSourceSlot == this)
+            }
+            else if (targeting && targetingSourceSlot == this)
             {
                 stopTargeting();
             }

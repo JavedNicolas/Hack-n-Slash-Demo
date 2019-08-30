@@ -12,7 +12,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] GameObject lifeUI;
 
     [Header("Openable UI")]
-    [SerializeField] InventoryUI inventoryUI;
+    [SerializeField] UIInventory inventoryUI;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class GameUI : MonoBehaviour
 
     public void displayUI(Being player)
     {
-        lifeUI.GetComponent<LifeUI>().setBeing(player);
+        lifeUI.GetComponent<UILife>().setBeing(player);
     }
 
     void showInventory()
