@@ -23,8 +23,8 @@ MonoBehaviour:
     _maxStackableSize: 10
     _targetType: 0
     _effects:
-    - _value: 10
-      _effect: {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
+    - value: 20
+      effect: {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
     _canBeRecycle: 1
   - _name: test item
     _databaseID: 1
@@ -37,8 +37,8 @@ MonoBehaviour:
     _maxStackableSize: 10
     _targetType: 1
     _effects:
-    - _value: 0
-      _effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
+    - value: 0
+      effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
     _canBeRecycle: 0
   - _name: testItem2
     _databaseID: 2
@@ -50,6 +50,6 @@ MonoBehaviour:
     _maxStackableSize: 10
     _targetType: 1
     _effects:
-    - _value: 0
-      _effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
+    - value: 0
+      effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
     _canBeRecycle: 0

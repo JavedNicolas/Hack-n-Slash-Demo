@@ -35,7 +35,7 @@ public class Being : Interactable
 
     [Header("Skills")]
     [SerializeField] private List<Ability> _skills = new List<Ability>();
-    public List<Ability> skills { get { return _skills; } }
+    public List<Ability> ability { get { return _skills; } }
 
     private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}

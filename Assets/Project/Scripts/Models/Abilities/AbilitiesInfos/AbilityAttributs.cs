@@ -31,17 +31,15 @@ public class AbilityAttributs : ScriptableObject
 [System.Serializable]
 public class EffectAndValue
 {
-    [SerializeField] private float _value;
-    [SerializeField] private Effect _effect;
-    public float value { get => _value; set => _value = value; }
-    public Effect effect { get => _effect; set => _effect = value; }
+    [SerializeField] public float value;
+    [SerializeField] public Effect effect;
 
     public EffectAndValue() { }
 
     public void addEffectAndValue(Effect effect, float value)
     {
-        _effect = effect;
-        _value = value;
+        this.effect = effect;
+        this.value = value;
     } 
 
 }

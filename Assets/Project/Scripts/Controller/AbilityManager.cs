@@ -115,7 +115,11 @@ public class AbilityManager : MonoBehaviour
                 List<EffectAndValue> effectAndValuesToUse = new List<EffectAndValue>();
                 for (int e = 0; e < effectAndValues.Count; e++)
                     if (effectAndValues[e].effect.startingType == EffectStartingTime.Hit)
+                    {
+                        effectAndValuesToUse.Add(new EffectAndValue());
                         effectAndValuesToUse[e].addEffectAndValue(effectAndValues[e].effect, effectAndValues[e].value);
+                    }
+                        
 
                 projectile.GetComponent<Projectile>().setProjectile(sender, effectAndValuesToUse);
             }

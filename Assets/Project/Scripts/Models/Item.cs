@@ -119,7 +119,8 @@ public class Item : Interactable
     public virtual bool pickUP(Player player, int quantity)
     {
         bool success = player.inventory.addToInventory(this, quantity);
-        itemHasBeenPickedUP();
+        if(success)
+            itemHasBeenPickedUP();
 
         return success;
     }

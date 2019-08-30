@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "ItemDatabase", menuName = "Database/Item")]
+[CreateAssetMenu(fileName = DatabaseConstant.itemDatabasePath, menuName = "Database/Item")]
 public class ItemDatabase : Database<Item>
 {
 }

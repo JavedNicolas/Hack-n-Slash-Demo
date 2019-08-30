@@ -223,7 +223,7 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
 
         if(Physics.Raycast(ray, out hit) && hit.transform.CompareTag(Tags.Ground.ToString()))
         {
-            GameObject itemObject = Instantiate(GameManager.instance.itemObjet);
+            GameObject itemObject = Instantiate(GameManager.instance.itemObjetPrefab);
             Loot loot = new Loot(_inventorySlot.item, 0, _inventorySlot.quantity);
             itemObject.GetComponent<ItemObject>().setLoot(loot);
             itemObject.transform.position = hit.point;

@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public ItemDatabase itemDatabase { get => _itemDatabase; }
 
     [SerializeField] GameObject _itemObject;
-    public GameObject itemObjet { get => _itemObject; }
+    public GameObject itemObjetPrefab { get => _itemObject; }
 
     public static GameManager instance;
     GameObject player;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this);
         playerTMp = new Player("Player Test", 100, 100, 0, 10, 11, 0, new List<Ability>(), 50, playerPrefab, 100);
-        playerTMp.skills.Add(getAbilityOfType(typeof(LightningBall)));
+        playerTMp.ability.Add(getAbilityOfType(typeof(LightningBall)));
     }
 
     // Start is called before the first frame update

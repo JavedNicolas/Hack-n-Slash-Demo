@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 
-[CreateAssetMenu(menuName = "Database/Ability", fileName = "AbilityDatabase")]
+[CreateAssetMenu(menuName = "Database/Ability", fileName = DatabaseConstant.abilityDatabaseFileName)]
 public class AbilityDatabase : Database<Ability>
 {
     [SerializeField] List<AbilityAttributs> attributs = new List<AbilityAttributs>();

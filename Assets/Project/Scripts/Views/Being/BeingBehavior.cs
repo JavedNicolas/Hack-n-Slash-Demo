@@ -168,7 +168,7 @@ public class BeingBehavior : InteractableObject
             if (Vector3.Distance(transform.position, interactionTarget.transform.position) <= interactionDistance)
             {
                 lookAtStraight(interactionTarget.transform.position);
-                if (interactionTarget.interactable.interact(this, interactionTarget.gameObject) && interactOnce)
+                if (interactionTarget.interactable.interact(this, interactionTarget.gameObject))
                     interactionTarget = null;
                 stopMoving();
             }
@@ -195,7 +195,7 @@ public class BeingBehavior : InteractableObject
         return false;
     }
 
-    protected void die()
+    protected virtual void die()
     {
         Destroy(gameObject);
     }

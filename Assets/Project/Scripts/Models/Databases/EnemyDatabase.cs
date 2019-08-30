@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Database/Enemies")]
+[CreateAssetMenu(fileName = DatabaseConstant.enemyDatabaseFileName, menuName = "Database/Enemies")]
 public class EnemyDatabase : Database<Enemy>
 {
 

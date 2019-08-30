@@ -9,6 +9,8 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     // database
     protected override string databasePath { get => "Databases/ItemDatabase"; }
 
+    Vector2 formScrollPos;
+
     // item Field
     string itemName;
     Sprite itemIcon;
@@ -32,6 +34,7 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     #region Right panel (The form)
     protected override void displayForm()
     {
+        formScrollPos = EditorGUILayout.BeginScrollView(formScrollPos);
         EditorGUILayout.BeginVertical();
         GUI.enabled = false;
         databaseID = EditorGUILayout.IntField("Database ID : ", databaseID);
@@ -52,7 +55,7 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         {
             for (int i = 0; i < numberOfEffect; i++)
             {
-                EditorGUILayout.LabelField("Effect n° " + i + " : ");
+                EditorGUILayout.LabelField("Effect n° " + i + " : ", centerTitle);
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Effect :");
                 effects[i].effect = (Effect)EditorGUILayout.ObjectField(effects[i].effect, typeof(Effect), true);
@@ -65,11 +68,10 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
             }
 
         }
-        
-
 
         displayFormButtons();
         EditorGUILayout.EndVertical();
+        EditorGUILayout.EndScrollView();
     }
     #endregion
 

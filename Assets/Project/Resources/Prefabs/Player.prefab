@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1832822816280725536}
   - component: {fileID: 2735543239254585675}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 3814854363101766748}
   - component: {fileID: 611912048}
   - component: {fileID: 6872138980982141078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlayerModel
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -154,6 +154,7 @@ MonoBehaviour:
   movementMask:
     serializedVersion: 2
     m_Bits: 1024
+  clickDelay: 3
   autoAttack: 1
 --- !u!1 &8251357967158934505
 GameObject:
@@ -167,7 +168,7 @@ GameObject:
   - component: {fileID: 8251357967158934507}
   - component: {fileID: 8251357967158934506}
   - component: {fileID: 963194229}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -324,6 +325,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 96fd2dc1d362adf4bba07e2f50bdbfae,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 96fd2dc1d362adf4bba07e2f50bdbfae,
         type: 3}

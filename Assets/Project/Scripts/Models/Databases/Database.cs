@@ -28,6 +28,12 @@ public class Database<T> : ScriptableObject where T : DatabaseElement
             return _elements[index];
     }
 
+    public T getElementWithDBID(int id)
+    {
+        orderDB();
+        return elements.Find(x => x.databaseID == id);  
+    }
+
     public T getRandomElement()
     {
         return _elements[Random.Range(0, _elements.Count)];

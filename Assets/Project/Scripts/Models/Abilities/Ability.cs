@@ -11,7 +11,6 @@ public abstract class Ability : DatabaseElement
     [SerializeField] protected AbilityAttributs _abilityAttributs;
     public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
 
-
     /// <summary>
     /// Start the sender animation for this ability
     /// </summary>

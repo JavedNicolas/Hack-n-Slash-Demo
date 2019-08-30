@@ -12,17 +12,24 @@ public class EnemyBehavior : BeingBehavior
     [Header("EnemyUI")]
     public UILife lifeUI;
 
-    List<PlayerBehavior> players = new List<PlayerBehavior>();
+    [Header("Loot")]
+    public static float lootExplosionStrength = 10f;
+    public List<Loot> loot;
 
-    int closestPlayerIndex = 0;
-    Vector3 closestPlayerPosition;
-    float closestPlayerDistance;
+    private List<PlayerBehavior> players = new List<PlayerBehavior>();
+
+    // Player detection
+    private int closestPlayerIndex = 0;
+    private Vector3 closestPlayerPosition;
+    private float closestPlayerDistance;
 
     LightningBall ability;
 
     void Start()
     {
-        being.skills.Add(GameManager.instance.getAbilityOfType(typeof(LightningBall)));
+        Enemy enemy = (Enemy)being;
+        loot = enemy.generateLoot();
+        being.ability.Add(GameManager.instance.getAbilityOfType(typeof(LightningBall)));
         players = FindObjectsOfType<PlayerBehavior>().ToList();
 
         lifeUI.setBeing(being);
@@ -76,7 +83,25 @@ public class EnemyBehavior : BeingBehavior
     {
         if (closestPlayerDistance < attackRange)
         {
-            useAbility(being.basicAttack, closestPlayerPosition, players[closestPlayerIndex]);
+            useAbility(being.ability[0], closestPlayerPosition, players[closestPlayerIndex]);
         }
+    }
+
+    void dropLoot()
+    {
+        for(int i = 0; i < loot.Count; i++)
+        {
+            GameObject itemObject = Instantiate(GameManager.instance.itemObjetPrefab);
+            itemObject.transform.position = transform.position;
+            itemObject.GetComponent<ItemObject>().setLoot(loot[i]);
+            Vector3 force = new Vector3(Random.Range(-lootExplosionStrength, lootExplosionStrength), 1, Random.Range(-lootExplosionStrength, lootExplosionStrength));
+            itemObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+        }
+    }
+
+    protected override void die()
+    {
+        dropLoot();
+        base.die();
     }
 }

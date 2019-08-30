@@ -29,13 +29,13 @@ public class UISkillChoice : MonoBehaviour
         clearChild();
         Player player = GameManager.instance.getPlayer();
 
-        for (int i = 0; i < player.skills.Count; i++)
+        for (int i = 0; i < player.ability.Count; i++)
         {
             GameObject skillIcon = Instantiate(skillIconUIPrefab);
             UISkillSlot skillIconUI = skillIcon.GetComponent<UISkillSlot>();
             if (skillIconUI != null)
             {
-                skillIconUI.ability = player.skills[i];
+                skillIconUI.ability = player.ability[i];
                 skillIconUI.isChoiceIcon = true;
                 skillIcon.transform.SetParent(transform);
                 skillIconUI.transform.localScale = new Vector3(1, 1, 1);
