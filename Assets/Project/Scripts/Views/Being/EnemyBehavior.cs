@@ -29,7 +29,7 @@ public class EnemyBehavior : BeingBehavior
     {
         Enemy enemy = (Enemy)being;
         loot = enemy.generateLoot();
-        being.ability.Add(GameManager.instance.getAbilityOfType(typeof(LightningBall)));
+        being.ability.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
         players = FindObjectsOfType<PlayerBehavior>().ToList();
 
         lifeUI.setBeing(being);

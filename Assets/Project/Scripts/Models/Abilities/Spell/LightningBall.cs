@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class LightningBall : Ability
 {
-    /*public LightningBall() : base(Resources.Load<LightningBallAttributs>(AbilityConstant.attributsFolder + "LightningBallAttributs"))
+    public LightningBall() { }
+
+    public LightningBall(LightningBall lightningBall)
     {
-    }*/
+        this._abilityAttributs = lightningBall.abilityAttributs;
+    }
 
     public override void animation()
     {

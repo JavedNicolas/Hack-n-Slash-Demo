@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class BaseUI : MonoBehaviour, IPointerDownHandler
+public abstract class BaseUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
 {
-    [Header("Movable attributs")]
-    [SerializeField] protected bool _canBeUsedToMove = false;
-    [SerializeField] protected GameObject _objectToMove;
 
     float clicked = 0;
     float clicktime = 0;
@@ -22,6 +19,21 @@ public abstract class BaseUI : MonoBehaviour, IPointerDownHandler
             leftClickOnUI();
     }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+        dragging(eventData);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        dragginEnd(eventData);
+    }
+
     protected abstract void leftClickOnUI();
     protected abstract void rightClickOnUI();
+
+    protected abstract void dragging(PointerEventData eventData);
+    protected abstract void dragginEnd(PointerEventData eventData);
+
+
 }

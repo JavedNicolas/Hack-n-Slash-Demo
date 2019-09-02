@@ -11,6 +11,7 @@ public class ItemObject : InteractableObject
     [Header("The loot")]
     [SerializeField] Loot _loot;
     public Loot loot { get => _loot; }
+
     public void setLoot(Loot loot)
     {
         this._loot = loot;

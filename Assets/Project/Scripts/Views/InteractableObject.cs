@@ -22,7 +22,6 @@ public abstract class InteractableObject : MonoBehaviour
     /// </summary>
     protected virtual void deleteItem()
     {
-        print("Destroy");
         DestroyImmediate(this.gameObject);
     }
 }

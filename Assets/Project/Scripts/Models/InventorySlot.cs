@@ -75,17 +75,17 @@ public struct InventorySlot
     /// Add an item to the slot, except if the item is stackable then add quantity
     /// </summary>
     /// <param name="item">The item to add</param>
-    public void AddItem(Item item, int quantity)
+    public void AddItem(Item item)
     {
         if(this.item != null && this.item.isConsomable)
         {
-            this.quantity += quantity;
+            this.quantity ++;
         }
         else
         {
             this.item = item;
             if (item.isStackable)
-                this.quantity = quantity;
+                this.quantity = 1;
         }
     }
 }

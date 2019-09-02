@@ -51,6 +51,11 @@ public class BeingBehavior : InteractableObject
         interactWithCurrentInteractionTarget();
     }
 
+    public void AddInteractibleTaget(InteractableObject interactableObject)
+    {
+        this.interactionTarget = interactableObject;
+    }
+
     /// <summary>
     /// Create a path to the destination
     /// </summary>

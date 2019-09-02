@@ -34,8 +34,8 @@ public class Being : Interactable
     public float projectileSpeed { get { return _projectileSpeed; } }
 
     [Header("Skills")]
-    [SerializeField] private List<Ability> _skills = new List<Ability>();
-    public List<Ability> ability { get { return _skills; } }
+    [SerializeField] private List<Ability> _ability = new List<Ability>();
+    public List<Ability> ability { get { return _ability; } }
 
     private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}
@@ -51,7 +51,7 @@ public class Being : Interactable
     #endregion
 
     #region init
-    public Being(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
+    public Being(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> abilities, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
     {
         this.name = name;
         this._currentLife = currentLife;
@@ -60,7 +60,7 @@ public class Being : Interactable
         _bonusAttackSpeed = aSPD;
         this._attackRange = attackRange;
         this._strength = strength;
-        this._skills = skills;
+        this._ability = abilities;
         this._movementSpeedBonus = movementSpeedPercentage;
         this._prefab = prefab;
         this._projectileSpeed = projectileSpeed;

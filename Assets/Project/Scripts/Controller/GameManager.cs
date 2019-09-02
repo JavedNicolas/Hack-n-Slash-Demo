@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this);
         playerTMp = new Player("Player Test", 100, 100, 0, 10, 11, 0, new List<Ability>(), 50, playerPrefab, 100);
-        playerTMp.ability.Add(getAbilityOfType(typeof(LightningBall)));
+        playerTMp.ability.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
     }
 
     // Start is called before the first frame update
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
             leftClickDelegate(overInterface);
         }
 
-        if (Input.GetButton(InputConstant.rightMouseButtonName))
+        if (Input.GetButtonDown(InputConstant.rightMouseButtonName))
         {
             overInterface = EventSystem.current.IsPointerOverGameObject();
             rightClickDelegate(overInterface);

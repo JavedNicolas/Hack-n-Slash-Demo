@@ -14,11 +14,10 @@ public class PlayerBehavior : BeingBehavior
     public LayerMask movementMask;
 
     [Header("Clicks")]
-    [SerializeField] float clickDelay = 3f;
+    float dropItemMaxDistance = 20f;
 
     // TEMPORARY
     public bool autoAttack = true;
-
 
     private void Start()
     {
@@ -92,5 +91,24 @@ public class PlayerBehavior : BeingBehavior
                 }
         }
     }
-   
+
+    public bool tryTodropItem(InventorySlot slotWithTheItem)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit) && hit.transform.CompareTag(Tags.Ground.ToString()))
+        {
+            if(Vector3.Distance(hit.point, transform.position) <= dropItemMaxDistance)
+            {
+                GameObject itemObject = Instantiate(GameManager.instance.itemObjetPrefab);
+                Loot loot = new Loot(slotWithTheItem.item, 0, slotWithTheItem.quantity);
+                itemObject.GetComponent<ItemObject>().setLoot(loot);
+                itemObject.transform.position = hit.point;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

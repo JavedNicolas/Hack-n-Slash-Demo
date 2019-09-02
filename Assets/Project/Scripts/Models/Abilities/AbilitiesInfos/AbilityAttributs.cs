@@ -9,7 +9,6 @@ public class AbilityAttributs : ScriptableObject
     [SerializeField] private string _description;
     [SerializeField] private Sprite _icon;
 
-
     [Header("Ability")]
     [SerializeField] private AbilityType _type;
     [SerializeField] private List<EffectAndValue> _effectAndValues = new List<EffectAndValue>();

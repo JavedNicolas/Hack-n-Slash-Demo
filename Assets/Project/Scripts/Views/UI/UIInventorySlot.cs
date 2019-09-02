@@ -11,6 +11,9 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     [SerializeField] Vector3 movingOffset = new Vector3(0, -15, 0);
     [SerializeField] Vector3 itemScaleWhileHandling = new Vector3(0.3f, 0.3f, 0.3f);
 
+    // The player
+    PlayerBehavior playerBehavior;
+
     // The ui slot
     private InventorySlot _inventorySlot;
     public InventorySlot inventorySlot { get => _inventorySlot; }
@@ -35,6 +38,11 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
         itemQuantityText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
+    private void Start()
+    {
+        playerBehavior = GameManager.instance.GetPlayerBehavior();
+    }
+
     // Deselect slot on hovering
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -44,7 +52,6 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     public void Update()
     {
         displayTargetingObject();
-        displayObjectMoving();
     }
 
     /// <summary>
@@ -144,7 +151,7 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     {
         if (hasItem() && _inventorySlot.item.databaseID != targetingSourceSlot.inventorySlot.item.databaseID)
         {
-            if(targetingSourceSlot.inventorySlot.item.use(GameManager.instance.GetPlayerBehavior(), transform.gameObject))
+            if(targetingSourceSlot.inventorySlot.item.use(playerBehavior, transform.gameObject))
             {
                 targetingSourceSlot.removeItem();
                 updateInventory(targetingSourceSlot._inventorySlot);
@@ -163,12 +170,54 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     }
     #endregion
 
+    #region dragging
+    protected override void dragging(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Left)
+        {
+            GameManager.instance.lockClick(true, true);
+            if (!moving && hasItem() && !targeting)
+            {
+                moving = true;
+                movingSourceSlot = this;
+            }
+            displayObjectMoving();
+        }
+    }
+
+    protected override void dragginEnd(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                if (playerBehavior.tryTodropItem(_inventorySlot))
+                {
+                    _inventorySlot.emptySlot();
+                    updateInventory(_inventorySlot);
+                }
+                stopMovingObject();
+                GameManager.instance.lockClick(false, true);
+            }
+            else
+            {
+                UIInventorySlot slotHovered = eventData.pointerEnter.GetComponent<UIInventorySlot>();
+                if (slotHovered != null)
+                    slotHovered.tryMovingTarget();
+                else
+                    stopMovingObject();
+            }
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// Use the item when clicked
     /// </summary>
     void useItem(GameObject target = null)
     {
-        if(_inventorySlot.item.use(GameManager.instance.GetPlayerBehavior()))
+        if(_inventorySlot.item.use(playerBehavior))
             if (_inventorySlot.item.isConsomable)
                 if(_inventorySlot.item.targetType == TargetType.None)
                 {
@@ -184,52 +233,17 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
 
 
     #region clicks
-    protected override void leftClickOnUI()
-    {
-        if (!moving && hasItem() && !targeting)
-        {
-            moving = true;
-            movingSourceSlot = this;
-        }
-        else if(moving)
-        {
-            tryMovingTarget();
-        }
-    }
+    protected override void leftClickOnUI() {}
 
     public void leftClick(bool overInterface)
     {
         if (!overInterface)
         {
-            if (moving && movingSourceSlot == this)
-            {
-                if (dropItem()){
-                    _inventorySlot.emptySlot();
-                    updateInventory(_inventorySlot);
-                }
-                stopMovingObject();
-            }
-            else if (targeting && targetingSourceSlot == this)
+            if (targeting && targetingSourceSlot == this)
             {
                 stopTargeting();
             }
         }
-    }
-
-    bool dropItem()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray, out hit) && hit.transform.CompareTag(Tags.Ground.ToString()))
-        {
-            GameObject itemObject = Instantiate(GameManager.instance.itemObjetPrefab);
-            Loot loot = new Loot(_inventorySlot.item, 0, _inventorySlot.quantity);
-            itemObject.GetComponent<ItemObject>().setLoot(loot);
-            itemObject.transform.position = hit.point;
-            return true;
-        }
-        return false;
     }
 
     protected override void rightClickOnUI()
@@ -257,15 +271,8 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     {
         if (!overInterface)
         {
-            if (moving && movingSourceSlot == this)
-                stopMovingObject();
-            else if (targeting && targetingSourceSlot == this)
+            if (targeting && targetingSourceSlot == this)
                 stopTargeting();
-        }
-        else
-        {
-            if (moving && movingSourceSlot == this)
-                stopMovingObject();
         }
     }
 
