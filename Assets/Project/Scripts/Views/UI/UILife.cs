@@ -24,7 +24,7 @@ public class UILife : MonoBehaviour
     {
         if(being != null)
         {
-            lifeFill.fillAmount = being.currentLife / being.baseLife;
+            lifeFill.fillAmount = being.currentLife / being.getCurrentMaxLife();
             if (!isSmallLifeBar)
                 lifeAsText.text = being.currentLife.ToString() + "/" + being.baseLife.ToString();
         }

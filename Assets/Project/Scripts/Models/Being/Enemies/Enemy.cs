@@ -8,15 +8,15 @@ public class Enemy : Being
     [SerializeField] List<Loot> _possibleLoot = new List<Loot>();
     public List<Loot> possibleLoot { get => _possibleLoot; }
 
-    public Enemy(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, 
-        GameObject prefab, float projectileSpeed, List<Loot> possibleLoot) : base(name, currentLife, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
+    public Enemy(string name, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, 
+        GameObject prefab, float projectileSpeed, List<Loot> possibleLoot) : base(name, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
     {
         this._possibleLoot = possibleLoot;
     }
 
     public Enemy(){ }
 
-    public Enemy(Enemy enemy) : base(enemy.name, enemy.baseLife, enemy.baseLife, enemy.shield, enemy.bonusAttackSpeed, enemy.attackRange, enemy.strength, enemy.ability, enemy.movementSpeedBonus, enemy.prefab, enemy.projectileSpeed)
+    public Enemy(Enemy enemy) : base(enemy.name, enemy.baseLife, enemy.shield, enemy.bonusAttackSpeed, enemy.attackRange, enemy.strength, enemy.ability, enemy.movementSpeedBonus, enemy.prefab, enemy.projectileSpeed)
     {
         this._possibleLoot = enemy._possibleLoot;
     }

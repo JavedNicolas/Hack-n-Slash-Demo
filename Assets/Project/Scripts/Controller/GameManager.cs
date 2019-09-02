@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         CurrentMapInstanceController.instance.loadZone();
         spawnPlayer();
-        GameUI.instance.displayUI(player.GetComponentInChildren<PlayerBehavior>().being);
+        GameUI.instance.displayPlayerUI(player.GetComponentInChildren<PlayerBehavior>().being);
     }
 
     // Update is called once per frame

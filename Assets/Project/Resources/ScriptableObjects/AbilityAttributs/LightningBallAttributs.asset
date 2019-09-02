@@ -26,7 +26,7 @@ MonoBehaviour:
   _canBeCastedOnSelf: 0
   _ballGameObject: {fileID: 233050881289928282, guid: 28560739714ed0e4d9bd0383c2431c85,
     type: 3}
-  _numberOfBaseProjectile: 3
+  _numberOfBaseProjectile: 5
   _projectileBaseSpeed: 25
   _formType: 0
   _offsetBetweenProjectile: 10

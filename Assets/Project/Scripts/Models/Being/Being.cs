@@ -51,10 +51,9 @@ public class Being : Interactable
     #endregion
 
     #region init
-    public Being(string name, float currentLife, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> abilities, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
+    public Being(string name, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> abilities, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
     {
         this.name = name;
-        this._currentLife = currentLife;
         this._baseLife = baseLife;
         this._shield = shield;
         _bonusAttackSpeed = aSPD;
@@ -65,6 +64,7 @@ public class Being : Interactable
         this._prefab = prefab;
         this._projectileSpeed = projectileSpeed;
         this._basicAttack = new BasicAttack();
+        this._currentLife = getCurrentMaxLife();
     }
 
     public Being() { }

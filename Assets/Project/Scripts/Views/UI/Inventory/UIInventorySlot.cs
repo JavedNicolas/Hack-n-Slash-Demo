@@ -81,6 +81,7 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
         _inventorySlot = updatedslot;
     }
 
+
     #region moving
     void displayObjectMoving()
     {
@@ -212,26 +213,6 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
 
     #endregion
 
-    /// <summary>
-    /// Use the item when clicked
-    /// </summary>
-    void useItem(GameObject target = null)
-    {
-        if(_inventorySlot.item.use(playerBehavior))
-            if (_inventorySlot.item.isConsomable)
-                if(_inventorySlot.item.targetType == TargetType.None)
-                {
-                    _inventorySlot.removeItem();
-                    updateInventory(_inventorySlot);
-                }
-    }
-
-    public void removeItem()
-    {
-        _inventorySlot.removeItem();
-    }
-
-
     #region clicks
     protected override void leftClickOnUI() {}
 
@@ -277,6 +258,26 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     }
 
     #endregion
+
+    /// <summary>
+    /// Use the item when clicked
+    /// </summary>
+    void useItem(GameObject target = null)
+    {
+        if (_inventorySlot.item.use(playerBehavior))
+            if (_inventorySlot.item.isConsomable)
+                if (_inventorySlot.item.targetType == TargetType.None)
+                {
+                    _inventorySlot.removeItem();
+                    updateInventory(_inventorySlot);
+                }
+    }
+
+    public void removeItem()
+    {
+        _inventorySlot.removeItem();
+    }
+
 
     public void updateInventory(List<InventorySlot> slots)
     {

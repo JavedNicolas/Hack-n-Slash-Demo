@@ -10,6 +10,7 @@ public class AbilityAttributs : ScriptableObject
     [SerializeField] private Sprite _icon;
 
     [Header("Ability")]
+    [SerializeField] private float _manaCost;
     [SerializeField] private AbilityType _type;
     [SerializeField] private List<EffectAndValue> _effectAndValues = new List<EffectAndValue>();
     [SerializeField] private AbilityCoolDownType _coolDownType;
@@ -19,6 +20,7 @@ public class AbilityAttributs : ScriptableObject
     public new string name { get => _name;}
     public string description { get => _description; }
     public Sprite icon { get => _icon; }
+    public float manaCost { get => _manaCost; }
     public AbilityCoolDownType coolDownType { get => _coolDownType; }
     public bool needTarget { get => _needTarget;}
     public bool canBeCastedOnSelf { get => _canBeCastedOnSelf; }

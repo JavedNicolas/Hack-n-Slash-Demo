@@ -10,6 +10,7 @@ public class GameUI : MonoBehaviour
 
     [Header("Base Screen UI")]
     [SerializeField] GameObject lifeUI;
+    [SerializeField] GameObject manaUI;
 
     [Header("Openable UI")]
     [SerializeField] UIInventory inventoryUI;
@@ -41,9 +42,10 @@ public class GameUI : MonoBehaviour
         GameManager.instance.getPlayer().inventory.updateSlots(slots);
     }
 
-    public void displayUI(Being player)
+    public void displayPlayerUI(Being player)
     {
         lifeUI.GetComponent<UILife>().setBeing(player);
+        manaUI.GetComponent<UIMana>().setBeing((Player)player);
     }
 
     void showInventory()

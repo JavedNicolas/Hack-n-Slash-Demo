@@ -320,9 +320,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7278199801213283802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9390aef7f78a2941b12270c2394e78b, type: 3}
+  m_Script: {fileID: 11500000, guid: d8261ed1f68f9c246b33be2dec6f4fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movingOffset: {x: 0, y: -15, z: 0}
+  itemScaleWhileHandling: {x: 0.3, y: 0.3, z: 0.3}
+  descriptionPopUPGO: {fileID: 0}
 --- !u!114 &7492171846686774162
 MonoBehaviour:
   m_ObjectHideFlags: 0

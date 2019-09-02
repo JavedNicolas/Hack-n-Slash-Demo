@@ -17,11 +17,11 @@ public class AbilityManager : MonoBehaviour
     /// </summary>
     /// <param name="mouseHit">Mouse position</param>
     /// <param name="ability">The ability</param>
-    /// <param name="senderScript">The sender BeingBehavior</param>
+    /// <param name="senderBehavior">The sender BeingBehavior</param>
     /// <returns></returns>
-    public bool tryToPerformAbility(RaycastHit mouseHit, Ability ability, BeingBehavior senderScript)
+    public bool tryToPerformAbility(RaycastHit mouseHit, Ability ability, BeingBehavior senderBehavior)
     {
-        if (ability.isAbilityAvailable(senderScript.being))
+        if (ability.isAbilityAvailable(senderBehavior.being))
         {
             if(ability.abilityAttributs.needTarget)
             {
@@ -29,20 +29,31 @@ public class AbilityManager : MonoBehaviour
                 if (targetScript != null)
                 {
                     bool canBeUsed = false;
-                    if (targetScript.being == senderScript.being && ability.abilityAttributs.canBeCastedOnSelf)
+                    if (targetScript.being == senderBehavior.being && ability.abilityAttributs.canBeCastedOnSelf)
                         canBeUsed = true;
+
+                    if(canBeUsed)
+                        canBeUsed = checkMana(ability, senderBehavior);
 
                     if (canBeUsed)
                     {
-                        ability.performAbility(senderScript, targetScript);
+                        ability.performAbility(senderBehavior, targetScript);
+                        if (senderBehavior.being is Player)
+                            ((Player)senderBehavior.being).spendMana(ability.abilityAttributs.manaCost);
                         return true;
                     }
                 }
             }
             else
             {
-                ability.performAbility(senderScript, mouseHit.point, senderScript);
-                return true;
+                if (checkMana(ability, senderBehavior))
+                {
+                    ability.performAbility(senderBehavior, mouseHit.point, senderBehavior);
+                    if (senderBehavior.being is Player)
+                        ((Player)senderBehavior.being).spendMana(ability.abilityAttributs.manaCost);
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -52,40 +63,53 @@ public class AbilityManager : MonoBehaviour
     /// <summary>
     /// Try to perform the ability (used for AI)
     /// </summary>
-    /// <param name="targetScript">The targeted beingBehavior script</param>
+    /// <param name="targetBehavior">The targeted beingBehavior script</param>
     /// <param name="targetedPosition">Mouse position</param>
     /// <param name="ability">The ability</param>
-    /// <param name="senderScript">The sender BeingBehavior</param>
+    /// <param name="senderBehavior">The sender BeingBehavior</param>
     /// <returns></returns>
-    public bool tryToPerformAbility(BeingBehavior targetScript, Vector3 targetedPosition, Ability ability, BeingBehavior senderScript)
+    public bool tryToPerformAbility(BeingBehavior targetBehavior, Vector3 targetedPosition, Ability ability, BeingBehavior senderBehavior)
     {
-        if (ability.isAbilityAvailable(senderScript.being))
+        if (ability.isAbilityAvailable(senderBehavior.being))
         {
             if (ability.abilityAttributs.needTarget)
             {
-                if (targetScript != null)
+                if (targetBehavior != null)
                 {
                     bool canBeUsed = false;
-                    if (targetScript.being == senderScript.being && ability.abilityAttributs.canBeCastedOnSelf)
+                    if (targetBehavior.being == senderBehavior.being && ability.abilityAttributs.canBeCastedOnSelf)
                         canBeUsed = true;
-                    else if (targetScript.being != senderScript.being)
+                    else if (targetBehavior.being != senderBehavior.being)
                         canBeUsed = true;
 
                     if (canBeUsed)
                     {
-                        ability.performAbility(senderScript, targetScript);
+                        ability.performAbility(senderBehavior, targetBehavior);
                         return true;
                     }
                 }
             }
             else
             {
-                ability.performAbility(senderScript, targetedPosition, senderScript);
+                ability.performAbility(senderBehavior, targetedPosition, senderBehavior);
                 return true;
             }
         }
 
         return false;
+    }
+
+    public bool checkMana(Ability ability, BeingBehavior senderBehavior)
+    {
+        Player player = (Player)senderBehavior.being;
+        if (player != null)
+        {
+            if (player.currentMana >= ability.abilityAttributs.manaCost)
+                return true;
+            else
+                return false;
+        }
+        return true;
     }
 
     public void launchProjectile(GameObject projectilePrefab, int numberOfProjectile, float projectileOffset, float projectileBaseSpeed, float projectileLife, 

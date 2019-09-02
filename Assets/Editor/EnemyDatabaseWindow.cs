@@ -158,7 +158,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
 
     protected override void updateElementWithFormValues()
     {
-        element = new Enemy(enemyName, baseLife, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0, possibleLoots);
+        element = new Enemy(enemyName, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0, possibleLoots);
         element.interactibleType = interactableType;
         element.databaseID = databaseID;
     }
