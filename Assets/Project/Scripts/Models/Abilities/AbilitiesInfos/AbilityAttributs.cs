@@ -43,4 +43,9 @@ public class EffectAndValue
         this.value = value;
     } 
 
+    public string getDescription()
+    {
+        return effect.description.Replace("{0}", value.ToString());
+    }
+
 }

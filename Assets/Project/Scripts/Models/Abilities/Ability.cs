@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public abstract class Ability : DatabaseElement
+public abstract class Ability : DatabaseElement, IDescribable
 {
     // attributs
     protected float lastTimeUsed = 0f;
@@ -79,5 +79,20 @@ public abstract class Ability : DatabaseElement
     public void abilityHasBeenUsed()
     {
         lastTimeUsed = Time.time;
+    }
+
+    public string getName()
+    {
+        return GetType().ToString();
+    }
+
+    public virtual string getDescription()
+    {
+        string description = "";
+        for (int i = 0; i < abilityAttributs.effectAndValues.Count; i++)
+        {
+            description += abilityAttributs.effectAndValues[i].getDescription() + "\n";
+        }
+        return description;
     }
 }

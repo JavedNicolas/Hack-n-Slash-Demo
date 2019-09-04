@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887a824b9ed051b4b9dc93522540f27f, type: 3}
   m_Name: Recycle Effect
   m_EditorClassIdentifier: 
+  _description: Recycle the target.
   _startingType: 0
   _effectTargetType: 0

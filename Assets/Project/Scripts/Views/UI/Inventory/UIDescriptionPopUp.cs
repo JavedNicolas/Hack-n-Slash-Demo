@@ -4,11 +4,12 @@ using System.Collections;
 
 public class UIDescriptionPopUp : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI itemName;
-    [SerializeField] TextMeshProUGUI itemDescription;
+    [SerializeField] TextMeshProUGUI nameTMPro;
+    [SerializeField] TextMeshProUGUI descriptionTMPro;
 
-    public void setText(Item item)
+    public void setText(IDescribable describable)
     {
-
+        this.nameTMPro.text = describable.getName() ;
+        this.descriptionTMPro.text = describable.getDescription();
     }
 }

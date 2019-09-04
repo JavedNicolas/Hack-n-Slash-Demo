@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(RectTransform))]
 public abstract class BaseUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
 {
 
@@ -27,6 +28,23 @@ public abstract class BaseUI : MonoBehaviour, IPointerDownHandler, IDragHandler,
     public void OnEndDrag(PointerEventData eventData)
     {
         dragginEnd(eventData);
+    }
+
+    public virtual Vector3 getDescriptionPopUpOffset()
+    {
+        float offsetX = GetComponent<RectTransform>().sizeDelta.x;
+        float offsetY = GetComponent<RectTransform>().sizeDelta.y;
+        return new Vector3(offsetX, offsetY);
+    }
+
+    public float getWidthSize()
+    {
+        return GetComponent<RectTransform>().sizeDelta.x;
+    }
+
+    public float getHeightSize()
+    {
+        return GetComponent<RectTransform>().sizeDelta.y;
     }
 
     protected abstract void leftClickOnUI();

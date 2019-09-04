@@ -31,4 +31,11 @@ public class LightningBall : Ability
         AbilityManager.instance.launchProjectile(attributs.ballGameObject, attributs.numberOfBaseProjectile, attributs.offsetBetweenProjectile, attributs.projectileBaseSpeed, attributs.projectileLife, targetedPosition,
             attributs.formType, senderGameObject, _abilityAttributs.effectAndValues);
     }
+
+    public override string getDescription()
+    {
+        string description = base.getDescription();
+        string lightningBallDescription = abilityAttributs.description.Replace("{0}", ((ProjectileAbilityAttributs)abilityAttributs).getNumberOfProjectile().ToString()) + "\n";
+        return description.Insert(0, lightningBallDescription);
+    }
 }

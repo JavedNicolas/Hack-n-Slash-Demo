@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1526dada4b63545bdde26f52514507, type: 3}
   m_Name: HealOnUseEffect
   m_EditorClassIdentifier: 
+  _description: Heal yourself for {0} on use.
   _startingType: 0
   _effectTargetType: 0

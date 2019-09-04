@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class UIInventorySlot : BaseUI, IPointerEnterHandler
+public class UIInventorySlot : BaseUI, IPopUpOnHovering
 {
     [Header("Targeting and moving object")]
     [SerializeField] Vector3 movingOffset = new Vector3(0, -15, 0);
@@ -31,6 +31,7 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     // Moving object
     public static bool moving = false;
     static UIInventorySlot movingSourceSlot;
+    Vector3 startLocalPosition;
 
     private void Awake()
     {
@@ -41,12 +42,19 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     private void Start()
     {
         playerBehavior = GameManager.instance.GetPlayerBehavior();
+        startLocalPosition = GetComponent<RectTransform>().localPosition;
     }
 
     // Deselect slot on hovering
     public void OnPointerEnter(PointerEventData eventData)
     {
         EventSystem.current.SetSelectedGameObject(null);
+        displayPopUp(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        displayPopUp(false);
     }
 
     public void Update()
@@ -122,7 +130,7 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     void stopMovingObject()
     {
         moving = false;
-        movingSourceSlot.GetComponent<RectTransform>().localPosition = Vector3.zero; 
+        movingSourceSlot.GetComponent<RectTransform>().localPosition = startLocalPosition; 
         movingSourceSlot.itemImage.transform.localScale = Vector3.one;
         movingSourceSlot = null;
     }
@@ -273,11 +281,19 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
                 }
     }
 
+    /// <summary>
+    /// remove an item from the slot
+    /// </summary>
     public void removeItem()
     {
         _inventorySlot.removeItem();
     }
 
+    public void displayPopUp(bool display)
+    {
+        if(_inventorySlot.item != null)
+            GameUI.instance.displayDescription(display, _inventorySlot.item, this);
+    }
 
     public void updateInventory(List<InventorySlot> slots)
     {
@@ -290,6 +306,11 @@ public class UIInventorySlot : BaseUI, IPointerEnterHandler
     }
 
     //getter
+    public override Vector3 getDescriptionPopUpOffset()
+    {
+        return transform.parent.GetComponentInParent<GridLayoutGroup>().cellSize;
+    }
+
     public bool hasItem() { return _inventorySlot.item != null ? true : false; }
     public InventorySlot getInventorySlot() { return _inventorySlot; }
 }

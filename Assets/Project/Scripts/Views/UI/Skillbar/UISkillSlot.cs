@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Button))]
-public class UISkillSlot : MonoBehaviour
+public class UISkillSlot : MonoBehaviour, IPopUpOnHovering
 {
     Ability _skill;
     public Ability ability
@@ -24,13 +25,22 @@ public class UISkillSlot : MonoBehaviour
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener(onClick);
-        //GetComponentInChildren<TextMeshProUGUI>().text = 
     }
 
     private void Start()
     {
         if (isChoiceIcon)
             keyDisplayer.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        displayPopUp(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        displayPopUp(false);
     }
 
     /// <summary>
@@ -51,6 +61,7 @@ public class UISkillSlot : MonoBehaviour
         {
             UISkillChoice.instance.updateSkillWithChoice(_skill);
             UISkillChoice.instance.gameObject.SetActive(false);
+            displayPopUp(false);
         }
         else
         {
@@ -67,5 +78,13 @@ public class UISkillSlot : MonoBehaviour
 
         }
 
+    }
+
+    public void displayPopUp(bool display)
+    {
+        if(ability != null)
+        {
+            GameUI.instance.displayDescription(display, ability, this);
+        }
     }
 }

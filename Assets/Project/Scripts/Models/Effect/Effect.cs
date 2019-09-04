@@ -5,6 +5,9 @@ using UnityEngine;
 public abstract class Effect : ScriptableObject
 {
     [Header("Effect attributs")]
+    [SerializeField] string _description;
+    public string description { get { return _description; } }
+
     [SerializeField] EffectStartingTime _startingType;
     public EffectStartingTime startingType { get { return _startingType; } }
 
@@ -25,6 +28,12 @@ public abstract class Effect : ScriptableObject
     /// <returns>Return true if the effect can be used</returns>
     public abstract bool canBeUsed(BeingBehavior sender, GameObject target, float value);
 
+    /// <summary>
+    /// check if the target is valid
+    /// </summary>
+    /// <param name="sender">The sender</param>
+    /// <param name="target">The target</param>
+    /// <returns>return true if the target is correct</returns>
     protected bool isCorrectTarget(BeingBehavior sender, GameObject target)
     {
         BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
