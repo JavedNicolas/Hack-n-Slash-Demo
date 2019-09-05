@@ -16,12 +16,27 @@ public class PlayerBehavior : BeingBehavior
     [Header("Clicks")]
     float dropItemMaxDistance = 20f;
 
+    GameObject _lifeUI;
+    GameObject _manaUI;
+
+    // UIs
+    UIInventory _inventoryUI;
+    UISkillBar _skillBarUI;
+
+    // PLayer
+    Player _player;
+
     // TEMPORARY
     public bool autoAttack = true;
 
     private void Start()
     {
-        interactOnce = !autoAttack;
+        _player = (Player)being;
+        _interactOnce = !autoAttack;
+
+        getUIElements();
+        initPlayerUI(_player);
+
         GameManager.instance.leftClickDelegate += LeftClick;
         GameManager.instance.rightClickDelegate += RightClick;
     }
@@ -29,6 +44,22 @@ public class PlayerBehavior : BeingBehavior
     private void Update()
     {
         skillBarKeyDown();
+        displayInventory();
+    }
+
+    public void getUIElements()
+    {
+        _inventoryUI = GameUI.instance.inventoryUI;
+        _skillBarUI = GameUI.instance.skillBar;
+        _lifeUI = GameUI.instance.lifeUI;
+        _manaUI = GameUI.instance.manaUI;
+    }
+
+    public void initPlayerUI(Being player)
+    {
+        _lifeUI.GetComponent<UILife>().setBeing(player);
+        _manaUI.GetComponent<UIMana>().setBeing((Player)player);
+        _inventoryUI.loadInventory(_player.inventory);
     }
 
     /// <summary>
@@ -50,7 +81,7 @@ public class PlayerBehavior : BeingBehavior
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementMask))
         {
             moveTo(hit.point);
-            interactionTarget = null;
+            _interactionTarget = null;
         }
     }
 
@@ -64,14 +95,16 @@ public class PlayerBehavior : BeingBehavior
 
 
         moveToInteractibleTarget();
-
     }
 
+    /// <summary>
+    /// Check for key to use the skill in the skill bar
+    /// </summary>
     void skillBarKeyDown()
     {
-        for (int i = 0; i < UISkillBar.instance.getSkillSlotNumber(); i++)
+        for (int i = 0; i < _skillBarUI.getSkillSlotNumber(); i++)
         {
-            UISkillSlot skillSlot = UISkillBar.instance.getSkillAtIndex(i);
+            UISkillSlot skillSlot = _skillBarUI.getSkillAtIndex(i);
 
             if (Input.GetButton(skillSlot.inputName))
                 if (skillSlot.ability != null)
@@ -79,7 +112,7 @@ public class PlayerBehavior : BeingBehavior
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit mouseHit;
                     if (Physics.Raycast(ray, out mouseHit))
-                        if (AbilityManager.instance.tryToPerformAbility(mouseHit, skillSlot.ability, this))
+                        if (_abilityManager.tryToPerformAbility(mouseHit, skillSlot.ability))
                         {
                             BeingBehavior target = null;
                             if (skillSlot.ability.abilityAttributs.needTarget)
@@ -92,6 +125,11 @@ public class PlayerBehavior : BeingBehavior
         }
     }
 
+    /// <summary>
+    /// Tyro to drop an item, it may fail depending on the distance to the player
+    /// </summary>
+    /// <param name="slotWithTheItem">Slot containing the item</param>
+    /// <returns>return true if the item can be dropped</returns>
     public bool tryTodropItem(InventorySlot slotWithTheItem)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -110,5 +148,21 @@ public class PlayerBehavior : BeingBehavior
         }
         return false;
     }
+
+    /// <summary>
+    /// Display inventory or hide it
+    /// </summary>
+    void displayInventory()
+    {
+        if (Input.GetButtonDown("Inventory"))
+        {
+            _inventoryUI.showInventory(false);
+        }
+        if (Input.GetButtonDown("SmallInventory"))
+        {
+            _inventoryUI.showInventory(true);
+        }
+    }
+
 
 }

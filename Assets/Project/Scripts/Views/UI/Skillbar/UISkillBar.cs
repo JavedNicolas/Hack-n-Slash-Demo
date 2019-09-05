@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class UISkillBar: MonoBehaviour
 {
-    public static UISkillBar instance;
 
     public List<UISkillSlot> numberOfSkillSlot = new List<UISkillSlot>();
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     /// <summary>
     /// Get the number of skill slot available

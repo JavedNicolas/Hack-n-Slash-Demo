@@ -8,41 +8,44 @@ using UnityEngine.EventSystems;
 public class UIInventorySlot : BaseUI, IPopUpOnHovering
 {
     [Header("Targeting and moving object")]
-    [SerializeField] Vector3 movingOffset = new Vector3(0, -15, 0);
-    [SerializeField] Vector3 itemScaleWhileHandling = new Vector3(0.3f, 0.3f, 0.3f);
+    [SerializeField] Vector3 _movingOffset = new Vector3(0, -15, 0);
+    [SerializeField] Vector3 _itemScaleWhileHandling = new Vector3(0.3f, 0.3f, 0.3f);
 
     // The player
-    PlayerBehavior playerBehavior;
+    PlayerBehavior _playerBehavior;
+
+    // UIInventory
+    UIInventory _parent;
 
     // The ui slot
     private InventorySlot _inventorySlot;
     public InventorySlot inventorySlot { get => _inventorySlot; }
 
     // Components
-    Image itemImage;
-    TextMeshProUGUI itemQuantityText;
+    Image _itemImage;
+    TextMeshProUGUI _itemQuantityText;
 
     // Object handling
     // targeted Object
     public static bool targeting = false;
-    static UIInventorySlot targetingSourceSlot;
-    static GameObject targetingCursorItem;
+    static UIInventorySlot _targetingSourceSlot;
+    static GameObject _targetingCursorItem;
 
     // Moving object
     public static bool moving = false;
-    static UIInventorySlot movingSourceSlot;
-    Vector3 startLocalPosition;
+    static UIInventorySlot _movingSourceSlot;
+    Vector3 _startLocalPosition;
 
     private void Awake()
     {
-        itemImage = GetComponent<Image>();
-        itemQuantityText = GetComponentInChildren<TextMeshProUGUI>();
+        _itemImage = GetComponent<Image>();
+        _itemQuantityText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void Start()
     {
-        playerBehavior = GameManager.instance.GetPlayerBehavior();
-        startLocalPosition = GetComponent<RectTransform>().localPosition;
+        _playerBehavior = GameManager.instance.GetPlayerBehavior();
+        _startLocalPosition = GetComponent<RectTransform>().localPosition;
     }
 
     // Deselect slot on hovering
@@ -65,25 +68,26 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     /// <summary>
     /// Update the slot with his content
     /// </summary>
-    public void initSlot(InventorySlot updatedslot)
+    public void initSlot(InventorySlot updatedslot, UIInventory parent)
     {
         if (updatedslot.item != null)
         {
-            Color color = itemImage.color;
+            Color color = _itemImage.color;
             color.a = 1;
-            itemImage.color = color;
-            itemImage.sprite = updatedslot.item.itemIcon;
+            _itemImage.color = color;
+            _itemImage.sprite = updatedslot.item.itemIcon;
+            _parent = parent;
             if (updatedslot.item.isStackable)
-                itemQuantityText.text = updatedslot.quantity.ToString();
+                _itemQuantityText.text = updatedslot.quantity.ToString();
         }
         else
         {
             _inventorySlot.emptySlot();
-            itemQuantityText.text = "";
-            itemImage.sprite = null;
-            Color color = itemImage.color;
+            _itemQuantityText.text = "";
+            _itemImage.sprite = null;
+            Color color = _itemImage.color;
             color.a = 0;
-            itemImage.color = color;
+            _itemImage.color = color;
         }
 
         _inventorySlot = updatedslot;
@@ -93,35 +97,35 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     #region moving
     void displayObjectMoving()
     {
-        if(moving && movingSourceSlot == this)
+        if(moving && _movingSourceSlot == this)
         {
-            itemImage.transform.localScale = itemScaleWhileHandling;
-            itemImage.transform.position = Input.mousePosition + movingOffset;
+            _itemImage.transform.localScale = _itemScaleWhileHandling;
+            _itemImage.transform.position = Input.mousePosition + _movingOffset;
         }
     }
 
     void tryMovingTarget()
     {
-        if (!hasItem() && this != movingSourceSlot)
+        if (!hasItem() && this != _movingSourceSlot)
         {
             // set this inventory slot
-            _inventorySlot.copySlot(movingSourceSlot.inventorySlot);
-            movingSourceSlot._inventorySlot.emptySlot();
+            _inventorySlot.copySlot(_movingSourceSlot.inventorySlot);
+            _movingSourceSlot._inventorySlot.emptySlot();
 
             // clean the old inventory slot
-            updateInventory(new List<InventorySlot>() { _inventorySlot, movingSourceSlot.inventorySlot });
+            updateInventorySlots(new List<InventorySlot>() { _inventorySlot, _movingSourceSlot.inventorySlot });
             stopMovingObject();
         }
-        else if (hasItem() && this != movingSourceSlot)
+        else if (hasItem() && this != _movingSourceSlot)
         {
             InventorySlot bufferSlot = this.inventorySlot;
-            _inventorySlot.copySlot(movingSourceSlot.inventorySlot);
-            movingSourceSlot._inventorySlot.copySlot(bufferSlot);
+            _inventorySlot.copySlot(_movingSourceSlot.inventorySlot);
+            _movingSourceSlot._inventorySlot.copySlot(bufferSlot);
 
-            updateInventory(new List<InventorySlot>() { _inventorySlot, movingSourceSlot.inventorySlot });
+            updateInventorySlots(new List<InventorySlot>() { _inventorySlot, _movingSourceSlot.inventorySlot });
             stopMovingObject();
         }
-        else if (this == movingSourceSlot)
+        else if (this == _movingSourceSlot)
         {
             stopMovingObject();
         }
@@ -130,27 +134,27 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     void stopMovingObject()
     {
         moving = false;
-        movingSourceSlot.GetComponent<RectTransform>().localPosition = startLocalPosition; 
-        movingSourceSlot.itemImage.transform.localScale = Vector3.one;
-        movingSourceSlot = null;
+        _movingSourceSlot.GetComponent<RectTransform>().localPosition = _startLocalPosition; 
+        _movingSourceSlot._itemImage.transform.localScale = Vector3.one;
+        _movingSourceSlot = null;
     }
     #endregion
 
     #region targeting
     void displayTargetingObject()
     {
-        if (targeting && targetingSourceSlot == this)
+        if (targeting && _targetingSourceSlot == this)
         {
-            if (targetingCursorItem == null)
+            if (_targetingCursorItem == null)
             {
-                targetingCursorItem = new GameObject();
-                targetingCursorItem.transform.parent = transform.parent;
-                targetingCursorItem.AddComponent<Image>();
-                targetingCursorItem.GetComponent<Image>().sprite = itemImage.sprite;
-                targetingCursorItem.transform.localScale = itemScaleWhileHandling;
+                _targetingCursorItem = new GameObject();
+                _targetingCursorItem.transform.parent = transform.parent;
+                _targetingCursorItem.AddComponent<Image>();
+                _targetingCursorItem.GetComponent<Image>().sprite = _itemImage.sprite;
+                _targetingCursorItem.transform.localScale = _itemScaleWhileHandling;
             }
                 
-            targetingCursorItem.transform.position = Input.mousePosition + movingOffset;
+            _targetingCursorItem.transform.position = Input.mousePosition + _movingOffset;
             if (Input.GetButtonDown(InputConstant.leftMouseButtonName))
                 stopTargeting();
         }
@@ -158,12 +162,12 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
 
     void tryUsingTargetItem()
     {
-        if (hasItem() && _inventorySlot.item.databaseID != targetingSourceSlot.inventorySlot.item.databaseID)
+        if (hasItem() && _inventorySlot.item.databaseID != _targetingSourceSlot.inventorySlot.item.databaseID)
         {
-            if(targetingSourceSlot.inventorySlot.item.use(playerBehavior, transform.gameObject))
+            if(_targetingSourceSlot.inventorySlot.item.use(_playerBehavior, transform.gameObject))
             {
-                targetingSourceSlot.removeItem();
-                updateInventory(targetingSourceSlot._inventorySlot);
+                _targetingSourceSlot.removeItem();
+                updateInventorySlots(_targetingSourceSlot._inventorySlot);
             }
             stopTargeting();
         }else
@@ -175,7 +179,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     void stopTargeting()
     {
         targeting = false;
-        Destroy(targetingCursorItem);
+        Destroy(_targetingCursorItem);
     }
     #endregion
 
@@ -188,7 +192,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
             if (!moving && hasItem() && !targeting)
             {
                 moving = true;
-                movingSourceSlot = this;
+                _movingSourceSlot = this;
             }
             displayObjectMoving();
         }
@@ -200,10 +204,10 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                if (playerBehavior.tryTodropItem(_inventorySlot))
+                if (_playerBehavior.tryTodropItem(_inventorySlot))
                 {
                     _inventorySlot.emptySlot();
-                    updateInventory(_inventorySlot);
+                    updateInventorySlots(_inventorySlot);
                 }
                 stopMovingObject();
                 GameManager.instance.lockClick(false, true);
@@ -228,7 +232,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     {
         if (!overInterface)
         {
-            if (targeting && targetingSourceSlot == this)
+            if (targeting && _targetingSourceSlot == this)
             {
                 stopTargeting();
             }
@@ -242,7 +246,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
             if(_inventorySlot.item.isConsomable && _inventorySlot.item.targetType != TargetType.None)
             {
                 targeting = true;
-                targetingSourceSlot = this;
+                _targetingSourceSlot = this;
             }
             else if (_inventorySlot.item.isConsomable && _inventorySlot.item.targetType == TargetType.None)
             {
@@ -250,7 +254,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
             }
                 
         }
-        if (targeting && targetingSourceSlot != this)
+        if (targeting && _targetingSourceSlot != this)
         {
             tryUsingTargetItem();
         }
@@ -260,7 +264,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     {
         if (!overInterface)
         {
-            if (targeting && targetingSourceSlot == this)
+            if (targeting && _targetingSourceSlot == this)
                 stopTargeting();
         }
     }
@@ -272,12 +276,12 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     /// </summary>
     void useItem(GameObject target = null)
     {
-        if (_inventorySlot.item.use(playerBehavior))
+        if (_inventorySlot.item.use(_playerBehavior))
             if (_inventorySlot.item.isConsomable)
                 if (_inventorySlot.item.targetType == TargetType.None)
                 {
                     _inventorySlot.removeItem();
-                    updateInventory(_inventorySlot);
+                    updateInventorySlots(_inventorySlot);
                 }
     }
 
@@ -295,14 +299,14 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
             GameUI.instance.displayDescription(display, _inventorySlot.item, this);
     }
 
-    public void updateInventory(List<InventorySlot> slots)
+    public void updateInventorySlots(List<InventorySlot> slots)
     {
-        GameUI.instance.updateInventorySlots(slots);
+        _parent.updateInventorySlots(slots);
     }
 
-    public void updateInventory(InventorySlot slot)
+    public void updateInventorySlots(InventorySlot slot)
     {
-        GameUI.instance.updateInventorySlots(new List<InventorySlot>() { slot });
+        _parent.updateInventorySlots(new List<InventorySlot>() { slot });
     }
 
     //getter

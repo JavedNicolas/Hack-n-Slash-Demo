@@ -9,17 +9,16 @@ public class GameUI : MonoBehaviour
     // instance
     public static GameUI instance;
 
-    [Header("Base Screen UI")]
-    [SerializeField] GameObject lifeUI;
-    [SerializeField] GameObject manaUI;
-
-    [Header("Openable UI")]
-    [SerializeField] UIInventory inventoryUI;
+    [Header("Player UI")]
+    [SerializeField] public UIInventory inventoryUI;
+    [SerializeField] public UISkillBar skillBar;
+    [SerializeField] public GameObject lifeUI;
+    [SerializeField] public GameObject manaUI;
 
     [Header("Description")]
-    [SerializeField] Canvas detailPopUPCanvas;
-    [SerializeField] UIDescriptionPopUp detailPopUpPrefab;
-    [SerializeField] Vector3 detailPopUpOffset;
+    [SerializeField] public Canvas detailPopUPCanvas;
+    [SerializeField] public UIDescriptionPopUp detailPopUpPrefab;
+    [SerializeField] public Vector3 detailPopUpOffset;
 
     UIDescriptionPopUp detailPopUp;
 
@@ -31,8 +30,6 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        inventoryUI.loadInventory();
-        GameManager.instance.getPlayer().inventory.inventoryChanged();
         initDetailPopUp();
     }
 
@@ -40,18 +37,6 @@ public class GameUI : MonoBehaviour
     {
         detailPopUp = Instantiate(detailPopUpPrefab);
         detailPopUp.gameObject.SetActive(false);
-    }
-
-    private void Update()
-    {
-        showInventory();
-    }
-
-
-    public void displayPlayerUI(Being player)
-    {
-        lifeUI.GetComponent<UILife>().setBeing(player);
-        manaUI.GetComponent<UIMana>().setBeing((Player)player);
     }
 
     /// <summary>
@@ -86,37 +71,4 @@ public class GameUI : MonoBehaviour
         detailPopUp.gameObject.SetActive(display);
 
     }
-
-
-    /// <summary>
-    /// Update inventory UI
-    /// </summary>
-    /// <param name="inventory"></param>
-    public void updateInventoryUI(Inventory inventory)
-    {
-        inventoryUI.updateInventoryUI(inventory);
-    }
-
-
-    /// <summary>
-    /// update a slot in the player inventory
-    /// </summary>
-    /// <param name="slots"></param>
-    public void updateInventorySlots(List<InventorySlot> slots)
-    {
-        GameManager.instance.getPlayer().inventory.updateSlots(slots);
-    }
-
-    void showInventory()
-    {
-        if (Input.GetButtonDown("Inventory"))
-        {
-            inventoryUI.showInventory(false);
-        }
-        if (Input.GetButtonDown("SmallInventory"))
-        {
-            inventoryUI.showInventory(true);
-        }
-    }
-
 }

@@ -19,7 +19,7 @@ public class BasicAttack : Ability
         useEffect(EffectStartingTime.Hit, sender, targetGameObject.gameObject);
     }
 
-    public override void performAbility(BeingBehavior sender, Vector3 targedPosition, BeingBehavior senderGameObject)
+    public override void performAbility(BeingBehavior sender, Vector3 targedPosition)
     {
         throw new System.NotImplementedException();
     }

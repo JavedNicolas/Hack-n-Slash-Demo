@@ -22,7 +22,7 @@ public class RecycleEffect : Effect
             UIInventorySlot inventorySlotUI = target.GetComponent<UIInventorySlot>();
             InventorySlot slot = inventorySlotUI.getInventorySlot();
             slot.removeItem();
-            GameUI.instance.updateInventorySlots(new List<InventorySlot>() { slot });
+            inventorySlotUI.updateInventorySlots(new List<InventorySlot>() { slot });
         }
     }
 }

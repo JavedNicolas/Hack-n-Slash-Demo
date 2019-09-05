@@ -29,7 +29,7 @@ public abstract class Ability : DatabaseElement, IDescribable
     /// <param name="sender">The sender being model</param>
     /// <param name="targedPosition">The ability targeted position</param>
     /// <param name="senderGameObject">The sender gameObject</param>
-    abstract public void performAbility(BeingBehavior sender, Vector3 targedPosition, BeingBehavior senderGameObject);
+    abstract public void performAbility(BeingBehavior sender, Vector3 targedPosition);
 
     /// <summary>
     /// launch and effect based on his starting time type (used for effect which start on precise movement which we controle, like before the skill or after)

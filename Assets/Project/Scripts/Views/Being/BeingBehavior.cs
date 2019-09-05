@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 
+[RequireComponent(typeof(AbilityManager))]
 public class BeingBehavior : InteractableObject
 {
     [Header("Being model")]
@@ -17,9 +18,13 @@ public class BeingBehavior : InteractableObject
     public int teamID;
 
     // Path variable
-    protected List<Vector3> path = new List<Vector3>();
-    protected NavMeshPath navMeshPath;
-    protected Vector3 yOffset;
+    protected List<Vector3> _path = new List<Vector3>();
+    protected NavMeshPath _navMeshPath;
+    protected Vector3 _yOffset;
+
+    //Ability manager
+    protected AbilityManager _abilityManager;
+    public AbilityManager abilityManager { get => _abilityManager; }
 
     // being
     private Being _being;
@@ -34,16 +39,17 @@ public class BeingBehavior : InteractableObject
     }
 
     // distance stop
-    protected float distanceToStop = 0.1f;
+    protected float _distanceToStop = 0.1f;
 
     // Interaction
-    protected InteractableObject interactionTarget;// interactible current target
-    protected bool interactOnce = false;
+    protected InteractableObject _interactionTarget;// interactible current target
+    protected bool _interactOnce = false;
 
     void Awake()
     {
-        navMeshPath = new NavMeshPath();
-        yOffset = new Vector3(0, gameObjectHeight / 2 - 0.1f, 0);
+        _abilityManager = GetComponent<AbilityManager>();
+        _navMeshPath = new NavMeshPath();
+        _yOffset = new Vector3(0, gameObjectHeight / 2 - 0.1f, 0);
     }
 
     void FixedUpdate()
@@ -54,7 +60,7 @@ public class BeingBehavior : InteractableObject
 
     public void AddInteractibleTaget(InteractableObject interactableObject)
     {
-        this.interactionTarget = interactableObject;
+        this._interactionTarget = interactableObject;
     }
 
     /// <summary>
@@ -64,11 +70,11 @@ public class BeingBehavior : InteractableObject
     /// <param name="distanceToStop">Distance from which the move need to be stopped</param>
     public void moveTo(Vector3 destination, float distanceToStop = 0.1f)
     {
-        NavMesh.CalculatePath(transformToMove.position, destination, NavMesh.AllAreas, navMeshPath);
-        this.distanceToStop = distanceToStop;
+        NavMesh.CalculatePath(transformToMove.position, destination, NavMesh.AllAreas, _navMeshPath);
+        this._distanceToStop = distanceToStop;
 
-        if (navMeshPath.corners.Length > 0)
-            path = navMeshPath.corners.ToList();
+        if (_navMeshPath.corners.Length > 0)
+            _path = _navMeshPath.corners.ToList();
 
         getToNextPathNode();
     }
@@ -78,21 +84,21 @@ public class BeingBehavior : InteractableObject
     /// </summary>
     protected void getToNextPathNode()
     {
-        if (path.Count == 0)
+        if (_path.Count == 0)
             return;
-        Vector3 currentPathDestination = path[0] + yOffset;
+        Vector3 currentPathDestination = _path[0] + _yOffset;
         transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.getMovementSpeed() * Time.deltaTime);
         lookAtStraight(currentPathDestination);
 
-        if (transformToMove.position == currentPathDestination ||(path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= distanceToStop))
+        if (transformToMove.position == currentPathDestination ||(_path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= _distanceToStop))
         {
-            path.RemoveAt(0);
+            _path.RemoveAt(0);
         }
     }
 
     protected void stopMoving()
     {
-        path.Clear();
+        _path.Clear();
     }
 
     /// <summary>
@@ -113,7 +119,7 @@ public class BeingBehavior : InteractableObject
     /// <param name="target">The targeted being behavior</param>
     public void useAbility(Ability ability, Vector3 targetedPosition, BeingBehavior target)
     {
-        if(AbilityManager.instance.tryToPerformAbility(target, targetedPosition, ability, this))
+        if(_abilityManager.tryToPerformAbility(target, targetedPosition, ability))
         {
             abilityUsed(targetedPosition, target, ability);
         }
@@ -153,7 +159,7 @@ public class BeingBehavior : InteractableObject
         {
             InteractableObject interactableObject = hit.transform.GetComponent<InteractableObject>();
 
-            interactionTarget = interactableObject;
+            _interactionTarget = interactableObject;
             return true;
         }
         return false;
@@ -165,22 +171,22 @@ public class BeingBehavior : InteractableObject
     /// </summary>
     void interactWithCurrentInteractionTarget()
     {
-        if (interactionTarget != null)
+        if (_interactionTarget != null)
         {
-            float interactionDistance = interactionTarget.interactable.getInteractionDistance();
-            if (interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
+            float interactionDistance = _interactionTarget.interactable.getInteractionDistance();
+            if (_interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
                 interactionDistance = being.attackRange;
 
-            if (Vector3.Distance(transform.position, interactionTarget.transform.position) <= interactionDistance)
+            if (Vector3.Distance(transform.position, _interactionTarget.transform.position) <= interactionDistance)
             {
-                lookAtStraight(interactionTarget.transform.position);
-                if (interactionTarget.interactable.interact(this, interactionTarget.gameObject))
-                    interactionTarget = null;
+                lookAtStraight(_interactionTarget.transform.position);
+                if (_interactionTarget.interactable.interact(this, _interactionTarget.gameObject))
+                    _interactionTarget = null;
                 stopMoving();
             }
             else
             {
-                moveTo(interactionTarget.transform.position, interactionDistance);
+                moveTo(_interactionTarget.transform.position, interactionDistance);
             }
         }
     }
@@ -192,10 +198,10 @@ public class BeingBehavior : InteractableObject
     /// <returns>True if the player is moving toward this position, else false</returns>
     public bool isMovingToward(Vector3 position)
     {
-        if (path.Count == 0)
+        if (_path.Count == 0)
             return false;
 
-        if (path[path.Count - 1].x == position.x && path[path.Count - 1].z == position.z)
+        if (_path[_path.Count - 1].x == position.x && _path[_path.Count - 1].z == position.z)
             return true;
 
         return false;

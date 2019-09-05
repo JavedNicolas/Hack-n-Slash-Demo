@@ -71,7 +71,6 @@ public class Inventory
         InventorySlot slot = _slots[slotIndex];
         slot.AddItem(itemToAdd);
         _slots[slotIndex] = slot;
-        inventoryChanged();
     }
 
     /// <summary>
@@ -85,12 +84,5 @@ public class Inventory
         {
             _slots[updatedSlots[i].index] = updatedSlots[i];
         }
-        
-        inventoryChanged();
-    }
-
-    public void inventoryChanged()
-    {
-        GameUI.instance.updateInventoryUI(this);
     }
 }

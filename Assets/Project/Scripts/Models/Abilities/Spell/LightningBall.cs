@@ -22,14 +22,14 @@ public class LightningBall : Ability
 
     }
 
-    public override void performAbility(BeingBehavior sender, Vector3 targetedPosition, BeingBehavior senderGameObject)
+    public override void performAbility(BeingBehavior sender, Vector3 targetedPosition)
     {
         LightningBallAttributs attributs = (LightningBallAttributs)_abilityAttributs;
 
         useEffect(EffectStartingTime.AbilityStart, sender, null);
 
-        AbilityManager.instance.launchProjectile(attributs.ballGameObject, attributs.numberOfBaseProjectile, attributs.offsetBetweenProjectile, attributs.projectileBaseSpeed, attributs.projectileLife, targetedPosition,
-            attributs.formType, senderGameObject, _abilityAttributs.effectAndValues);
+        sender.abilityManager.launchProjectile(attributs.ballGameObject, attributs.numberOfBaseProjectile, attributs.offsetBetweenProjectile, attributs.projectileBaseSpeed, attributs.projectileLife, targetedPosition,
+            attributs.formType, _abilityAttributs.effectAndValues);
     }
 
     public override string getDescription()

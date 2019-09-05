@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BeingBehavior))]
 public class AbilityManager : MonoBehaviour
 {
-    public static AbilityManager instance;
+    BeingBehavior abilitySender;
 
     private void Awake()
     {
-        instance = this;
+        abilitySender = GetComponent<BeingBehavior>();
     }
-
 
     /// <summary>
     /// Try to perform the ability (used for player)
@@ -19,9 +19,9 @@ public class AbilityManager : MonoBehaviour
     /// <param name="ability">The ability</param>
     /// <param name="senderBehavior">The sender BeingBehavior</param>
     /// <returns></returns>
-    public bool tryToPerformAbility(RaycastHit mouseHit, Ability ability, BeingBehavior senderBehavior)
+    public bool tryToPerformAbility(RaycastHit mouseHit, Ability ability)
     {
-        if (ability.isAbilityAvailable(senderBehavior.being))
+        if (ability.isAbilityAvailable(abilitySender.being))
         {
             if(ability.abilityAttributs.needTarget)
             {
@@ -29,28 +29,28 @@ public class AbilityManager : MonoBehaviour
                 if (targetScript != null)
                 {
                     bool canBeUsed = false;
-                    if (targetScript.being == senderBehavior.being && ability.abilityAttributs.canBeCastedOnSelf)
+                    if (targetScript.being == abilitySender.being && ability.abilityAttributs.canBeCastedOnSelf)
                         canBeUsed = true;
 
                     if(canBeUsed)
-                        canBeUsed = checkMana(ability, senderBehavior);
+                        canBeUsed = checkMana(ability);
 
                     if (canBeUsed)
                     {
-                        ability.performAbility(senderBehavior, targetScript);
-                        if (senderBehavior.being is Player)
-                            ((Player)senderBehavior.being).spendMana(ability.abilityAttributs.manaCost);
+                        ability.performAbility(abilitySender, targetScript);
+                        if (abilitySender.being is Player)
+                            ((Player)abilitySender.being).spendMana(ability.abilityAttributs.manaCost);
                         return true;
                     }
                 }
             }
             else
             {
-                if (checkMana(ability, senderBehavior))
+                if (checkMana(ability))
                 {
-                    ability.performAbility(senderBehavior, mouseHit.point, senderBehavior);
-                    if (senderBehavior.being is Player)
-                        ((Player)senderBehavior.being).spendMana(ability.abilityAttributs.manaCost);
+                    ability.performAbility(abilitySender, mouseHit.point);
+                    if (abilitySender.being is Player)
+                        ((Player)abilitySender.being).spendMana(ability.abilityAttributs.manaCost);
                     return true;
                 }
                 return false;
@@ -68,30 +68,30 @@ public class AbilityManager : MonoBehaviour
     /// <param name="ability">The ability</param>
     /// <param name="senderBehavior">The sender BeingBehavior</param>
     /// <returns></returns>
-    public bool tryToPerformAbility(BeingBehavior targetBehavior, Vector3 targetedPosition, Ability ability, BeingBehavior senderBehavior)
+    public bool tryToPerformAbility(BeingBehavior targetBehavior, Vector3 targetedPosition, Ability ability)
     {
-        if (ability.isAbilityAvailable(senderBehavior.being))
+        if (ability.isAbilityAvailable(abilitySender.being))
         {
             if (ability.abilityAttributs.needTarget)
             {
                 if (targetBehavior != null)
                 {
                     bool canBeUsed = false;
-                    if (targetBehavior.being == senderBehavior.being && ability.abilityAttributs.canBeCastedOnSelf)
+                    if (targetBehavior.being == abilitySender.being && ability.abilityAttributs.canBeCastedOnSelf)
                         canBeUsed = true;
-                    else if (targetBehavior.being != senderBehavior.being)
+                    else if (targetBehavior.being != abilitySender.being)
                         canBeUsed = true;
 
                     if (canBeUsed)
                     {
-                        ability.performAbility(senderBehavior, targetBehavior);
+                        ability.performAbility(abilitySender, targetBehavior);
                         return true;
                     }
                 }
             }
             else
             {
-                ability.performAbility(senderBehavior, targetedPosition, senderBehavior);
+                ability.performAbility(abilitySender, targetedPosition);
                 return true;
             }
         }
@@ -99,9 +99,9 @@ public class AbilityManager : MonoBehaviour
         return false;
     }
 
-    public bool checkMana(Ability ability, BeingBehavior senderBehavior)
+    public bool checkMana(Ability ability)
     {
-        Player player = (Player)senderBehavior.being;
+        Player player = (Player)abilitySender.being;
         if (player != null)
         {
             if (player.currentMana >= ability.abilityAttributs.manaCost)
@@ -113,22 +113,22 @@ public class AbilityManager : MonoBehaviour
     }
 
     public void launchProjectile(GameObject projectilePrefab, int numberOfProjectile, float projectileOffset, float projectileBaseSpeed, float projectileLife, 
-        Vector3 targetedPosition, ProjectileFormType formType, BeingBehavior sender, List<EffectAndValue> effectAndValues)
+        Vector3 targetedPosition, ProjectileFormType formType, List<EffectAndValue> effectAndValues)
     {
         for (int i = 0; i < numberOfProjectile; i++)
         {
             // create projectile
             GameObject projectile = Instantiate(projectilePrefab);
-            projectile.transform.position = projectileStartPosition(formType, projectileOffset, i, numberOfProjectile, sender.transform);
+            projectile.transform.position = projectileStartPosition(formType, projectileOffset, i, numberOfProjectile);
 
             // get projectile direction
-            Vector3 direction = projectileDirection(formType, projectileOffset, i, numberOfProjectile, targetedPosition, sender.transform);
+            Vector3 direction = projectileDirection(formType, projectileOffset, i, numberOfProjectile, targetedPosition);
             direction.y = 0;
 
             // Apply force to it
             if (projectile.GetComponent<Rigidbody>() != null)
             {
-                float projectileSpeed = projectileBaseSpeed + (projectileBaseSpeed * (sender.being.projectileSpeed / 100));
+                float projectileSpeed = projectileBaseSpeed + (projectileBaseSpeed * (abilitySender.being.projectileSpeed / 100));
                 projectile.GetComponent<Rigidbody>().AddForce(direction * projectileSpeed, ForceMode.Impulse);
             }
 
@@ -145,7 +145,7 @@ public class AbilityManager : MonoBehaviour
                     }
                         
 
-                projectile.GetComponent<Projectile>().setProjectile(sender, effectAndValuesToUse);
+                projectile.GetComponent<Projectile>().setProjectile(abilitySender, effectAndValuesToUse);
             }
 
             Destroy(projectile, projectileLife);
@@ -159,7 +159,7 @@ public class AbilityManager : MonoBehaviour
     /// <param name="skill">The skill sending the projectile</param>
     /// <param name="projectileCurrentIndex">The current projectile begin sent</param>
     /// <param name="numberOfProjectile">The number of project</param>
-    Vector3 projectileStartPosition(ProjectileFormType formType, float projectileOffset, int projectileCurrentIndex, int numberOfProjectile, Transform sender)
+    Vector3 projectileStartPosition(ProjectileFormType formType, float projectileOffset, int projectileCurrentIndex, int numberOfProjectile)
     {
         Vector3 position = new Vector3();
 
@@ -167,10 +167,10 @@ public class AbilityManager : MonoBehaviour
             case ProjectileFormType.Line:
                 float totalProjectileLineLength = projectileOffset * (numberOfProjectile - 1);
                 float currentProjectileOffset = -totalProjectileLineLength / 2 + projectileOffset * projectileCurrentIndex;
-                position = sender.position + (sender.right * currentProjectileOffset);
+                position = transform.position + (transform.right * currentProjectileOffset);
                 break;
             case ProjectileFormType.Cone:
-                position = sender.position;
+                position = transform.position;
                 break;
         }
 
@@ -185,7 +185,7 @@ public class AbilityManager : MonoBehaviour
     /// <param name="numberOfProjectile"> The total number of projectile</param>
     /// <param name="targetPosition"> The position where the projectile need to head to</param>
     /// <returns></returns>
-    Vector3 projectileDirection(ProjectileFormType formType, float projectileOffset, int projectileCurrentIndex, int numberOfProjectile, Vector3 targetPosition, Transform sender)
+    Vector3 projectileDirection(ProjectileFormType formType, float projectileOffset, int projectileCurrentIndex, int numberOfProjectile, Vector3 targetPosition)
     {
         Vector3 direction = new Vector3();
 
@@ -195,11 +195,11 @@ public class AbilityManager : MonoBehaviour
                 float totalProjectileLineLength = projectileOffset * (numberOfProjectile - 1);
                 float currentProjectileOffset = -totalProjectileLineLength / 2 + projectileOffset * projectileCurrentIndex;
 
-                targetPosition = targetPosition + (sender.right * currentProjectileOffset);
-                direction = (targetPosition - sender.position).normalized;
+                targetPosition = targetPosition + (transform.right * currentProjectileOffset);
+                direction = (targetPosition - transform.position).normalized;
 
                 break;
-            case ProjectileFormType.Line: direction = (targetPosition - sender.position).normalized; break;
+            case ProjectileFormType.Line: direction = (targetPosition - transform.position).normalized; break;
         }
         direction.y = 0;
 

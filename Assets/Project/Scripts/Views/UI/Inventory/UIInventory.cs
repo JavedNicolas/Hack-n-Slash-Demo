@@ -13,13 +13,23 @@ public class UIInventory : MonoBehaviour
     [SerializeField] GameObject inventorySlotPrefab;
 
     [Header("Settings")]
-    [SerializeField] float numberOfSlotPerLine = 7;
+    [SerializeField] float _numberOfSlotPerLine = 7;
 
-    private int numberOfSlot;
+    private int _numberOfSlot;
+    private Inventory _inventory;
 
-    public void loadInventory()
+    private void Update()
     {
-        numberOfSlot = GameManager.instance.getPlayerInventory().numberOfSlot;
+        if(_inventory != null)
+        {
+            updateInventoryUI();
+        }
+    }
+
+    public void loadInventory(Inventory inventory)
+    {
+        this._inventory = inventory;
+        _numberOfSlot = _inventory.numberOfSlot;
         setInventorySizes(fullInventory);
         setInventorySizes(smallInventory);
         addInventorySlots(fullInventory);
@@ -51,18 +61,18 @@ public class UIInventory : MonoBehaviour
     /// Update the inventory display
     /// </summary>
     /// <param name="inventory">The inventory to put</param>
-    public void updateInventoryUI(Inventory inventory)
+    public void updateInventoryUI()
     {
-        updateSlotsContent(inventory, fullInventory);
-        updateSlotsContent(inventory, smallInventory);
+        updateSlotsContent(fullInventory);
+        updateSlotsContent(smallInventory);
     }
 
-    void updateSlotsContent(Inventory inventory, GameObject inventoryToFill)
+    void updateSlotsContent(GameObject inventoryToFill)
     {
         List<UIInventorySlot> itemSlots = inventoryToFill.GetComponentsInChildren<UIInventorySlot>().ToList();
-        for (int i = 0; i < inventory.slots.Count; i++)
+        for (int i = 0; i < _inventory.slots.Count; i++)
         {
-            itemSlots[i].initSlot(inventory.slots[i]);
+            itemSlots[i].initSlot(_inventory.slots[i], this);
         }
     }
 
@@ -74,8 +84,8 @@ public class UIInventory : MonoBehaviour
     {
         float invWith = inventoryToFill.GetComponent<RectTransform>().rect.width;
         float spacing = inventoryToFill.GetComponentInChildren<GridLayoutGroup>().spacing.x;
-        float totalSpacing = spacing * (numberOfSlotPerLine - 1);
-        float cellWidth = (invWith - totalSpacing) / (numberOfSlotPerLine +1);
+        float totalSpacing = spacing * (_numberOfSlotPerLine - 1);
+        float cellWidth = (invWith - totalSpacing) / (_numberOfSlotPerLine +1);
         Vector2 cellSize = new Vector2(cellWidth, cellWidth);
 
         inventoryToFill.GetComponentInChildren<GridLayoutGroup>().cellSize = cellSize;
@@ -87,7 +97,7 @@ public class UIInventory : MonoBehaviour
     /// <param name="inventoryToFill">Inventory to update (full or small)</param>
     void addInventorySlots(GameObject inventoryToFill)
     {
-        int numberOfSlotToAdd = this.numberOfSlot - inventoryToFill.GetComponentsInChildren<UIInventorySlot>().Count();
+        int numberOfSlotToAdd = this._numberOfSlot - inventoryToFill.GetComponentsInChildren<UIInventorySlot>().Count();
 
         for(int i = 0; i < numberOfSlotToAdd; i++)
         {
@@ -100,6 +110,15 @@ public class UIInventory : MonoBehaviour
                 GameManager.instance.rightClickDelegate += newSlot.GetComponentInChildren<UIInventorySlot>().rightCLick;
             }
         }
+    }
+
+    /// <summary>
+    /// update a slot in the player inventory
+    /// </summary>
+    /// <param name="slots"></param>
+    public void updateInventorySlots(List<InventorySlot> slots)
+    {
+        _inventory.updateSlots(slots);
     }
 
 }
