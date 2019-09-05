@@ -12,8 +12,9 @@ public class GameUI : MonoBehaviour
     [Header("Player UI")]
     [SerializeField] public UIInventory inventoryUI;
     [SerializeField] public UISkillBar skillBar;
-    [SerializeField] public GameObject lifeUI;
-    [SerializeField] public GameObject manaUI;
+    [SerializeField] public UILife lifeUI;
+    [SerializeField] public UIMana manaUI;
+    [SerializeField] public UITopBar topBar;
 
     [Header("Description")]
     [SerializeField] public Canvas detailPopUPCanvas;

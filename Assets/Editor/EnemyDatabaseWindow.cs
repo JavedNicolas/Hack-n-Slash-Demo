@@ -25,6 +25,9 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     List<Loot> possibleLoots = new List<Loot>();
     List<int> lootID = new List<int>();
 
+    //xp
+    float xp;
+
     private void OnEnable()
     {
         itemDatabase = Resources.Load<ItemDatabase>(DatabaseConstant.itemDatabasePath);
@@ -47,6 +50,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         GUI.enabled = true;
         databaseID = database.getFreeId();
         enemyName = EditorGUILayout.TextField("Name : ", enemyName);
+        xp = EditorGUILayout.FloatField("Experience : ", xp);
         baseLife = EditorGUILayout.FloatField("baseLife : ", baseLife);
         attackSpeedBonus = EditorGUILayout.FloatField("Attack Speed Bonus :", attackSpeedBonus);
         prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", prefab, typeof(GameObject), false);
@@ -147,6 +151,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         {
             databaseID = element.databaseID;
             enemyName = element.name;
+            xp = element.experience;
             baseLife = element.baseLife;
             attackSpeedBonus = element.bonusAttackSpeed;
             movementSpeedBonus = element.movementSpeedBonus;
@@ -158,7 +163,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
 
     protected override void updateElementWithFormValues()
     {
-        element = new Enemy(enemyName, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0, possibleLoots);
+        element = new Enemy(enemyName, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0, possibleLoots, xp);
         element.interactibleType = interactableType;
         element.databaseID = databaseID;
     }
@@ -169,6 +174,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         element = new Enemy();
         databaseID = database.getFreeId();
         enemyName = "";
+        xp = 0;
         baseLife = 0;
         attackSpeedBonus = 0;
         movementSpeedBonus = 0;

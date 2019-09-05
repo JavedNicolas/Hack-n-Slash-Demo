@@ -43,7 +43,7 @@ public abstract class Ability : DatabaseElement, IDescribable
         for (int i =0; i < effects.Count; i++)
         {
             if (effects[i].effect.startingType == startingType)
-                effects[i].effect.use(sender, target, _abilityAttributs.effectAndValues[i].value);
+                effects[i].effect.use(sender, target, _abilityAttributs.effectAndValues[i].value, this);
         }
     }
 

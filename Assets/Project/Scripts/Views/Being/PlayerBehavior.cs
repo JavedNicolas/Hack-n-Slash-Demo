@@ -16,14 +16,14 @@ public class PlayerBehavior : BeingBehavior
     [Header("Clicks")]
     float dropItemMaxDistance = 20f;
 
-    GameObject _lifeUI;
-    GameObject _manaUI;
-
     // UIs
+    UITopBar _topBarUI;
     UIInventory _inventoryUI;
     UISkillBar _skillBarUI;
+    UILife _lifeUI;
+    UIMana _manaUI;
 
-    // PLayer
+    // Player
     Player _player;
 
     // TEMPORARY
@@ -32,10 +32,11 @@ public class PlayerBehavior : BeingBehavior
     private void Start()
     {
         _player = (Player)being;
+        _player.hasLevelUp = launchlevelUpAnimation;
         _interactOnce = !autoAttack;
 
         getUIElements();
-        initPlayerUI(_player);
+        initPlayerUI();
 
         GameManager.instance.leftClickDelegate += LeftClick;
         GameManager.instance.rightClickDelegate += RightClick;
@@ -53,13 +54,15 @@ public class PlayerBehavior : BeingBehavior
         _skillBarUI = GameUI.instance.skillBar;
         _lifeUI = GameUI.instance.lifeUI;
         _manaUI = GameUI.instance.manaUI;
+        _topBarUI = GameUI.instance.topBar;
     }
 
-    public void initPlayerUI(Being player)
+    public void initPlayerUI()
     {
-        _lifeUI.GetComponent<UILife>().setBeing(player);
-        _manaUI.GetComponent<UIMana>().setBeing((Player)player);
+        _lifeUI.setBeing(_player);
+        _manaUI.setBeing(_player);
         _inventoryUI.loadInventory(_player.inventory);
+        _topBarUI.init(_player);
     }
 
     /// <summary>
@@ -94,7 +97,7 @@ public class PlayerBehavior : BeingBehavior
             return;
 
 
-        moveToInteractibleTarget();
+        moveToInteractableTarget();
     }
 
     /// <summary>
@@ -162,6 +165,16 @@ public class PlayerBehavior : BeingBehavior
         {
             _inventoryUI.showInventory(true);
         }
+    }
+
+    void launchlevelUpAnimation()
+    {
+
+    }
+
+    public void addExperience(float value)
+    {
+        _player.addExperience(value);
     }
 
 

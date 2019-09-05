@@ -31,7 +31,7 @@ public class ItemNameDisplayer : BaseUI, IPointerDownHandler, IPopUpOnHovering
 
     protected override void rightClickOnUI()
     {
-        GameManager.instance.GetPlayerBehavior().AddInteractibleTaget(parentObject);
+        GameManager.instance.GetPlayerBehavior().AddInteractableTaget(parentObject);
     }
 
     protected override void dragging(PointerEventData eventData)

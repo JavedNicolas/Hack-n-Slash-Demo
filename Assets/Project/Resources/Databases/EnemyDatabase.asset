@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _elements:
   - _name: test
-    _databaseID: 1
+    _databaseID: 2
     _interactibleType: 0
     _baseLife: 100
     _prefab: {fileID: 7699618545951562393, guid: 539abc4bc8423374ea56e4d48393cccc,
@@ -71,6 +71,7 @@ MonoBehaviour:
       changeToDrop: 20
       quantity: 2
       isRandom: 0
+    _experience: 50
   - _name: Enemy2
     _databaseID: 2
     _interactibleType: 0
@@ -79,19 +80,20 @@ MonoBehaviour:
       type: 3}
     _possibleLoot:
     - item:
-        _name: testItem2
-        _databaseID: 2
+        _name: Life potion
+        _databaseID: 0
         _interactibleType: 1
-        _itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+        _itemIcon: {fileID: 21300000, guid: f128ea2283adf8846af2958d4ee0efe9, type: 3}
         _itemModel: {fileID: 0}
         _isConsomable: 1
         _isStackable: 1
         _maxStackableSize: 10
-        _targetType: 1
+        _targetType: 0
         _effects:
-        - value: 0
-          effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
-        _canBeRecycle: 0
+        - value: 20
+          effect: {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
+        _canBeRecycle: 1
       changeToDrop: 30
       quantity: 1
       isRandom: 1
+    _experience: 70

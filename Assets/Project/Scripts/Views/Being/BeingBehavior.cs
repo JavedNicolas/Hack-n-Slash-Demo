@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Linq;
 
 [RequireComponent(typeof(AbilityManager))]
 public class BeingBehavior : InteractableObject
@@ -58,11 +57,18 @@ public class BeingBehavior : InteractableObject
         interactWithCurrentInteractionTarget();
     }
 
-    public void AddInteractibleTaget(InteractableObject interactableObject)
+
+    /// <summary>
+    /// Look at the position with x and z rotation locked in place
+    /// </summary>
+    /// <param name="position"></param>
+    protected void lookAtStraight(Vector3 position)
     {
-        this._interactionTarget = interactableObject;
+        transform.LookAt(position);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
+    #region movement
     /// <summary>
     /// Create a path to the destination
     /// </summary>
@@ -90,27 +96,35 @@ public class BeingBehavior : InteractableObject
         transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.getMovementSpeed() * Time.deltaTime);
         lookAtStraight(currentPathDestination);
 
-        if (transformToMove.position == currentPathDestination ||(_path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= _distanceToStop))
+        if (transformToMove.position == currentPathDestination || (_path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= _distanceToStop))
         {
             _path.RemoveAt(0);
         }
+    }
+
+    /// <summary>
+    /// Check if the player is moving toward a position
+    /// </summary>
+    /// <param name="position">The position to check</param>
+    /// <returns>True if the player is moving toward this position, else false</returns>
+    public bool isMovingToward(Vector3 position)
+    {
+        if (_path.Count == 0)
+            return false;
+
+        if (_path[_path.Count - 1].x == position.x && _path[_path.Count - 1].z == position.z)
+            return true;
+
+        return false;
     }
 
     protected void stopMoving()
     {
         _path.Clear();
     }
+    #endregion
 
-    /// <summary>
-    /// Look at the position with x and z rotation locked in place
-    /// </summary>
-    /// <param name="position"></param>
-    protected void lookAtStraight(Vector3 position)
-    {
-        transform.LookAt(position);
-        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-    }
-
+    #region ability
     /// <summary>
     /// Use the being ability
     /// </summary>
@@ -145,13 +159,24 @@ public class BeingBehavior : InteractableObject
             ability.abilityHasBeenUsed();
         }
     }
+    #endregion
 
+    #region interaction
+
+    /// <summary>
+    /// Add a interactable target for being to interact with
+    /// </summary>
+    /// <param name="interactableObject">the interactable target</param>
+    public void AddInteractableTaget(InteractableObject interactableObject)
+    {
+        this._interactionTarget = interactableObject;
+    }
     /// <summary>
     /// Move the player to the interactible object
     /// </summary>
     /// <param name="fromRightClick">If the call comes from the right mouse click</param>
     /// <returns>return true if the interaction is possible</returns>
-    protected bool moveToInteractibleTarget()
+    protected bool moveToInteractableTarget()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -190,21 +215,27 @@ public class BeingBehavior : InteractableObject
             }
         }
     }
+    #endregion
 
     /// <summary>
-    /// Check if the player is moving toward a position
+    /// Deal damage to this being
     /// </summary>
-    /// <param name="position">The position to check</param>
-    /// <returns>True if the player is moving toward this position, else false</returns>
-    public bool isMovingToward(Vector3 position)
+    /// <param name="damage">The damage to deal</param>
+    /// <param name="damageDealer">The damage dealer</param>
+    public virtual void takeDamage(float damage, Ability damagingAbility, BeingBehavior damageDealer)
     {
-        if (_path.Count == 0)
-            return false;
-
-        if (_path[_path.Count - 1].x == position.x && _path[_path.Count - 1].z == position.z)
-            return true;
-
-        return false;
+        being.takeDamage(damage);
+        if (being.isDead())
+        {
+            PlayerBehavior playerBehavior = (PlayerBehavior)damageDealer;
+            if (playerBehavior != null)
+            {
+                Enemy enemy = (Enemy)being;
+                playerBehavior.addExperience(enemy.experience);
+            }
+               
+            die();
+        }
     }
 
     protected virtual void die()

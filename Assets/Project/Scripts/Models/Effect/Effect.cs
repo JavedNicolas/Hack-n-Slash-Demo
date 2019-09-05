@@ -20,7 +20,7 @@ public abstract class Effect : ScriptableObject
     /// <param name="sender">The seffect sender</param>
     /// <param name="target">The effect target game object</param>
     /// <param name="value">The effect value</param>
-    public abstract void use(BeingBehavior sender, GameObject target, float value);
+    public abstract void use(BeingBehavior sender, GameObject target, float value, Ability abilitySender = null);
 
     /// <summary>
     /// Check if the effect can be used

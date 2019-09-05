@@ -109,6 +109,11 @@ public class Being : Interactable
         return _baseLife;
     }
 
+    public bool isDead()
+    {
+        return _currentLife <= 0;
+    }
+
     public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)
     {
         if (objectToInteractWith.GetComponent<BeingBehavior>() != null && objectToInteractWith.GetComponent<BeingBehavior>().teamID != sender.teamID)
