@@ -412,7 +412,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.79e-43, y: 1.16e-43, z: 0, w: -1.1039068e-27}
+  m_BoundingSphereOverride: {x: 1.1266e-41, y: 1.01e-43, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -709,6 +709,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8713181062266050799, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713181062266050799, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5269904918306108452, guid: ddc5bf39957ea464e97d799e7f6327ed,
         type: 3}
       propertyPath: keyDisplayer
@@ -923,6 +933,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3448058591214747573, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448058591214747573, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4458168008796509126, guid: ddc5bf39957ea464e97d799e7f6327ed,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -973,6 +993,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9087182101193005127, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087182101193005127, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7789900054657020980, guid: ddc5bf39957ea464e97d799e7f6327ed,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1023,6 +1053,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4002644797899047946, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002644797899047946, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2705307775848917113, guid: ddc5bf39957ea464e97d799e7f6327ed,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1072,6 +1112,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098909393115139832, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098909393115139832, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7801007273636192907, guid: ddc5bf39957ea464e97d799e7f6327ed,
         type: 3}

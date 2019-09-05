@@ -226,8 +226,8 @@ MonoBehaviour:
   transformToMove: {fileID: 7699618545951562397}
   gameObjectHeight: 2
   teamID: 1
-  dectetionRange: 30
-  attackRange: 20
+  dectetionRange: 50
+  attackRange: 10
   lifeUI: {fileID: 528517487798713340}
   loot: []
 --- !u!1001 &4063416995716116836
@@ -237,6 +237,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 737134738465940031}
     m_Modifications:
+    - target: {fileID: 580570607724276834, guid: 3f750eb2d159bc44d824176a938419e3,
+        type: 3}
+      propertyPath: m_Name
+      value: LifeBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 580570607724276834, guid: 3f750eb2d159bc44d824176a938419e3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2901972955529845023, guid: 3f750eb2d159bc44d824176a938419e3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -341,16 +351,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 580570607724276834, guid: 3f750eb2d159bc44d824176a938419e3,
-        type: 3}
-      propertyPath: m_Name
-      value: LifeBar
-      objectReference: {fileID: 0}
-    - target: {fileID: 580570607724276834, guid: 3f750eb2d159bc44d824176a938419e3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1231107418498437349, guid: 3f750eb2d159bc44d824176a938419e3,
         type: 3}

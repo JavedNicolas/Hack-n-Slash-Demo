@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7fe211217fe54448ba844d5f00bdaef, type: 3}
   m_Name: DamageOnHitEffect
   m_EditorClassIdentifier: 
-  _description: Deal {0] damage to an enemy.
+  _description: Deal {0} damage to an enemy.
   _startingType: 1
   _effectTargetType: 1

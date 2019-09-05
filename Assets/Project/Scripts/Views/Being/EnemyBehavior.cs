@@ -16,12 +16,10 @@ public class EnemyBehavior : BeingBehavior
     public static float lootExplosionStrength = 10f;
     public List<Loot> loot;
 
-    private List<PlayerBehavior> players = new List<PlayerBehavior>();
+    private List<BeingBehavior> enemies = new List<BeingBehavior>();
 
     // Player detection
-    private int closestPlayerIndex = 0;
-    private Vector3 closestPlayerPosition;
-    private float closestPlayerDistance;
+    private BeingBehavior closestEnemy;
 
     LightningBall ability;
 
@@ -30,16 +28,17 @@ public class EnemyBehavior : BeingBehavior
         Enemy enemy = (Enemy)being;
         loot = enemy.generateLoot();
         being.ability.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
-        players = FindObjectsOfType<PlayerBehavior>().ToList();
 
         lifeUI.setBeing(being);
 
-        InvokeRepeating("checkForPlayerInRange", 0.0f, 0.1f);
+        InvokeRepeating("checkForEnemyInRange", 0.0f, 0.1f);
     }
 
     private void Update()
     {
-        checkIfPLayerIsInAttackRange();
+        refreshEnemyList();
+        checkIfEnemyIsInAttackRange();
+        
         if(being != null && being.currentLife <= 0)
         {
             die();
@@ -47,31 +46,51 @@ public class EnemyBehavior : BeingBehavior
     }
 
     /// <summary>
-    /// Check if the closesest Player is in the detection Range
+    /// Resh the list containing the enemy in the map
     /// </summary>
-    void checkForPlayerInRange()
+    void refreshEnemyList()
     {
-        if (players.Count > 0)
+        enemies = FindObjectsOfType<BeingBehavior>().ToList();
+    }
+
+    /// <summary>
+    /// Check if the closest Player is in the detection Range
+    /// </summary>
+    void checkForEnemyInRange()
+    {
+        if (enemies.Count > 0)
         {
-            closestPlayerIndex = 0;
-            closestPlayerPosition = players[0].transform.position;
-            closestPlayerDistance = Vector3.Distance(transform.position, closestPlayerPosition);
-
-            for (int i = 1; i < players.Count; i++)
+            if(closestEnemy == null)
             {
-                float distance2 = Vector3.Distance(transform.position, players[i].transform.position);
-
-                if (closestPlayerDistance < distance2)
-                {
-                    closestPlayerPosition = players[i].transform.position;
-                    closestPlayerDistance = distance2;
-                    closestPlayerIndex = i;
-                }   
+                int closestEnemyIndex = enemies.FindIndex(x => x.teamID != teamID && canBeAttacked);
+                closestEnemy = enemies[closestEnemyIndex];
             }
 
-            if (closestPlayerDistance < dectetionRange && closestPlayerDistance > attackRange)
+            if (closestEnemy == null)
             {
-                moveTo(closestPlayerPosition, attackRange);
+                stopMoving();
+                return;
+            }
+                
+            float currentClosestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
+
+            for (int i = 1; i < enemies.Count; i++)
+            {
+                if (enemies[i] == null)
+                    continue;
+
+                float distance = Vector3.Distance(transform.position, enemies[i].transform.position);
+
+                if (currentClosestEnemyDistance > distance && enemies[i].teamID != teamID)
+                {
+                    closestEnemy = enemies[i];
+                    currentClosestEnemyDistance = distance;
+                }
+            }
+
+            if (currentClosestEnemyDistance < dectetionRange && currentClosestEnemyDistance > attackRange && closestEnemy != null)
+            {
+                moveTo(closestEnemy.transform.position, attackRange);
             }
         }
     }
@@ -79,12 +98,17 @@ public class EnemyBehavior : BeingBehavior
     /// <summary>
     /// Check if the player is in attack range if so attack
     /// </summary>
-    void checkIfPLayerIsInAttackRange()
+    void checkIfEnemyIsInAttackRange()
     {
-        if (closestPlayerDistance < attackRange)
+        if (closestEnemy == null)
+            return;
+
+        float closestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
+        if (closestEnemyDistance < attackRange)
         {
-            useAbility(being.ability[0], closestPlayerPosition, players[closestPlayerIndex]);
+            useAbility(being.ability[0], closestEnemy.transform.position, closestEnemy);
         }
+
     }
 
     void dropLoot()

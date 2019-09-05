@@ -35,7 +35,7 @@ MonoBehaviour:
           effect: {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
         _canBeRecycle: 1
       changeToDrop: 50
-      quantity: 0
+      quantity: 1
       isRandom: 1
     - item:
         _name: Life potion
@@ -71,3 +71,27 @@ MonoBehaviour:
       changeToDrop: 20
       quantity: 2
       isRandom: 0
+  - _name: Enemy2
+    _databaseID: 2
+    _interactibleType: 0
+    _baseLife: 10
+    _prefab: {fileID: 7699618545951562393, guid: 32c51c63ea64b644c931f9d6d037aeac,
+      type: 3}
+    _possibleLoot:
+    - item:
+        _name: testItem2
+        _databaseID: 2
+        _interactibleType: 1
+        _itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+        _itemModel: {fileID: 0}
+        _isConsomable: 1
+        _isStackable: 1
+        _maxStackableSize: 10
+        _targetType: 1
+        _effects:
+        - value: 0
+          effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
+        _canBeRecycle: 0
+      changeToDrop: 30
+      quantity: 1
+      isRandom: 1

@@ -13,6 +13,7 @@ public class BeingBehavior : InteractableObject
     public float gameObjectHeight;
 
     [Header("Team")]
+    public bool canBeAttacked = true;
     public int teamID;
 
     // Path variable

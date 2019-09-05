@@ -19,7 +19,8 @@ public class Loot
 
     public Loot(Item item, float changeToDrop, int quantity)
     {
-        this.item = new Item(item);
+        if(item != null)
+            this.item = new Item(item);
         this.changeToDrop = changeToDrop;
         this.quantity = quantity;
     }
