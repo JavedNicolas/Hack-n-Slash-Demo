@@ -8,13 +8,16 @@ using UnityEngine.EventSystems;
 public class PlayerBehavior : BeingBehavior
 {
     [Header("Camera Rotation")]
-    public float cameraRotation = 30f;
+    [SerializeField] float cameraRotation = 30f;
 
     [Header("Movement Mask")]
-    public LayerMask movementMask;
+    [SerializeField] LayerMask movementMask;
 
     [Header("Clicks")]
     float dropItemMaxDistance = 20f;
+
+    [Header("Animation")]
+    [SerializeField] ParticleSystem[] levelUPParticules;
 
     // UIs
     UITopBar _topBarUI;
@@ -169,7 +172,10 @@ public class PlayerBehavior : BeingBehavior
 
     void launchlevelUpAnimation()
     {
-
+        for(int i= 0; i < levelUPParticules.Length; i++)
+        {
+            levelUPParticules[i].Play();
+        }
     }
 
     public void addExperience(float value)
