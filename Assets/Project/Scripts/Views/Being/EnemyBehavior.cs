@@ -27,7 +27,7 @@ public class EnemyBehavior : BeingBehavior
     {
         Enemy enemy = (Enemy)being;
         loot = enemy.generateLoot();
-        being.ability.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
+        being.abilities.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
 
         lifeUI.setBeing(being);
 
@@ -63,7 +63,7 @@ public class EnemyBehavior : BeingBehavior
             if(closestEnemy == null)
             {
                 int closestEnemyIndex = enemies.FindIndex(x => x.teamID != teamID && canBeAttacked);
-                closestEnemy = enemies[closestEnemyIndex];
+                closestEnemy = (closestEnemyIndex < enemies.Count ? enemies[closestEnemyIndex] : null);
             }
 
             if (closestEnemy == null)
@@ -106,7 +106,7 @@ public class EnemyBehavior : BeingBehavior
         float closestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
         if (closestEnemyDistance < attackRange)
         {
-            useAbility(being.ability[0], closestEnemy.transform.position, closestEnemy);
+            useAbility(being.abilities[0], closestEnemy.transform.position, closestEnemy);
         }
 
     }

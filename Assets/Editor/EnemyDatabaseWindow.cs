@@ -15,9 +15,10 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     // Enemy Field
     string enemyName;
     float baseLife;
-    float attackSpeedBonus;
+    float attackSpeed;
+    float castSpeed;
     GameObject prefab;
-    float movementSpeedBonus;
+    float movementSpeed;
     InteractableObjectType interactableType;
 
     // loot
@@ -26,7 +27,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     List<int> lootID = new List<int>();
 
     //xp
-    float xp;
+    [Range(0,100)]float xp;
 
     private void OnEnable()
     {
@@ -50,11 +51,12 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         GUI.enabled = true;
         databaseID = database.getFreeId();
         enemyName = EditorGUILayout.TextField("Name : ", enemyName);
-        xp = EditorGUILayout.FloatField("Experience : ", xp);
-        baseLife = EditorGUILayout.FloatField("baseLife : ", baseLife);
-        attackSpeedBonus = EditorGUILayout.FloatField("Attack Speed Bonus :", attackSpeedBonus);
+        xp = EditorGUILayout.FloatField("Base Experience %: ", xp);
+        baseLife = EditorGUILayout.FloatField("Base Life : ", baseLife);
+        attackSpeed = EditorGUILayout.FloatField("Attack Speed :", attackSpeed);
+        castSpeed = EditorGUILayout.FloatField("Cast Speed :", castSpeed);
         prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", prefab, typeof(GameObject), false);
-        movementSpeedBonus = EditorGUILayout.FloatField("Movement Speed Bonus : ", movementSpeedBonus);
+        movementSpeed = EditorGUILayout.FloatField("Movement Speed : ", movementSpeed);
         interactableType = InteractableObjectType.Enemy;
         numberOfLoot = EditorGUILayout.IntField("Number Of Loot :", numberOfLoot);
         updateLootListsSize(numberOfLoot);
@@ -153,8 +155,9 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
             enemyName = element.name;
             xp = element.experience;
             baseLife = element.baseLife;
-            attackSpeedBonus = element.bonusAttackSpeed;
-            movementSpeedBonus = element.movementSpeedBonus;
+            castSpeed = element.baseCastSpeed;
+            attackSpeed = element.baseAttackSpeed;
+            movementSpeed = element.baseMovementSpeed;
             prefab = element.prefab;
             numberOfLoot = element.possibleLoot.Count;
             possibleLoots = element.possibleLoot;
@@ -163,7 +166,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
 
     protected override void updateElementWithFormValues()
     {
-        element = new Enemy(enemyName, baseLife, 0, attackSpeedBonus, 10, 0, new List<Ability>(), movementSpeedBonus, prefab, 0, possibleLoots, xp);
+        element = new Enemy(enemyName, baseLife, attackSpeed, castSpeed, 10, movementSpeed, new List<Ability>(), prefab, possibleLoots, xp);
         element.interactibleType = interactableType;
         element.databaseID = databaseID;
     }
@@ -176,8 +179,9 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         enemyName = "";
         xp = 0;
         baseLife = 0;
-        attackSpeedBonus = 0;
-        movementSpeedBonus = 0;
+        attackSpeed = 0;
+        castSpeed = 0;
+        movementSpeed = 0;
         prefab = null;
         numberOfLoot = 0;
         possibleLoots = new List<Loot>();

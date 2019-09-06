@@ -4,5 +4,5 @@ using System.Collections;
 public interface IDescribable 
 {
     string getName();
-    string getDescription();
+    string getDescription(Being owner);
 }

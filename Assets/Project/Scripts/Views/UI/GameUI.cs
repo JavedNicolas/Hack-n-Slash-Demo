@@ -65,7 +65,7 @@ public class GameUI : MonoBehaviour
                 Vector3 detailPopUpPosition = objectToDescribe.transform.position;
 
                 detailPopUp.transform.position = detailPopUpPosition;
-                detailPopUp.setText(describable);
+                detailPopUp.setText(describable, GameManager.instance.getPlayer());
             }
             else { return; }
         }

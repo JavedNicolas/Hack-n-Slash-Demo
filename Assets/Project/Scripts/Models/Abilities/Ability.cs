@@ -86,7 +86,7 @@ public abstract class Ability : DatabaseElement, IDescribable
         return GetType().ToString();
     }
 
-    public virtual string getDescription()
+    public virtual string getDescription(Being owner)
     {
         string description = "";
         for (int i = 0; i < abilityAttributs.effectAndValues.Count; i++)

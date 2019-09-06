@@ -31,14 +31,16 @@ public class Player : Being
     public HasLevelUp hasLevelUp;
     #endregion
 
-    public Player(string name, float baseLife, float baseMana, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, GameObject prefab, float projectileSpeed) : base(name, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
+    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab) :
+        base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilities, prefab)
     {
         this._baseMana = baseMana;
         this._currentMana = getCurrentMaxMana();
         this._currentLevel = 1;
     }
 
-    public Player(Player player)
+    public Player(Player player) : base(player.name, 
+        player.baseLife, player.baseAttackSpeed, player.baseCastSpeed, player.baseAttackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
     {
         this._currentLevelExp = player.currentLevelExp;
         this._currentLevel = player.currentLevel;
@@ -49,12 +51,31 @@ public class Player : Being
     }
 
     /// <summary>
+    /// Override the use of the baseSpeed for the Constant base speed
+    /// </summary>
+    /// <returns>a floot representing the movement speed</returns>
+    public override float getMovementSpeed()
+    {
+        return getBuffedValue(BeingConstant.baseMoveSpeed, StatType.MovementSpeed);
+    }
+
+    /// <summary>
     /// Spend an amount of mana
     /// </summary>
     /// <param name="mana">The mana to spend</param>
     public void spendMana(float mana)
     {
         _currentMana = Mathf.Clamp(_currentMana - mana, 0, getCurrentMaxMana());
+    }
+
+    // getter
+    /// <summary>
+    /// Get the current amout of mana max
+    /// </summary>
+    /// <returns></returns>
+    public float getCurrentMaxMana()
+    {
+        return getBuffedValue((int)_baseMana, StatType.Mana);
     }
 
     /// <summary>
@@ -85,16 +106,12 @@ public class Player : Being
     {
         _currentLevelExp = _currentLevelExp - LevelExperienceTable.levelExperienceNeeded[currentLevel - 1];
         _currentLevel++;
-        hasLevelUp();
-    }
+        _stats.Add(new Stat(StatType.Life, StatBonusType.Pure, 10, "Level" + (_currentLevel - 1).ToString()));
+        _stats.Add(new Stat(StatType.Mana, StatBonusType.Pure, 2, "Level" + (_currentLevel - 1).ToString()));
 
-    // getter
-    /// <summary>
-    /// Get the current amout of mana max
-    /// </summary>
-    /// <returns></returns>
-    public float getCurrentMaxMana()
-    {
-        return _baseMana;
+        _currentMana = getCurrentMaxMana();
+        _currentLife = getCurrentMaxLife();
+
+        hasLevelUp();
     }
 }

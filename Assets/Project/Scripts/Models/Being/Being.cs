@@ -7,35 +7,33 @@ public class Being : Interactable
 {
     #region being attributs
 
-    [Header("Health")]
-    private float _currentLife;
+    [Header("Current")]
+    protected float _currentLife;
     public float currentLife { get { return _currentLife; } }
-    [SerializeField] private float _baseLife;
+
+    [Header("Base Start")]
+    [SerializeField] float _baseLife;
     public float baseLife { get { return _baseLife; } }
-    private float _shield;
-    public float shield { get { return _shield; } }
 
-    [Header("Damage")]
-    private float _bonusAttackSpeed;
-    public float bonusAttackSpeed { get { return _bonusAttackSpeed; } }
+    [SerializeField] float _baseAttackRange;
+    public float baseAttackRange { get => _baseAttackRange; }
 
-    private float _bonusCastSpeed;
-    public float bonusCastSpeed { get { return _bonusCastSpeed; } }
+    [SerializeField] float _baseMovementSpeed;
+    public float baseMovementSpeed { get => _baseMovementSpeed; }
 
-    private float _attackRange;
-    public float attackRange { get { return _attackRange; } }
+    [SerializeField] float _baseAttackSpeed;
+    public float baseAttackSpeed { get => _baseAttackSpeed; }
+
+    [SerializeField] float _baseCastSpeed;
+    public float baseCastSpeed { get => _baseAttackSpeed; }
 
     [Header("Stats")]
-    private int _strength;
-    public int strength { get { return _strength; } }
-
-    [Header("Projectiles")]
-    private float _projectileSpeed;
-    public float projectileSpeed { get { return _projectileSpeed; } }
+    [SerializeField] protected List<Stat> _stats = new List<Stat>();
+    public List<Stat> stats { get => _stats; }
 
     [Header("Skills")]
     [SerializeField] private List<Ability> _ability = new List<Ability>();
-    public List<Ability> ability { get { return _ability; } }
+    public List<Ability> abilities { get { return _ability; } }
 
     private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}
@@ -44,25 +42,19 @@ public class Being : Interactable
     [SerializeField] private GameObject _prefab;
     public GameObject prefab {  get { return _prefab; } }
 
-    [Header("Misc")]
-    private float _movementSpeedBonus;
-    public float movementSpeedBonus {  get { return _movementSpeedBonus; } }
-
     #endregion
 
     #region init
-    public Being(string name, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> abilities, float movementSpeedPercentage, GameObject prefab, float projectileSpeed)
+    public Being(string name, float baseLife, float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<Ability> abilities, GameObject prefab)
     {
         this.name = name;
         this._baseLife = baseLife;
-        this._shield = shield;
-        _bonusAttackSpeed = aSPD;
-        this._attackRange = attackRange;
-        this._strength = strength;
+        this._baseAttackSpeed = baseASPD;
+        this._baseCastSpeed = baseCastSpeed;
+        this._baseAttackRange = baseAttackRange;
+        this._baseMovementSpeed = baseMovementSpeed;
         this._ability = abilities;
-        this._movementSpeedBonus = movementSpeedPercentage;
         this._prefab = prefab;
-        this._projectileSpeed = projectileSpeed;
         this._basicAttack = new BasicAttack();
         this._currentLife = getCurrentMaxLife();
     }
@@ -89,31 +81,143 @@ public class Being : Interactable
     /// Get the attack per second value
     /// </summary>
     /// <returns>The Attack per second</returns>
+    public float getAttackRange()
+    {
+        return getBuffedValue(_baseAttackRange, StatType.AttackRange);
+    }
+
+    /// <summary>
+    /// Get the attack per second value
+    /// </summary>
+    /// <returns>The Attack per second</returns>
     public float getASPD()
     {
-        return BeingConstant.baseASPD + (BeingConstant.baseASPD * (bonusAttackSpeed / 100));
+        return getBuffedValue(_baseAttackSpeed, StatType.AttackSpeed);
     }
 
+    /// <summary>
+    /// Get the cast per second value
+    /// </summary>
+    /// <returns>The cast per second</returns>
     public float getCastPerSecond()
     {
-        return BeingConstant.baseCastperSecond + (BeingConstant.baseCastperSecond * (bonusCastSpeed / 100));
+        return getBuffedValue(_baseAttackSpeed, StatType.CastSpeed);
     }
 
-    public float getMovementSpeed()
+    /// <summary>
+    /// get the movement speed
+    /// </summary>
+    /// <returns>the movement speed</returns>
+    public virtual float getMovementSpeed()
     {
-        return BeingConstant.baseMoveSpeed + (BeingConstant.baseMoveSpeed * (_movementSpeedBonus / 100));
+        return getBuffedValue(_baseMovementSpeed, StatType.MovementSpeed);
     }
 
+    /// <summary>
+    /// Get the curent max life (base life + all the bonuses)
+    /// </summary>
+    /// <returns></returns>
     public float getCurrentMaxLife()
     {
-        return _baseLife;
+        return getBuffedValue((int)_baseLife, StatType.Life);
     }
 
+    /// <summary>
+    /// Return the value buffed by the player stats as an int
+    /// </summary>
+    /// <param name="value">the value to buff</param>
+    /// <param name="statType">The type of the value </param>
+    /// <returns>An ceiled int</returns>
+    public int getBuffedValue(int value, StatType statType)
+    {
+        return Mathf.FloorToInt(getBuffedValue((float)value, statType));
+    }
+
+    /// <summary>
+    /// Return the value buffed by the player stats
+    /// </summary>
+    /// <param name="value">the value to buff</param>
+    /// <param name="statType">The type of the value </param>
+    /// <returns></returns>
+    public float getBuffedValue(float value, StatType statType)
+    {
+        float buffedValue = 0;
+        float pureBonus = 0;
+        float additionalBonus = 0;
+        float multipliedBonus = 0;
+
+        for(int i =0; i < stats.Count; i++)
+        {
+            Stat currentStat = stats[i];
+            if(currentStat.statType == statType)
+            switch (currentStat.bonusType)
+            {
+                case StatBonusType.Pure: pureBonus += currentStat.value; break;
+                case StatBonusType.additional: additionalBonus += currentStat.value; break;
+                case StatBonusType.Multiplied: multipliedBonus += currentStat.value; break;
+            }
+        }
+
+        buffedValue = ((value + pureBonus) + ((value + pureBonus) * (additionalBonus / 100))) * (1 + (multipliedBonus /100));
+
+        return buffedValue;
+    }
+
+    /// <summary>
+    /// try to add a stat to the player
+    /// </summary>
+    /// <param name="stat">The stat to add</param>
+    /// <returns>Return true if the stat has be added, false if not. \n
+    /// Ex : It can fail if the player cannot get this stat, or if it already has it from the same source)</returns>
+    public bool addStat(Stat stat)
+    {
+        if (_stats.Exists(x => x.sourceName == stat.sourceName && x.bonusType == stat.bonusType && x.statType == stat.statType))
+            return false;
+
+        _stats.Add(stat);
+
+        return true;
+    }
+
+
+    /// <summary>
+    /// try to remove a stat to the player
+    /// </summary>
+    /// <param name="stat">The stat to remove</param>
+    /// <returns>Return true if the stat has be removed, false if not. \n
+    /// Ex : The player does not have this stat from this source</returns>
+    public bool removeStat(string sourceName)
+    {
+        List<Stat> statsFound = _stats.FindAll(x => x.sourceName == sourceName);
+        if(statsFound.Count == 0)
+            return false;
+
+        for(int i=0; i < statsFound.Count; i++)
+        {
+            if(_stats.Contains(statsFound[i]))
+            {
+                _stats.Remove(statsFound[i]);
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// return true if the enemy is dead
+    /// </summary>
+    /// <returns></returns>
     public bool isDead()
     {
         return _currentLife <= 0;
     }
 
+    /// <summary>
+    /// Interaction with the being
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="objectToInteractWith"></param>
+    /// <returns></returns>
     public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)
     {
         if (objectToInteractWith.GetComponent<BeingBehavior>() != null && objectToInteractWith.GetComponent<BeingBehavior>().teamID != sender.teamID)

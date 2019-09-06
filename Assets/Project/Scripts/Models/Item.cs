@@ -134,7 +134,7 @@ public class Item : Interactable, IDescribable
     /// get description based on the effect
     /// </summary>
     /// <returns>The description</returns>
-    public string getDescription()
+    public string getDescription(Being owner)
     {
         string description = "";
         for(int i = 0; i < effects.Count; i++)

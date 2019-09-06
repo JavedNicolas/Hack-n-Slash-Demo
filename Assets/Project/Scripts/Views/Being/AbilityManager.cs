@@ -128,7 +128,7 @@ public class AbilityManager : MonoBehaviour
             // Apply force to it
             if (projectile.GetComponent<Rigidbody>() != null)
             {
-                float projectileSpeed = projectileBaseSpeed + (projectileBaseSpeed * (abilitySender.being.projectileSpeed / 100));
+                float projectileSpeed = abilitySender.being.getBuffedValue(projectileBaseSpeed, StatType.ProjectileSpeed);
                 projectile.GetComponent<Rigidbody>().AddForce(direction * projectileSpeed, ForceMode.Impulse);
             }
 

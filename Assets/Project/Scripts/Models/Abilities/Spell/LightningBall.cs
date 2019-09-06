@@ -28,14 +28,25 @@ public class LightningBall : Ability
 
         useEffect(EffectStartingTime.AbilityStart, sender, null);
 
-        sender.abilityManager.launchProjectile(attributs.ballGameObject, attributs.numberOfBaseProjectile, attributs.offsetBetweenProjectile, attributs.projectileBaseSpeed, attributs.projectileLife, targetedPosition,
+        Being senderBeing = sender.being;
+
+        sender.abilityManager.launchProjectile(attributs.ballGameObject, senderBeing.getBuffedValue(attributs.numberOfBaseProjectile, StatType.NumberOfProjectile), 
+            attributs.offsetBetweenProjectile, senderBeing.getBuffedValue(attributs.projectileBaseSpeed, StatType.ProjectileSpeed), attributs.projectileLife, targetedPosition,
             attributs.formType, _abilityAttributs.effectAndValues);
     }
 
-    public override string getDescription()
+    public override string getDescription(Being owner)
     {
-        string description = base.getDescription();
-        string lightningBallDescription = abilityAttributs.description.Replace("{0}", ((ProjectileAbilityAttributs)abilityAttributs).getNumberOfProjectile().ToString()) + "\n";
+        string description = base.getDescription(owner);
+        // cast the attributs
+        ProjectileAbilityAttributs projectileAbilityAttributs = (ProjectileAbilityAttributs)abilityAttributs;
+
+        // get the buffed value of projectile Number
+        int numberOfProjectile = (int)owner.getBuffedValue(projectileAbilityAttributs.numberOfBaseProjectile, StatType.NumberOfProjectile);
+
+        // insert at the start of the description the number of projectile
+        string lightningBallDescription = abilityAttributs.description.Replace("{0}", numberOfProjectile.ToString()) + "\n";
+
         return description.Insert(0, lightningBallDescription);
     }
 }

@@ -13,8 +13,9 @@ public class Enemy : Being
     public float experience { get => _experience; }
     #endregion
 
-    public Enemy(string name, float baseLife, float shield, float aSPD, float attackRange, int strength, List<Ability> skills, float movementSpeedPercentage, 
-        GameObject prefab, float projectileSpeed, List<Loot> possibleLoot, float experience) : base(name, baseLife, shield, aSPD, attackRange, strength, skills, movementSpeedPercentage, prefab, projectileSpeed)
+    public Enemy(string name, float baseLife, float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, 
+        List<Ability> abilities, GameObject prefab, List<Loot> possibleLoot, float experience) :
+        base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed, abilities, prefab)
     {
         this._possibleLoot = possibleLoot;
         this._experience = experience;
@@ -22,7 +23,8 @@ public class Enemy : Being
 
     public Enemy(){ }
 
-    public Enemy(Enemy enemy) : base(enemy.name, enemy.baseLife, enemy.shield, enemy.bonusAttackSpeed, enemy.attackRange, enemy.strength, enemy.ability, enemy.movementSpeedBonus, enemy.prefab, enemy.projectileSpeed)
+    public Enemy(Enemy enemy) :
+        base(enemy.name, enemy.baseLife, enemy.baseAttackSpeed, enemy.baseCastSpeed, enemy.baseAttackRange, enemy.baseMovementSpeed, enemy.abilities, enemy.prefab)
     {
         this._possibleLoot = enemy._possibleLoot;
         this._experience = enemy.experience;
@@ -45,6 +47,11 @@ public class Enemy : Being
         return loot;
     }
 
+    /// <summary>
+    /// get A loot for the index, or a random loot if the loot is random
+    /// </summary>
+    /// <param name="i">index</param>
+    /// <returns>a loot</returns>
     Loot getLootAt(int i)
     {
         if (_possibleLoot[i].isRandom)

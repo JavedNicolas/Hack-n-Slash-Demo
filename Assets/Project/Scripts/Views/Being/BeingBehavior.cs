@@ -200,7 +200,7 @@ public class BeingBehavior : InteractableObject
         {
             float interactionDistance = _interactionTarget.interactable.getInteractionDistance();
             if (_interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
-                interactionDistance = being.attackRange;
+                interactionDistance = being.getAttackRange();
 
             if (Vector3.Distance(transform.position, _interactionTarget.transform.position) <= interactionDistance)
             {
@@ -227,14 +227,15 @@ public class BeingBehavior : InteractableObject
         being.takeDamage(damage);
         if (being.isDead())
         {
-            PlayerBehavior playerBehavior = (PlayerBehavior)damageDealer;
-            if (playerBehavior != null)
+            if (damageDealer is PlayerBehavior)
             {
+                PlayerBehavior playerBehavior = (PlayerBehavior)damageDealer;
                 Enemy enemy = (Enemy)being;
                 playerBehavior.addExperience(enemy.experience);
             }
-               
-            die();
+            
+            if(!(damageDealer is PlayerBehavior))
+                die();
         }
     }
 
