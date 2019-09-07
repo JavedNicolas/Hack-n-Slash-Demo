@@ -93,9 +93,9 @@ public class Being : Interactable
     /// <param name="value">the value to buff</param>
     /// <param name="statType">The type of the value </param>
     /// <returns>An ceiled int</returns>
-    public int getBuffedValue(int value, StatType statType)
+    public int getBuffedValue(int value, StatType statType, string specificTo = "")
     {
-        return Mathf.FloorToInt(getBuffedValue((float)value, statType));
+        return Mathf.FloorToInt(getBuffedValue((float)value, statType, specificTo));
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public class Being : Interactable
     /// <param name="value">the value to buff</param>
     /// <param name="statType">The type of the value </param>
     /// <returns></returns>
-    public float getBuffedValue(float value, StatType statType)
+    public float getBuffedValue(float value, StatType statType, string specificTo = "")
     {
         float pureBonus = 0;
         float additionalBonus = 0;
@@ -113,7 +113,10 @@ public class Being : Interactable
         for(int i =0; i < stats.Count; i++)
         {
             Stat currentStat = stats[i];
-            if(currentStat.statType == statType)
+            // get the stat value if the stat is of the same type as asked and 
+            // if the stat is no specific
+            // or if it's specific and match the specific To paramater
+            if(currentStat.statType == statType && (!currentStat.isSpecific || (currentStat.isSpecific && currentStat.isSpecificTo == specificTo)))
             {
                 float influenceFactor = getInflencedFactor(currentStat);
                 influenceFactor = Mathf.FloorToInt(influenceFactor / currentStat.influencedEvery);
@@ -153,7 +156,7 @@ public class Being : Interactable
     /// Ex : It can fail if the player cannot get this stat, or if it already has it from the same source)</returns>
     public bool addStat(Stat stat)
     {
-        if (_stats.Exists(x => x.sourceName == stat.sourceName && x.bonusType == stat.bonusType && x.statType == stat.statType))
+        if (_stats.Exists(x => x.sourceName == stat.sourceName && x.bonusType == stat.bonusType && x.statType == stat.statType && x.isSpecificTo == stat.isSpecificTo))
             return false;
 
         _stats.Add(stat);

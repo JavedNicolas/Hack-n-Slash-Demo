@@ -30,7 +30,7 @@ public class LightningBall : Ability
 
         Being senderBeing = sender.being;
 
-        sender.abilityManager.launchProjectile(attributs.ballGameObject, senderBeing.getBuffedValue(attributs.numberOfBaseProjectile, StatType.NumberOfProjectile), 
+        sender.abilityManager.launchProjectile(attributs.ballGameObject, senderBeing.getBuffedValue(attributs.numberOfBaseProjectile, StatType.NumberOfProjectile, GetType().ToString()), 
             attributs.offsetBetweenProjectile, senderBeing.getBuffedValue(attributs.projectileBaseSpeed, StatType.ProjectileSpeed), attributs.projectileLife, targetedPosition,
             attributs.formType, _abilityAttributs.effectAndValues);
     }
@@ -42,7 +42,7 @@ public class LightningBall : Ability
         ProjectileAbilityAttributs projectileAbilityAttributs = (ProjectileAbilityAttributs)abilityAttributs;
 
         // get the buffed value of projectile Number
-        int numberOfProjectile = owner.getBuffedValue(projectileAbilityAttributs.numberOfBaseProjectile, StatType.NumberOfProjectile);
+        int numberOfProjectile = owner.getBuffedValue(projectileAbilityAttributs.numberOfBaseProjectile, StatType.NumberOfProjectile, GetType().ToString());
 
         // insert at the start of the description the number of projectile
         string lightningBallDescription = abilityAttributs.description.Replace("{0}", numberOfProjectile.ToString()) + "\n";
