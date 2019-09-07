@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2", StatInfluencedBy.Level, 2));
         print(playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2", typeof(LightningBall).ToString())));
-        print(typeof(LightningBall).ToString());
+        print(playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2")));
     }
 
     // Start is called before the first frame update

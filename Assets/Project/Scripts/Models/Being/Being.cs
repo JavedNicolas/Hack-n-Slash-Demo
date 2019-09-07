@@ -156,7 +156,8 @@ public class Being : Interactable
     /// Ex : It can fail if the player cannot get this stat, or if it already has it from the same source)</returns>
     public bool addStat(Stat stat)
     {
-        if (_stats.Exists(x => x.sourceName == stat.sourceName && x.bonusType == stat.bonusType && x.statType == stat.statType && x.isSpecificTo == stat.isSpecificTo))
+        if (_stats.Exists(x => x.sourceName == stat.sourceName && x.bonusType == stat.bonusType && x.statType == stat.statType &&
+        x.isSpecificTo == stat.isSpecificTo && x.isInfluencedBy == stat.isInfluencedBy))
             return false;
 
         _stats.Add(stat);
