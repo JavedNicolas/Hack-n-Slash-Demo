@@ -93,7 +93,7 @@ public class BeingBehavior : InteractableObject
         if (_path.Count == 0)
             return;
         Vector3 currentPathDestination = _path[0] + _yOffset;
-        transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.getMovementSpeed() * Time.deltaTime);
+        transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.movementSpeed* Time.deltaTime);
         lookAtStraight(currentPathDestination);
 
         if (transformToMove.position == currentPathDestination || (_path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= _distanceToStop))
@@ -200,7 +200,7 @@ public class BeingBehavior : InteractableObject
         {
             float interactionDistance = _interactionTarget.interactable.getInteractionDistance();
             if (_interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
-                interactionDistance = being.getAttackRange();
+                interactionDistance = being.attackRange;
 
             if (Vector3.Distance(transform.position, _interactionTarget.transform.position) <= interactionDistance)
             {

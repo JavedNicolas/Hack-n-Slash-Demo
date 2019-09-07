@@ -17,5 +17,5 @@ public class ProjectileAbilityAttributs: AbilityAttributs
     public float projectileBaseSpeed { get => _projectileBaseSpeed; }
     public ProjectileFormType formType { get => _formType; }
     public float offsetBetweenProjectile { get => _offsetBetweenProjectile;  }
-    public float projectileLife { get => _projectileLife;  }
+    public float projectileLife { get => _projectileLife; }
 }

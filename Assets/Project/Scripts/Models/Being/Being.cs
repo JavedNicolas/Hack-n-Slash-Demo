@@ -11,23 +11,33 @@ public class Being : Interactable
     protected float _currentLife;
     public float currentLife { get { return _currentLife; } }
 
-    [Header("Base Start")]
-    [SerializeField] float _baseLife;
-    public float baseLife { get { return _baseLife; } }
+    [Header("Base Stat")]
+    [SerializeField] float _maxLife;
+    public float maxLife { get { return Mathf.FloorToInt(getBuffedValue(_maxLife, StatType.Life)); } }
 
-    [SerializeField] float _baseAttackRange;
-    public float baseAttackRange { get => _baseAttackRange; }
+    [SerializeField] float _attackRange;
+    public float attackRange { get => getBuffedValue(_attackRange, StatType.AttackRange); }
 
-    [SerializeField] float _baseMovementSpeed;
-    public float baseMovementSpeed { get => _baseMovementSpeed; }
+    [SerializeField] float _movementSpeed;
+    public float movementSpeed { get => getBuffedValue(_movementSpeed, StatType.MovementSpeed); }
 
-    [SerializeField] float _baseAttackSpeed;
-    public float baseAttackSpeed { get => _baseAttackSpeed; }
+    [SerializeField] float _attackSpeed;
+    public float attackSpeed { get => getBuffedValue(_attackSpeed, StatType.AttackSpeed); }
 
-    [SerializeField] float _baseCastSpeed;
-    public float baseCastSpeed { get => _baseAttackSpeed; }
+    [SerializeField] float _castSpeed;
+    public float castSpeed { get => getBuffedValue(_castSpeed, StatType.CastSpeed); }
 
     [Header("Stats")]
+
+    [SerializeField] protected int _intelligence;
+    public int intelligence { get => getBuffedValue(_intelligence, StatType.Intelligence); }
+
+    [SerializeField] protected int _strength;
+    public int strength { get => getBuffedValue(_strength, StatType.Strength); }
+
+    [SerializeField] protected int _dexterity;
+    public int dexterity { get => getBuffedValue(_dexterity, StatType.Dexterity); }
+
     [SerializeField] protected List<Stat> _stats = new List<Stat>();
     public List<Stat> stats { get => _stats; }
 
@@ -48,15 +58,15 @@ public class Being : Interactable
     public Being(string name, float baseLife, float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<Ability> abilities, GameObject prefab)
     {
         this.name = name;
-        this._baseLife = baseLife;
-        this._baseAttackSpeed = baseASPD;
-        this._baseCastSpeed = baseCastSpeed;
-        this._baseAttackRange = baseAttackRange;
-        this._baseMovementSpeed = baseMovementSpeed;
+        this._maxLife = baseLife;
+        this._attackSpeed = baseASPD;
+        this._castSpeed = baseCastSpeed;
+        this._attackRange = baseAttackRange;
+        this._movementSpeed = baseMovementSpeed;
         this._ability = abilities;
         this._prefab = prefab;
         this._basicAttack = new BasicAttack();
-        this._currentLife = getCurrentMaxLife();
+        this._currentLife = maxLife;
     }
 
     public Being() { }
@@ -69,57 +79,12 @@ public class Being : Interactable
     /// <param name="damage">the damage to apply</param>
     public void takeDamage(float damage)
     {
-        _currentLife = Mathf.Clamp(_currentLife - damage, 0, getCurrentMaxLife());
+        _currentLife = Mathf.Clamp(_currentLife - damage, 0, maxLife);
     }
 
     public void heal(float life)
     {
-        _currentLife = Mathf.Clamp(_currentLife + life, 0, getCurrentMaxLife());
-    }
-
-    /// <summary>
-    /// Get the attack per second value
-    /// </summary>
-    /// <returns>The Attack per second</returns>
-    public float getAttackRange()
-    {
-        return getBuffedValue(_baseAttackRange, StatType.AttackRange);
-    }
-
-    /// <summary>
-    /// Get the attack per second value
-    /// </summary>
-    /// <returns>The Attack per second</returns>
-    public float getASPD()
-    {
-        return getBuffedValue(_baseAttackSpeed, StatType.AttackSpeed);
-    }
-
-    /// <summary>
-    /// Get the cast per second value
-    /// </summary>
-    /// <returns>The cast per second</returns>
-    public float getCastPerSecond()
-    {
-        return getBuffedValue(_baseAttackSpeed, StatType.CastSpeed);
-    }
-
-    /// <summary>
-    /// get the movement speed
-    /// </summary>
-    /// <returns>the movement speed</returns>
-    public virtual float getMovementSpeed()
-    {
-        return getBuffedValue(_baseMovementSpeed, StatType.MovementSpeed);
-    }
-
-    /// <summary>
-    /// Get the curent max life (base life + all the bonuses)
-    /// </summary>
-    /// <returns></returns>
-    public float getCurrentMaxLife()
-    {
-        return getBuffedValue((int)_baseLife, StatType.Life);
+        _currentLife = Mathf.Clamp(_currentLife + life, 0, maxLife);
     }
 
     /// <summary>
@@ -141,7 +106,6 @@ public class Being : Interactable
     /// <returns></returns>
     public float getBuffedValue(float value, StatType statType)
     {
-        float buffedValue = 0;
         float pureBonus = 0;
         float additionalBonus = 0;
         float multipliedBonus = 0;
@@ -150,17 +114,35 @@ public class Being : Interactable
         {
             Stat currentStat = stats[i];
             if(currentStat.statType == statType)
-            switch (currentStat.bonusType)
             {
-                case StatBonusType.Pure: pureBonus += currentStat.value; break;
-                case StatBonusType.additional: additionalBonus += currentStat.value; break;
-                case StatBonusType.Multiplied: multipliedBonus += currentStat.value; break;
+                float influenceFactor = getInflencedFactor(currentStat);
+                influenceFactor = Mathf.FloorToInt(influenceFactor / currentStat.influencedEvery);
+                switch (currentStat.bonusType)
+                {
+                    case StatBonusType.Pure: pureBonus += currentStat.value * influenceFactor; break;
+                    case StatBonusType.additional: additionalBonus += currentStat.value * influenceFactor; break;
+                    case StatBonusType.Multiplied: multipliedBonus += currentStat.value * influenceFactor; break;
+                }
             }
+           
         }
 
-        buffedValue = ((value + pureBonus) + ((value + pureBonus) * (additionalBonus / 100))) * (1 + (multipliedBonus /100));
+        float buffedValue = ((value + pureBonus) + ((value + pureBonus) * (additionalBonus / 100))) * (1 + (multipliedBonus /100));
 
         return buffedValue;
+    }
+
+    protected virtual float getInflencedFactor(Stat stat)
+    {
+        switch (stat.isInfluencedBy)
+        {
+            case StatInfluencedBy.Nothing: return 1;
+            case StatInfluencedBy.Intelligence: return intelligence ;
+            case StatInfluencedBy.Strength: return strength;
+            case StatInfluencedBy.Dexterity: return dexterity;
+            case StatInfluencedBy.MaxLife: return maxLife;
+            default: return 0;
+        }
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ public class SelfHealEffect : Effect
 {
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
-        if (sender.being.currentLife != sender.being.getCurrentMaxLife())
+        if (sender.being.currentLife != sender.being.maxLife)
             return true;
         return false; 
     }

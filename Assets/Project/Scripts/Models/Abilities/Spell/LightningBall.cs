@@ -42,7 +42,7 @@ public class LightningBall : Ability
         ProjectileAbilityAttributs projectileAbilityAttributs = (ProjectileAbilityAttributs)abilityAttributs;
 
         // get the buffed value of projectile Number
-        int numberOfProjectile = (int)owner.getBuffedValue(projectileAbilityAttributs.numberOfBaseProjectile, StatType.NumberOfProjectile);
+        int numberOfProjectile = owner.getBuffedValue(projectileAbilityAttributs.numberOfBaseProjectile, StatType.NumberOfProjectile);
 
         // insert at the start of the description the number of projectile
         string lightningBallDescription = abilityAttributs.description.Replace("{0}", numberOfProjectile.ToString()) + "\n";

@@ -154,10 +154,10 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
             databaseID = element.databaseID;
             enemyName = element.name;
             xp = element.experience;
-            baseLife = element.baseLife;
-            castSpeed = element.baseCastSpeed;
-            attackSpeed = element.baseAttackSpeed;
-            movementSpeed = element.baseMovementSpeed;
+            baseLife = element.maxLife;
+            castSpeed = element.castSpeed;
+            attackSpeed = element.attackSpeed;
+            movementSpeed = element.movementSpeed;
             prefab = element.prefab;
             numberOfLoot = element.possibleLoot.Count;
             possibleLoots = element.possibleLoot;

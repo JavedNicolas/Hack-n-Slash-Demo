@@ -18,8 +18,8 @@ public class Player : Being
 
     [Header("Mana")]
 
-    [SerializeField] private float _baseMana;
-    public float baseMana { get => _baseMana; }
+    [SerializeField] private float _maxMana;
+    public float maxMana { get => Mathf.FloorToInt(getBuffedValue(_maxMana, StatType.Mana)); }
 
     [SerializeField] private float _currentMana;
     public float currentMana { get => _currentMana; }
@@ -31,32 +31,40 @@ public class Player : Being
     public HasLevelUp hasLevelUp;
     #endregion
 
+
     public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab) :
         base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilities, prefab)
     {
-        this._baseMana = baseMana;
+        this._maxMana = baseMana;
         this._currentMana = getCurrentMaxMana();
         this._currentLevel = 1;
+        setBaseStat();
     }
 
     public Player(Player player) : base(player.name, 
-        player.baseLife, player.baseAttackSpeed, player.baseCastSpeed, player.baseAttackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
+        player.maxLife, player.attackSpeed, player.castSpeed, player.attackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
     {
         this._currentLevelExp = player.currentLevelExp;
         this._currentLevel = player.currentLevel;
         this._inventory = player.inventory;
-        this._baseMana = player.baseMana;
+        this._maxMana = player.maxMana;
         this._currentMana = player.currentMana;
         this._currentLevel = player.currentLevel;
+        setBaseStat();
     }
 
-    /// <summary>
-    /// Override the use of the baseSpeed for the Constant base speed
-    /// </summary>
-    /// <returns>a floot representing the movement speed</returns>
-    public override float getMovementSpeed()
+    void setBaseStat()
     {
-        return getBuffedValue(BeingConstant.baseMoveSpeed, StatType.MovementSpeed);
+        // life and mana
+        _stats.Add(new Stat(StatType.Life, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.Add(new Stat(StatType.Mana, StatBonusType.Pure, 2, "Base Class Stat", StatInfluencedBy.Level));
+
+        // basic stat
+        _stats.Add(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.Add(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.Add(new Stat(StatType.Strength, StatBonusType.Pure, 3, "Base Class Stat", StatInfluencedBy.Level));
+
+        _stats.Add(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Dexterity));
     }
 
     /// <summary>
@@ -75,7 +83,7 @@ public class Player : Being
     /// <returns></returns>
     public float getCurrentMaxMana()
     {
-        return getBuffedValue((int)_baseMana, StatType.Mana);
+        return getBuffedValue((int)_maxMana, StatType.Mana);
     }
 
     /// <summary>
@@ -106,12 +114,21 @@ public class Player : Being
     {
         _currentLevelExp = _currentLevelExp - LevelExperienceTable.levelExperienceNeeded[currentLevel - 1];
         _currentLevel++;
-        _stats.Add(new Stat(StatType.Life, StatBonusType.Pure, 10, "Level" + (_currentLevel - 1).ToString()));
-        _stats.Add(new Stat(StatType.Mana, StatBonusType.Pure, 2, "Level" + (_currentLevel - 1).ToString()));
 
-        _currentMana = getCurrentMaxMana();
-        _currentLife = getCurrentMaxLife();
+        _currentMana = maxMana;
+        _currentLife = maxLife;
 
         hasLevelUp();
+    }
+
+    protected override float getInflencedFactor(Stat stat)
+    {
+        switch (stat.isInfluencedBy)
+        {
+            case StatInfluencedBy.Level: return _currentLevel;
+            case StatInfluencedBy.JobLevel: return _currentLevel;
+            case StatInfluencedBy.MaxMana: return getCurrentMaxMana();
+            default: return base.getInflencedFactor(stat);
+        }
     }
 }

@@ -5,7 +5,7 @@ public enum StatType
 {
     // Base start
     Intelligence,
-    Strenght,
+    Strength,
     Dexterity,
 
     // Life and mana
@@ -36,4 +36,22 @@ public enum StatBonusType
     Pure, // add pure stat (before every other bonus)
     additional, // add a percentage of the base damage as bonus
     Multiplied // add a percentage of the total damage (after pure and additional are added)
+}
+
+public enum StatInfluencedBy
+{
+    // none
+    Nothing,
+
+    // basic statc
+    Intelligence,
+    Strength,
+    Dexterity,
+
+    // other
+    MaxLife,
+    MaxMana,
+    Level,
+    JobLevel
+
 }

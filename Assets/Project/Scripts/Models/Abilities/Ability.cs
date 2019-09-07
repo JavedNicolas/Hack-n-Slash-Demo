@@ -51,9 +51,9 @@ public abstract class Ability : DatabaseElement, IDescribable
     {
         switch (_abilityAttributs.coolDownType)
         {
-            case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.getASPD()) ? true : false; 
+            case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.attackSpeed) ? true : false; 
             case AbilityCoolDownType.Cooldown: break;
-            case AbilityCoolDownType.CastSpeed: return Time.time >= lastTimeUsed + (1f / sender.getCastPerSecond()) ? true: false;
+            case AbilityCoolDownType.CastSpeed: return Time.time >= lastTimeUsed + (1f / sender.castSpeed) ? true: false;
         }
 
         return false;
