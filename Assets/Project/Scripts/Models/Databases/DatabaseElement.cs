@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class DatabaseElement
+public class DatabaseElement : IDescribable
 {
     [SerializeField] protected string _name;
     public string name { get => _name; set => _name = value; }
 
     [SerializeField] protected int _databaseID;
     public int databaseID { get => _databaseID; set => _databaseID = value; }
+
+    public virtual string getName()
+    {
+        return _name;
+    }
+
+    public virtual string getDescription(Being owner)
+    {
+        return "";
+    }
 }

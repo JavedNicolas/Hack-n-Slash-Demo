@@ -65,6 +65,11 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
                 EditorGUILayout.LabelField("Value :");
                 effects[i].value = EditorGUILayout.FloatField( effects[i].value);
                 EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Starting time :");
+                effects[i].startingTime = (EffectStartingTime)EditorGUILayout.EnumPopup(effects[i].startingTime);
+                EditorGUILayout.EndHorizontal();
             }
 
         }

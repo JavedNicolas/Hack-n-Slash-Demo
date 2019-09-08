@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
         if (other.GetComponent<BeingBehavior>() != null)
         {
             for (int i = 0; i < _effectValues.Count; i++)
-                _effectValues[i].effect.use(_senderObject, other.gameObject, _effectValues[i].value);
+                _effectValues[i].useEffect(_senderObject, other.gameObject, null);
         }
         else if (other.CompareTag(Tags.Environment.ToString()))
         {

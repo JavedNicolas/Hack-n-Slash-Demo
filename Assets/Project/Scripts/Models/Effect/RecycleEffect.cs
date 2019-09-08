@@ -15,7 +15,7 @@ public class RecycleEffect : Effect
         return false;
     }
 
-    public override void use(BeingBehavior sender, GameObject target, float value, Ability abilitySender = null)
+    public override void use(BeingBehavior sender, GameObject target, float value, DatabaseElement effectOrigin = null)
     {
         if (canBeUsed(sender, target, value))
         {

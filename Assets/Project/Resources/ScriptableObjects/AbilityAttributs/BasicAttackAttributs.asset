@@ -15,10 +15,11 @@ MonoBehaviour:
   _name: Basic Attack
   _description: Attack an enemy with a basic blow.
   _icon: {fileID: 0}
+  _manaCost: 0
   _type: 0
   _effectAndValues:
-  - _value: 50
-    _effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
+  - value: 25
+    effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
   _coolDownType: 0
   _needTarget: 1
   _canBeCastedOnSelf: 0

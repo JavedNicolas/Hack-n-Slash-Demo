@@ -26,26 +26,4 @@ public class AbilityAttributs : ScriptableObject
     public bool canBeCastedOnSelf { get => _canBeCastedOnSelf; }
     public AbilityType type { get => _type; }
     public List<EffectAndValue> effectAndValues { get => _effectAndValues; set => _effectAndValues = value; }
-
-}
-
-[System.Serializable]
-public class EffectAndValue
-{
-    [SerializeField] public float value;
-    [SerializeField] public Effect effect;
-
-    public EffectAndValue() { }
-
-    public void addEffectAndValue(Effect effect, float value)
-    {
-        this.effect = effect;
-        this.value = value;
-    } 
-
-    public string getDescription()
-    {
-        return effect.description.Replace("{0}", value.ToString());
-    }
-
 }

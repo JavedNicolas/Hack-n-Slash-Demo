@@ -24,7 +24,7 @@ public class Enemy : Being
     public Enemy(){ }
 
     public Enemy(Enemy enemy) :
-        base(enemy.name, enemy.maxLife, enemy.attackSpeed, enemy.castSpeed, enemy.attackRange, enemy.movementSpeed, enemy.abilities, enemy.prefab)
+        base(enemy.name, enemy._stats.maxLife, enemy._stats.attackSpeed, enemy._stats.castSpeed, enemy._stats.attackRange, enemy._stats.movementSpeed, enemy.abilities, enemy.prefab)
     {
         this._possibleLoot = enemy._possibleLoot;
         this._experience = enemy.experience;

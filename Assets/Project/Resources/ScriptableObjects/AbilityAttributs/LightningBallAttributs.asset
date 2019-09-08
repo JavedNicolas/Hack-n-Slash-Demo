@@ -13,20 +13,23 @@ MonoBehaviour:
   m_Name: LightningBallAttributs
   m_EditorClassIdentifier: 
   _name: Lighning Ball
-  _description: Launch {0} lightning in front of you.
+  _description: Launch a lightning in front of you.
   _icon: {fileID: 21300000, guid: 6d254a407afa0b1498389ee33e5649d6, type: 3}
   _manaCost: 5
   _type: 1
-  _effectAndValues:
-  - value: 50
-    effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
+  _effectAndValues: []
   _coolDownType: 1
   _needTarget: 0
   _canBeCastedOnSelf: 0
   _ballGameObject: {fileID: 233050881289928282, guid: 28560739714ed0e4d9bd0383c2431c85,
     type: 3}
   _numberOfBaseProjectile: 1
-  _projectileBaseSpeed: 25
+  _projectileBaseSpeed: 20
   _formType: 0
   _offsetBetweenProjectile: 10
   _projectileLife: 1
+  _effectOfTheProjectile:
+  - value: 50
+    effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
+    startingTime: 1
+    statTypes: 08000000

@@ -18,10 +18,10 @@ public class GameUI : MonoBehaviour
 
     [Header("Description")]
     [SerializeField] public Canvas detailPopUPCanvas;
-    [SerializeField] public UIDescriptionPopUp detailPopUpPrefab;
-    [SerializeField] public Vector3 detailPopUpOffset;
+    [SerializeField] public UIBasicDescriptionPopUp detailPopUpPrefab;
+    [SerializeField] public UIAbilityDescriptionPopUp abilityPopUpPrefab;
 
-    UIDescriptionPopUp detailPopUp;
+    UIBasicDescriptionPopUp detailPopUp;
 
     private void Awake()
     {

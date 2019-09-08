@@ -26,16 +26,24 @@ public class PlayerBehavior : BeingBehavior
     UILife _lifeUI;
     UIMana _manaUI;
 
-    // Player
-    Player _player;
+    // being
+    public new Player being
+    {
+        get { return (Player)_being; }
+        set
+        {
+            _being = value;
+            interactable = value;
+        }
+
+    }
 
     // TEMPORARY
     public bool autoAttack = true;
 
     private void Start()
     {
-        _player = (Player)being;
-        _player.hasLevelUp = launchlevelUpAnimation;
+        being.hasLevelUp = launchlevelUpAnimation;
         _interactOnce = !autoAttack;
 
         getUIElements();
@@ -62,10 +70,10 @@ public class PlayerBehavior : BeingBehavior
 
     public void initPlayerUI()
     {
-        _lifeUI.setBeing(_player);
-        _manaUI.setBeing(_player);
-        _inventoryUI.loadInventory(_player.inventory);
-        _topBarUI.init(_player);
+        _lifeUI.setBeing(being);
+        _manaUI.setBeing(being);
+        _inventoryUI.loadInventory(being.inventory);
+        _topBarUI.init(being);
     }
 
     /// <summary>
@@ -180,7 +188,7 @@ public class PlayerBehavior : BeingBehavior
 
     public void addExperience(float value)
     {
-        _player.addExperience(value);
+        being.addExperience(value);
     }
 
 

@@ -1,15 +1,17 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 [System.Serializable]
-public abstract class Ability : DatabaseElement, IDescribable
+public abstract class Ability : DatabaseElement
 {
     // attributs
     protected float lastTimeUsed = 0f;
+
     [SerializeField] protected AbilityAttributs _abilityAttributs;
     public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
+
 
     /// <summary>
     /// Start the sender animation for this ability
@@ -21,7 +23,10 @@ public abstract class Ability : DatabaseElement, IDescribable
     /// </summary>
     /// <param name="sender">The sender being model</param>
     /// <param name="targetGameObject">The target gameObject</param>
-    abstract public void performAbility(BeingBehavior sender, BeingBehavior targetGameObject);
+    virtual public void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
+    {
+        useEffect(EffectStartingTime.AbilityStart, sender, targetGameObject.gameObject);
+    }
 
     /// <summary>
     /// Perform Ability (used for projectile)
@@ -29,7 +34,10 @@ public abstract class Ability : DatabaseElement, IDescribable
     /// <param name="sender">The sender being model</param>
     /// <param name="targedPosition">The ability targeted position</param>
     /// <param name="senderGameObject">The sender gameObject</param>
-    abstract public void performAbility(BeingBehavior sender, Vector3 targedPosition);
+    virtual public void performAbility(BeingBehavior sender, Vector3 targedPosition)
+    {
+        useEffect(EffectStartingTime.AbilityStart, sender, null);
+    }
 
     /// <summary>
     /// launch and effect based on his starting time type (used for effect which start on precise movement which we controle, like before the skill or after)
@@ -40,20 +48,28 @@ public abstract class Ability : DatabaseElement, IDescribable
     protected void useEffect(EffectStartingTime startingType, BeingBehavior sender, GameObject target)
     {
         List<EffectAndValue> effects = _abilityAttributs.effectAndValues;
-        for (int i =0; i < effects.Count; i++)
+        for (int i = 0; i < effects.Count; i++)
         {
-            if (effects[i].effect.startingType == startingType)
-                effects[i].effect.use(sender, target, _abilityAttributs.effectAndValues[i].value, this);
+            if (effects[i].startingTime == startingType)
+            {
+                effects[i].useEffect(sender, target, this);
+            }
+
         }
     }
 
+    /// <summary>
+    /// Check if the ability if available (cooldown type)
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <returns></returns>
     public bool isAbilityAvailable(Being sender)
     {
         switch (_abilityAttributs.coolDownType)
         {
-            case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.attackSpeed) ? true : false; 
+            case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.stats.attackSpeed) ? true : false;
             case AbilityCoolDownType.Cooldown: break;
-            case AbilityCoolDownType.CastSpeed: return Time.time >= lastTimeUsed + (1f / sender.castSpeed) ? true: false;
+            case AbilityCoolDownType.CastSpeed: return Time.time >= lastTimeUsed + (1f / sender.stats.castSpeed) ? true : false;
         }
 
         return false;
@@ -81,18 +97,18 @@ public abstract class Ability : DatabaseElement, IDescribable
         lastTimeUsed = Time.time;
     }
 
-    public string getName()
+    public override string getName()
     {
         return GetType().ToString();
     }
 
-    public virtual string getDescription(Being owner)
+    /// <summary>
+    /// Return the description based on the effect
+    /// </summary>
+    /// <param name="owner">The owner of the ability (to get the buffedValues)</param>
+    /// <returns></returns>
+    public override string getDescription(Being owner)
     {
-        string description = "";
-        for (int i = 0; i < abilityAttributs.effectAndValues.Count; i++)
-        {
-            description += abilityAttributs.effectAndValues[i].getDescription() + "\n";
-        }
-        return description;
+        return abilityAttributs.description;
     }
 }

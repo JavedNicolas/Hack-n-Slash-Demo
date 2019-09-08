@@ -128,7 +128,7 @@ public class AbilityManager : MonoBehaviour
             // Apply force to it
             if (projectile.GetComponent<Rigidbody>() != null)
             {
-                float projectileSpeed = abilitySender.being.getBuffedValue(projectileBaseSpeed, StatType.ProjectileSpeed);
+                float projectileSpeed = abilitySender.being.stats.getBuffedValue(projectileBaseSpeed, StatType.ProjectileSpeed);
                 projectile.GetComponent<Rigidbody>().AddForce(direction * projectileSpeed, ForceMode.Impulse);
             }
 
@@ -138,10 +138,10 @@ public class AbilityManager : MonoBehaviour
             {
                 List<EffectAndValue> effectAndValuesToUse = new List<EffectAndValue>();
                 for (int e = 0; e < effectAndValues.Count; e++)
-                    if (effectAndValues[e].effect.startingType == EffectStartingTime.Hit)
+                    if (effectAndValues[e].startingTime == EffectStartingTime.Hit)
                     {
                         effectAndValuesToUse.Add(new EffectAndValue());
-                        effectAndValuesToUse[e].addEffectAndValue(effectAndValues[e].effect, effectAndValues[e].value);
+                        effectAndValuesToUse[e].addEffectAndValue(effectAndValues[e].effect, effectAndValues[e].value, effectAndValues[e].statTypes);
                     }
                         
 

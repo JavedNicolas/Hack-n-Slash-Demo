@@ -8,9 +8,6 @@ public abstract class Effect : ScriptableObject
     [SerializeField] string _description;
     public string description { get { return _description; } }
 
-    [SerializeField] EffectStartingTime _startingType;
-    public EffectStartingTime startingType { get { return _startingType; } }
-
     [SerializeField] EffectTargetType _effectTargetType;
     public EffectTargetType effectTargetType { get { return _effectTargetType; } }
 
@@ -20,7 +17,7 @@ public abstract class Effect : ScriptableObject
     /// <param name="sender">The seffect sender</param>
     /// <param name="target">The effect target game object</param>
     /// <param name="value">The effect value</param>
-    public abstract void use(BeingBehavior sender, GameObject target, float value, Ability abilitySender = null);
+    public abstract void use(BeingBehavior sender, GameObject target, float value, DatabaseElement effectOrigin = null);
 
     /// <summary>
     /// Check if the effect can be used

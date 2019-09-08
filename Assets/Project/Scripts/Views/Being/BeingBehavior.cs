@@ -26,7 +26,7 @@ public class BeingBehavior : InteractableObject
     public AbilityManager abilityManager { get => _abilityManager; }
 
     // being
-    private Being _being;
+    protected Being _being;
     public Being being
     {
         get { return _being; }
@@ -93,7 +93,7 @@ public class BeingBehavior : InteractableObject
         if (_path.Count == 0)
             return;
         Vector3 currentPathDestination = _path[0] + _yOffset;
-        transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.movementSpeed* Time.deltaTime);
+        transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.stats.movementSpeed* Time.deltaTime);
         lookAtStraight(currentPathDestination);
 
         if (transformToMove.position == currentPathDestination || (_path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= _distanceToStop))
@@ -200,7 +200,7 @@ public class BeingBehavior : InteractableObject
         {
             float interactionDistance = _interactionTarget.interactable.getInteractionDistance();
             if (_interactionTarget.interactable.interactibleType == InteractableObjectType.Enemy)
-                interactionDistance = being.attackRange;
+                interactionDistance = being.stats.attackRange;
 
             if (Vector3.Distance(transform.position, _interactionTarget.transform.position) <= interactionDistance)
             {
@@ -222,7 +222,7 @@ public class BeingBehavior : InteractableObject
     /// </summary>
     /// <param name="damage">The damage to deal</param>
     /// <param name="damageDealer">The damage dealer</param>
-    public virtual void takeDamage(float damage, Ability damagingAbility, BeingBehavior damageDealer)
+    public virtual void takeDamage(float damage, DatabaseElement damageOrigin, BeingBehavior damageDealer)
     {
         being.takeDamage(damage);
         if (being.isDead())

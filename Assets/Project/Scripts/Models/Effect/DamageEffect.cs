@@ -13,12 +13,13 @@ public class DamageEffect : Effect
         return false;
     }
 
-    public override void use(BeingBehavior sender, GameObject target, float value, Ability abilitySender = null)
+    public override void use(BeingBehavior sender, GameObject target, float value, DatabaseElement effectOrigin = null)
     {
         if(canBeUsed(sender, target, value))
         {
             BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
-            targetScript.takeDamage(value, abilitySender,sender);
+            targetScript.takeDamage(value, effectOrigin, sender);
+            Debug.Log(value);
         }
     }
 }

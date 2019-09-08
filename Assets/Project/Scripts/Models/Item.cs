@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public class Item : Interactable, IDescribable
+public class Item : Interactable
 {
     public const float interactionDistance = 6f;
 
@@ -125,21 +125,16 @@ public class Item : Interactable, IDescribable
         return success;
     }
 
-    public string getName()
-    {
-        return name;
-    }
-
     /// <summary>
     /// get description based on the effect
     /// </summary>
     /// <returns>The description</returns>
-    public string getDescription(Being owner)
+    public override string getDescription(Being owner)
     {
         string description = "";
         for(int i = 0; i < effects.Count; i++)
         {
-            description += effects[i].getDescription() + "\n";
+            description += effects[i].getDescription(owner, name) + "\n";
         }
         return description;
     }

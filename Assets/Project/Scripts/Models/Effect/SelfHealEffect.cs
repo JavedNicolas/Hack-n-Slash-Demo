@@ -7,12 +7,12 @@ public class SelfHealEffect : Effect
 {
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
-        if (sender.being.currentLife != sender.being.maxLife)
+        if (sender.being.currentLife != sender.being.stats.maxLife)
             return true;
         return false; 
     }
 
-    public override void use(BeingBehavior sender, GameObject target, float value,Ability abilitySender = null)
+    public override void use(BeingBehavior sender, GameObject target, float value, DatabaseElement effectOrigin = null)
     {
         if(canBeUsed(sender, target, value))
             sender.being.heal(value);

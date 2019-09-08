@@ -24,9 +24,9 @@ public class UIMana : MonoBehaviour
     {
         if(player != null)
         {
-            manaFill.fillAmount = player.currentMana / player.maxMana;
+            manaFill.fillAmount = player.currentMana / player.stats.maxMana;
             if (!isSmallManaBar)
-                manaAsText.text = player.currentMana.ToString() + "/" + player.maxMana.ToString();
+                manaAsText.text = player.currentMana.ToString() + "/" + player.stats.maxMana.ToString();
         }
         
     }

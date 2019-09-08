@@ -9,21 +9,16 @@ public class Player : Being
     private float _currentLevelExp;
     public float currentLevelExp { get => _currentLevelExp; }
 
-    private int _currentLevel;
-    public int currentLevel { get => _currentLevel; }
-
     [Header("Inventory")]
     private Inventory _inventory = new Inventory();
     public Inventory inventory { get { return _inventory; } }
 
     [Header("Mana")]
-
-    [SerializeField] private float _maxMana;
-    public float maxMana { get => Mathf.FloorToInt(getBuffedValue(_maxMana, StatType.Mana)); }
-
     [SerializeField] private float _currentMana;
     public float currentMana { get => _currentMana; }
 
+
+    public new PlayerStat stats { get => (PlayerStat)_stats; }
     #endregion
 
     #region delegate
@@ -32,39 +27,36 @@ public class Player : Being
     #endregion
 
 
-    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab) :
+    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab, int currentLevel) :
         base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilities, prefab)
     {
-        this._maxMana = baseMana;
-        this._currentMana = getCurrentMaxMana();
-        this._currentLevel = 1;
+        _stats = new PlayerStat(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, currentLevel);
+        this._currentMana = stats.maxMana;
         setBaseStat();
     }
 
-    public Player(Player player) : base(player.name, 
-        player.maxLife, player.attackSpeed, player.castSpeed, player.attackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
+    public Player(Player player) : base(player.name,
+        player._stats.maxLife, player._stats.attackSpeed, player._stats.castSpeed, player._stats.attackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
     {
+        _stats = new PlayerStat(player.stats.maxLife, player.stats.maxMana, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, 1);
         this._currentLevelExp = player.currentLevelExp;
-        this._currentLevel = player.currentLevel;
         this._inventory = player.inventory;
-        this._maxMana = player.maxMana;
         this._currentMana = player.currentMana;
-        this._currentLevel = player.currentLevel;
         setBaseStat();
     }
 
     void setBaseStat()
     {
         // life and mana
-        _stats.Add(new Stat(StatType.Life, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
-        _stats.Add(new Stat(StatType.Mana, StatBonusType.Pure, 2, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Life, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Mana, StatBonusType.Pure, 2, "Base Class Stat", StatInfluencedBy.Level));
 
         // basic stat
-        _stats.Add(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
-        _stats.Add(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Level));
-        _stats.Add(new Stat(StatType.Strength, StatBonusType.Pure, 3, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Strength, StatBonusType.Pure, 3, "Base Class Stat", StatInfluencedBy.Level));
 
-        _stats.Add(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Dexterity));
+        _stats.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Dexterity));
     }
 
     /// <summary>
@@ -73,17 +65,7 @@ public class Player : Being
     /// <param name="mana">The mana to spend</param>
     public void spendMana(float mana)
     {
-        _currentMana = Mathf.Clamp(_currentMana - mana, 0, getCurrentMaxMana());
-    }
-
-    // getter
-    /// <summary>
-    /// Get the current amout of mana max
-    /// </summary>
-    /// <returns></returns>
-    public float getCurrentMaxMana()
-    {
-        return getBuffedValue((int)_maxMana, StatType.Mana);
+        _currentMana = Mathf.Clamp(_currentMana - mana, 0, stats.maxMana);
     }
 
     /// <summary>
@@ -94,41 +76,31 @@ public class Player : Being
     {
         // if this is not the last level then add the exp 
         //and level up if the current xp is above the level requirement
-        if (_currentLevel != LevelExperienceTable.levelExperienceNeeded.Length)
+        if (stats.currentLevel != LevelExperienceTable.levelExperienceNeeded.Length)
         { 
             _currentLevelExp += value;
-            if (_currentLevelExp >= LevelExperienceTable.levelExperienceNeeded[currentLevel - 1])
+            if (_currentLevelExp >= LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1])
             {
                 levelUp();
             }
         }
 
         // if the level is the maxium then leave the currentXP at max
-        if (_currentLevel == LevelExperienceTable.levelExperienceNeeded.Length)
+        if (stats.currentLevel == LevelExperienceTable.levelExperienceNeeded.Length)
         {
-            _currentLevelExp = LevelExperienceTable.levelExperienceNeeded[currentLevel - 1];
+            _currentLevelExp = LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1];
         }
     }
 
     void levelUp()
     {
-        _currentLevelExp = _currentLevelExp - LevelExperienceTable.levelExperienceNeeded[currentLevel - 1];
-        _currentLevel++;
+        _currentLevelExp = _currentLevelExp - LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1];
+        stats.levelUp();
 
-        _currentMana = maxMana;
-        _currentLife = maxLife;
+        _currentMana = stats.maxMana;
+        _currentLife = stats.maxLife;
 
         hasLevelUp();
     }
 
-    protected override float getInflencedFactor(Stat stat)
-    {
-        switch (stat.isInfluencedBy)
-        {
-            case StatInfluencedBy.Level: return _currentLevel;
-            case StatInfluencedBy.JobLevel: return _currentLevel;
-            case StatInfluencedBy.MaxMana: return getCurrentMaxMana();
-            default: return base.getInflencedFactor(stat);
-        }
-    }
 }

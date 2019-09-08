@@ -42,13 +42,14 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(this);
-        playerTMp = new Player("Player Test", 100, 100, 1, 1, 10, new List<Ability>(), playerPrefab);
+        playerTMp = new Player("Player Test", 200, 100, 1, 1, 10, new List<Ability>(), playerPrefab,1);
         playerTMp.abilities.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2", StatInfluencedBy.Level, 2));
-        print(playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2", typeof(LightningBall).ToString())));
-        print(playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2")));
+        playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2", typeof(LightningBall).ToString()));
+        playerTMp.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, "Test2"));
+        playerTMp.addStat(new Stat(StatType.ProjectileSpeed, StatBonusType.Pure, 1, "Test2", StatInfluencedBy.Intelligence, 1));
     }
 
     // Start is called before the first frame update
