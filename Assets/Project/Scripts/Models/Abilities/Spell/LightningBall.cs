@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class LightningBall : Ability
 {
-    LightningBallAttributs _attributs;
-
-    public LightningBall() { }
+    public LightningBall() {}
 
     public LightningBall(LightningBall lightningBall)
     {
         this._abilityAttributs = lightningBall.abilityAttributs;
-        _attributs = (LightningBallAttributs)_abilityAttributs;
     }
 
     public override void animation()
@@ -22,6 +19,11 @@ public class LightningBall : Ability
 
     public override void performAbility(BeingBehavior sender, Vector3 targetedPosition)
     {
-        _attributs.sendProjectile(sender, targetedPosition, GetType().Name);
+        sender.abilityManager.launchProjectile(this, getEffectFor(EffectType.Projectile), targetedPosition);
+    }
+
+    public override void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerStat : BeingStats
+public class PlayerStats : BeingStats
 {
     [SerializeField] private float _maxMana;
     public float maxMana { get => Mathf.FloorToInt(getBuffedValue(_maxMana, StatType.Mana)); }
@@ -10,7 +10,7 @@ public class PlayerStat : BeingStats
     public int currentJobLevel { get => _currentJobLevel; }
 
 
-    public PlayerStat(float maxLife,float maxMana,  float attackSpeed, float castSpeed, float attackRange, float movementSpeed, int currentLevel) : 
+    public PlayerStats(float maxLife,float maxMana,  float attackSpeed, float castSpeed, float attackRange, float movementSpeed, int currentLevel) : 
         base(maxLife, attackSpeed, castSpeed, attackRange, movementSpeed, currentLevel)
     {
         this._maxMana = maxMana;

@@ -18,7 +18,7 @@ public class Player : Being
     public float currentMana { get => _currentMana; }
 
 
-    public new PlayerStat stats { get => (PlayerStat)_stats; }
+    public new PlayerStats stats { get => (PlayerStats)_stats; }
     #endregion
 
     #region delegate
@@ -30,7 +30,7 @@ public class Player : Being
     public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab, int currentLevel) :
         base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilities, prefab)
     {
-        _stats = new PlayerStat(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, currentLevel);
+        _stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, currentLevel);
         this._currentMana = stats.maxMana;
         setBaseStat();
     }
@@ -38,7 +38,7 @@ public class Player : Being
     public Player(Player player) : base(player.name,
         player._stats.maxLife, player._stats.attackSpeed, player._stats.castSpeed, player._stats.attackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
     {
-        _stats = new PlayerStat(player.stats.maxLife, player.stats.maxMana, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, 1);
+        _stats = new PlayerStats(player.stats.maxLife, player.stats.maxMana, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, 1);
         this._currentLevelExp = player.currentLevelExp;
         this._inventory = player.inventory;
         this._currentMana = player.currentMana;
@@ -48,15 +48,13 @@ public class Player : Being
     void setBaseStat()
     {
         // life and mana
-        _stats.addStat(new Stat(StatType.Life, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
-        _stats.addStat(new Stat(StatType.Mana, StatBonusType.Pure, 2, "Base Class Stat", StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Life, StatBonusType.Pure, 10, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Mana, StatBonusType.Pure, 2, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
 
         // basic stat
-        _stats.addStat(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, "Base Class Stat", StatInfluencedBy.Level));
-        _stats.addStat(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Level));
-        _stats.addStat(new Stat(StatType.Strength, StatBonusType.Pure, 3, "Base Class Stat", StatInfluencedBy.Level));
-
-        _stats.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Base Class Stat", StatInfluencedBy.Dexterity));
+        _stats.addStat(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        _stats.addStat(new Stat(StatType.Strength, StatBonusType.Pure, 3, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
     }
 
     /// <summary>

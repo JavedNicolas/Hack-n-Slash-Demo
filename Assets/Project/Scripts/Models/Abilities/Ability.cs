@@ -7,11 +7,16 @@ using UnityEngine;
 public abstract class Ability : DatabaseElement
 {
     // attributs
+    // handle the cooldown
     protected float lastTimeUsed = 0f;
 
+    // Level
+    [SerializeField] protected int _currentLevel;
+    public int currentLevel { get => _currentLevel == 0 ? 1 : _currentLevel; }
+
+    // Ability attributs
     [SerializeField] protected AbilityAttributs _abilityAttributs;
     public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
-
 
     /// <summary>
     /// Start the sender animation for this ability
@@ -23,10 +28,7 @@ public abstract class Ability : DatabaseElement
     /// </summary>
     /// <param name="sender">The sender being model</param>
     /// <param name="targetGameObject">The target gameObject</param>
-    virtual public void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
-    {
-        useEffect(EffectStartingTime.AbilityStart, sender, targetGameObject.gameObject);
-    }
+    abstract public void performAbility(BeingBehavior sender, BeingBehavior targetGameObject);
 
     /// <summary>
     /// Perform Ability (used for projectile)
@@ -34,28 +36,31 @@ public abstract class Ability : DatabaseElement
     /// <param name="sender">The sender being model</param>
     /// <param name="targedPosition">The ability targeted position</param>
     /// <param name="senderGameObject">The sender gameObject</param>
-    virtual public void performAbility(BeingBehavior sender, Vector3 targedPosition)
+    abstract public void performAbility(BeingBehavior sender, Vector3 targedPosition);
+
+    /// <summary>
+    /// Use every effect for the effectType
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="target"></param>
+    /// <param name="forEffectType"></param>
+    public void useEffects(BeingBehavior sender, GameObject target, EffectType forEffectType)
     {
-        useEffect(EffectStartingTime.AbilityStart, sender, null);
+        foreach(AbilityEffectAndValue effectAndValue in abilityAttributs.effectAndValues)
+        {
+            if(effectAndValue.effectType == forEffectType)
+                effectAndValue.useEffect(sender, target, this);
+        }
     }
 
     /// <summary>
-    /// launch and effect based on his starting time type (used for effect which start on precise movement which we controle, like before the skill or after)
+    /// Get all the effect a given effect Type
     /// </summary>
-    /// <param name="startingType">The starting type</param>
-    /// <param name="sender">The sender of the ability</param>
-    /// <param name="target">The target of the ability</param>
-    protected void useEffect(EffectStartingTime startingType, BeingBehavior sender, GameObject target)
+    /// <param name="effectType"></param>
+    /// <returns></returns>
+    public List<AbilityEffectAndValue> getEffectFor(EffectType effectType)
     {
-        List<EffectAndValue> effects = _abilityAttributs.effectAndValues;
-        for (int i = 0; i < effects.Count; i++)
-        {
-            if (effects[i].startingTime == startingType)
-            {
-                effects[i].useEffect(sender, target, this);
-            }
-
-        }
+        return abilityAttributs.effectAndValues.FindAll(x => x.effectType == effectType).ToList();
     }
 
     /// <summary>
@@ -110,5 +115,18 @@ public abstract class Ability : DatabaseElement
     public override string getDescription(Being owner)
     {
         return abilityAttributs.description;
+    }
+
+    /// <summary>
+    /// Increase the level of the ability if the level isn't maxed
+    /// </summary>
+    /// <returns></returns>
+    public bool levelUp()
+    {
+        if (currentLevel == abilityAttributs.maxLevel - 1)
+            return false;
+
+        _currentLevel++;
+        return true;
     }
 }

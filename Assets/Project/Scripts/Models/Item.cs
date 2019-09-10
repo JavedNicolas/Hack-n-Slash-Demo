@@ -29,8 +29,8 @@ public class Item : Interactable
     [SerializeField] TargetType _targetType;
     public TargetType targetType { get => _targetType; }
 
-    [SerializeField] List<EffectAndValue> _effects;
-    public List<EffectAndValue> effects { get => _effects; }
+    [SerializeField] List<ItemEffectAndValue> _effects;
+    public List<ItemEffectAndValue> effects { get => _effects; }
 
     // Recycle
     [SerializeField] bool _canBeRecycle = false;
@@ -63,7 +63,7 @@ public class Item : Interactable
     }
 
     public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize, bool canBeRecycled,
-        TargetType targetType, List<EffectAndValue> effects)
+        TargetType targetType, List<ItemEffectAndValue> effects)
     {
         this.name = name;
         this._itemIcon = itemIcon;
@@ -90,12 +90,12 @@ public class Item : Interactable
             // check if the the effects can be use
             for (int i = 0; i < _effects.Count; i++)
             {
-                if (!effects[i].effect.canBeUsed(sender, target, effects[i].value))
+                if (!effects[i].canBeUsed(sender, target, this))
                     return false;
             }
 
             for (int i = 0; i < _effects.Count; i++)
-                effects[i].effect.use(sender, target, effects[i].value);
+                effects[i].useEffect(sender, target, this);
         }
         return true;
     }
@@ -134,7 +134,7 @@ public class Item : Interactable
         string description = "";
         for(int i = 0; i < effects.Count; i++)
         {
-            description += effects[i].getDescription(owner, name) + "\n";
+            description += effects[i].getDescription(owner, this) + "\n";
         }
         return description;
     }

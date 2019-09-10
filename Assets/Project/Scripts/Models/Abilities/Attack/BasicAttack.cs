@@ -16,7 +16,7 @@ public class BasicAttack : Ability
 
     public override void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
     {
-        useEffect(EffectStartingTime.Hit, sender, targetGameObject.gameObject);
+        
     }
 
     public override void performAbility(BeingBehavior sender, Vector3 targedPosition)

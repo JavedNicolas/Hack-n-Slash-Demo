@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class AbilityConstant
 {
+    public static string abilityBaseSourceName = "Base Abilty Stat";
     public static string skillPrefabFolder = "Prefabs/Skills/";
     public static string projectilePrefabFolder = skillPrefabFolder + "Projectile/";
     public static string attributsFolder = "ScriptableObjects/AbilityAttributs/";
@@ -24,10 +25,11 @@ public enum ProjectileFormType
     Cone, Line
 }
 
-public enum AbilityType
+public enum AbilityTag
 {
-    Attack, Spell, Support
+    Attack, Spell, Projectile, Area, Heal, Support, Physic, Elemental, Lightning, Fire, Wind, Ice, Movement
 }
+
 
 
 

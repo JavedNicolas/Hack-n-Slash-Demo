@@ -19,6 +19,8 @@ public class PlayerBehavior : BeingBehavior
     [Header("Animation")]
     [SerializeField] ParticleSystem[] levelUPParticules;
 
+    public new PlayerAbilityManager abilityManager { get => (PlayerAbilityManager)_abilityManager; }
+
     // UIs
     UITopBar _topBarUI;
     UIInventory _inventoryUI;
@@ -26,7 +28,7 @@ public class PlayerBehavior : BeingBehavior
     UILife _lifeUI;
     UIMana _manaUI;
 
-    // being
+    // override the being
     public new Player being
     {
         get { return (Player)_being; }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Stats
 {
     [SerializeField] protected List<Stat> _stats = new List<Stat>();
-    public List<Stat> stats { get => _stats; }
+    public List<Stat> statList { get => _stats; }
 
     /// <summary>
     /// try to add a stat to the player
@@ -94,9 +94,9 @@ public class Stats
         float multipliedBonus = 0;
 
         foreach (StatType statType in statTypes)
-            for (int i = 0; i < stats.Count; i++)
+            for (int i = 0; i < statList.Count; i++)
             {
-                Stat currentStat = stats[i];
+                Stat currentStat = statList[i];
                 // get the stat value if the stat is of the same type as asked and 
                 // if the stat is no specific
                 // or if it's specific and match the specific To paramater
@@ -116,5 +116,4 @@ public class Stats
         return buffedValue;
     }
 
-    
 }

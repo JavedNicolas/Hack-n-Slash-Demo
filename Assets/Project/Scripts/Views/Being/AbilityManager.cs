@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BeingBehavior))]
 public class AbilityManager : MonoBehaviour
 {
-    BeingBehavior abilitySender;
+    protected BeingBehavior _abilitySender;
+    public BeingBehavior abilitySender { get => _abilitySender; }
 
     private void Awake()
     {
-        abilitySender = GetComponent<BeingBehavior>();
+        _abilitySender = GetComponent<BeingBehavior>();
     }
 
     /// <summary>
@@ -112,43 +112,33 @@ public class AbilityManager : MonoBehaviour
         return true;
     }
 
-    public void launchProjectile(GameObject projectilePrefab, int numberOfProjectile, float projectileOffset, float projectileBaseSpeed, float projectileLife, 
-        Vector3 targetedPosition, ProjectileFormType formType, List<EffectAndValue> effectAndValues)
+    public void launchProjectile(Ability ability, List<AbilityEffectAndValue> projectileEffectValues, Vector3 targetedPosition)
     {
+        IProjectileAttributs projectileAttributs = (IProjectileAttributs)ability.abilityAttributs;
+        int numberOfProjectile = abilitySender.being.stats.getBuffedValue(1, StatType.NumberOfProjectile, ability.getName(), ability.abilityAttributs.stats.statList);
+        float projectileSpeed = abilitySender.being.stats.getBuffedValue(projectileAttributs.baseProjectileSpeed, StatType.ProjectileSpeed, ability.getName(), ability.abilityAttributs.stats.statList);
+
         for (int i = 0; i < numberOfProjectile; i++)
         {
             // create projectile
-            GameObject projectile = Instantiate(projectilePrefab);
-            projectile.transform.position = projectileStartPosition(formType, projectileOffset, i, numberOfProjectile);
+            GameObject projectile = Instantiate(projectileAttributs.projectilePrefab);
+            projectile.transform.position = projectileStartPosition(projectileAttributs.formType, projectileAttributs.offsetBetweenProjectile, i, numberOfProjectile);
 
             // get projectile direction
-            Vector3 direction = projectileDirection(formType, projectileOffset, i, numberOfProjectile, targetedPosition);
+            Vector3 direction = projectileDirection(projectileAttributs.formType, projectileAttributs.offsetBetweenProjectile, i, numberOfProjectile, targetedPosition);
             direction.y = 0;
 
             // Apply force to it
             if (projectile.GetComponent<Rigidbody>() != null)
             {
-                float projectileSpeed = abilitySender.being.stats.getBuffedValue(projectileBaseSpeed, StatType.ProjectileSpeed);
                 projectile.GetComponent<Rigidbody>().AddForce(direction * projectileSpeed, ForceMode.Impulse);
             }
-
-
             // set is collision effect
             if (projectile.GetComponent<Projectile>() != null)
             {
-                List<EffectAndValue> effectAndValuesToUse = new List<EffectAndValue>();
-                for (int e = 0; e < effectAndValues.Count; e++)
-                    if (effectAndValues[e].startingTime == EffectStartingTime.Hit)
-                    {
-                        effectAndValuesToUse.Add(new EffectAndValue());
-                        effectAndValuesToUse[e].addEffectAndValue(effectAndValues[e].effect, effectAndValues[e].value, effectAndValues[e].statTypes);
-                    }
-                        
-
-                projectile.GetComponent<Projectile>().setProjectile(abilitySender, effectAndValuesToUse);
+                projectile.GetComponent<Projectile>().setProjectile(abilitySender, ability, projectileEffectValues);
             }
-
-            Destroy(projectile, projectileLife);
+            Destroy(projectile, projectileAttributs.projectileLife);
         }
     }
 

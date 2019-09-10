@@ -22,6 +22,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] public UIAbilityDescriptionPopUp abilityPopUpPrefab;
 
     UIBasicDescriptionPopUp detailPopUp;
+    UIAbilityDescriptionPopUp abilityDetailPopUp;
 
     private void Awake()
     {
@@ -38,6 +39,9 @@ public class GameUI : MonoBehaviour
     {
         detailPopUp = Instantiate(detailPopUpPrefab);
         detailPopUp.gameObject.SetActive(false);
+
+        abilityDetailPopUp = Instantiate(abilityPopUpPrefab);
+        abilityDetailPopUp.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -49,9 +53,18 @@ public class GameUI : MonoBehaviour
     /// <param name="objectToDescribe">To object to describe (used to position the pop up)</param>
     public void displayDescription(bool display, IDescribable describable, MonoBehaviour objectToDescribe, bool smallSize = false)
     {
-        if (detailPopUp == null)
+        if (detailPopUp == null || abilityDetailPopUp == null)
             initDetailPopUp();
 
+        if(describable is Ability)
+            displayAbilityDescription(display, (Ability)describable, objectToDescribe, smallSize);
+        else
+            displayBasicDescription(display, describable, objectToDescribe, smallSize);
+
+    }
+
+    void displayBasicDescription(bool display, IDescribable describable, MonoBehaviour objectToDescribe, bool smallSize )
+    {
         if (display)
         {
             Canvas canvas = objectToDescribe.GetComponentInParent<Canvas>();
@@ -70,6 +83,29 @@ public class GameUI : MonoBehaviour
             else { return; }
         }
         detailPopUp.gameObject.SetActive(display);
+
+    }
+
+    void displayAbilityDescription(bool display, Ability ability, MonoBehaviour objectToDescribe, bool smallSize )
+    {
+        if (display)
+        {
+            Canvas canvas = objectToDescribe.GetComponentInParent<Canvas>();
+            if (canvas)
+            {
+                abilityDetailPopUp.transform.SetParent(canvas.transform);
+                if (smallSize)
+                    abilityDetailPopUp.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+                else
+                    abilityDetailPopUp.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                Vector3 detailPopUpPosition = objectToDescribe.transform.position;
+
+                abilityDetailPopUp.transform.position = detailPopUpPosition;
+                abilityDetailPopUp.setText(ability, GameManager.instance.getPlayer());
+            }
+            else { return; }
+        }
+        abilityDetailPopUp.gameObject.SetActive(display);
 
     }
 }

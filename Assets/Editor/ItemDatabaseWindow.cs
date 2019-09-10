@@ -22,7 +22,7 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     TargetType targetType;
     InteractableObjectType interactableType;
     int numberOfEffect;
-    List<EffectAndValue> effects = new List<EffectAndValue>();
+    List<ItemEffectAndValue> effects = new List<ItemEffectAndValue>();
 
     [MenuItem("Database/Item")]
     public static void databadeMenuFunction()
@@ -63,12 +63,12 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Value :");
-                effects[i].value = EditorGUILayout.FloatField( effects[i].value);
+                effects[i].value = EditorGUILayout.FloatField(effects[i].value);
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Starting time :");
-                effects[i].startingTime = (EffectStartingTime)EditorGUILayout.EnumPopup(effects[i].startingTime);
+                effects[i].startingTime = (EffectType)EditorGUILayout.EnumPopup(effects[i].startingTime);
                 EditorGUILayout.EndHorizontal();
             }
 
@@ -86,7 +86,7 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         {
             if(effects.Count < size)
             {
-                effects.Add(new EffectAndValue());
+                effects.Add(new ItemEffectAndValue());
             }else if(effects.Count > size)
             {
                 effects.RemoveAt(effects.Count - 1);
@@ -136,6 +136,6 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         numberOfEffect = 0;
         interactableType = default;
         targetType = default;
-        effects = new List<EffectAndValue>();
+        effects = new List<ItemEffectAndValue>();
     }
 }

@@ -722,7 +722,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 9.91e-43, y: 1.16e-43, z: 0, w: 5.4092032e-15}
+  m_BoundingSphereOverride: {x: 4.5905e-41, y: 0, z: 0, w: 0.0000000012750361}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1967,7 +1967,8 @@ MonoBehaviour:
   detailPopUPCanvas: {fileID: 715244491}
   detailPopUpPrefab: {fileID: 6950834220682278968, guid: 2442ad28ec94cde47bb4d085ba25e185,
     type: 3}
-  detailPopUpOffset: {x: 0, y: 0, z: 0}
+  abilityPopUpPrefab: {fileID: 515486597435873383, guid: 03c703a67745ebd479f98390a134fa89,
+    type: 3}
 --- !u!4 &1286926780
 Transform:
   m_ObjectHideFlags: 0
@@ -3066,11 +3067,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 715244492}
     m_Modifications:
-    - target: {fileID: 8901576039468648792, guid: 4558d022dcf8d0a42a0b9ed1c26f675b,
-        type: 3}
-      propertyPath: m_Name
-      value: Life
-      objectReference: {fileID: 0}
     - target: {fileID: 8901576039468648795, guid: 4558d022dcf8d0a42a0b9ed1c26f675b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3175,6 +3171,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8901576039468648792, guid: 4558d022dcf8d0a42a0b9ed1c26f675b,
+        type: 3}
+      propertyPath: m_Name
+      value: Life
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4558d022dcf8d0a42a0b9ed1c26f675b, type: 3}

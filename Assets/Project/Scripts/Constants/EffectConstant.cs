@@ -1,7 +1,7 @@
 ﻿
-public enum EffectStartingTime
+public enum EffectType
 {
-    AbilityStart, Hit, AbilityUsed
+    OnUse, Projectile, Area
 }
 
 public enum EffectTargetType

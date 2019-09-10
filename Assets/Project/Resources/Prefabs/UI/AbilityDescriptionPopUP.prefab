@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 6628163542363502560}
-  nameTMPro: {fileID: 3823899242027324967}
-  dps: {fileID: 4532061287101451271}
-  descriptionTMPro: {fileID: 3538152024484990703}
-  statsTMPro: {fileID: 1758734291888800169}
+  nameText: {fileID: 3823899242027324967}
+  dpsText: {fileID: 4532061287101451271}
+  descriptionText: {fileID: 3538152024484990703}
+  statsText: {fileID: 1758734291888800169}

@@ -228,7 +228,7 @@ MonoBehaviour:
   gameObjectHeight: 2
   canBeAttacked: 1
   teamID: 1
-  dectetionRange: 50
+  dectetionRange: 20
   attackRange: 10
   lifeUI: {fileID: 8404993513805362487}
   loot: []

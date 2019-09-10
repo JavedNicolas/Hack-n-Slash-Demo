@@ -23,6 +23,17 @@ public class EnemyBehavior : BeingBehavior
 
     LightningBall ability;
 
+    // override the being
+    public new Enemy being
+    {
+        get { return (Enemy)_being; }
+        set
+        {
+            _being = value;
+            interactable = value;
+        }
+    }
+
     void Start()
     {
         Enemy enemy = (Enemy)being;

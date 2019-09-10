@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(AbilityManager))]
 public class BeingBehavior : InteractableObject
 {
     [Header("Being model")]

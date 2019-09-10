@@ -12,6 +12,13 @@ public enum StatType
     Life,
     Mana,
 
+    // Damage Types
+    Physical,
+    Ice,
+    Fire,
+    Lightning,
+    Wind,
+
     // ability speed
     CastSpeed,
     AttackSpeed,
@@ -29,7 +36,6 @@ public enum StatType
     // Movement
     MovementSpeed
 }
-
 
 public enum StatBonusType
 {

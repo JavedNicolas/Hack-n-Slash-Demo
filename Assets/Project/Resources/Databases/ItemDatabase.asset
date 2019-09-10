@@ -26,6 +26,7 @@ MonoBehaviour:
     - value: 20
       effect: {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
       startingTime: 0
+      effectType: 0
       statTypes: 
     _canBeRecycle: 1
   - _name: test item
@@ -42,6 +43,7 @@ MonoBehaviour:
     - value: 0
       effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
       startingTime: 0
+      effectType: 0
       statTypes: 
     _canBeRecycle: 0
   - _name: testItem2
@@ -57,5 +59,6 @@ MonoBehaviour:
     - value: 0
       effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
       startingTime: 0
+      effectType: 0
       statTypes: 
     _canBeRecycle: 0

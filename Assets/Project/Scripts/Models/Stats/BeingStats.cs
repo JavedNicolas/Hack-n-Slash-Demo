@@ -46,6 +46,70 @@ public class BeingStats : Stats
         this._currentLevel = currentLevel;
     }
 
+    #region getBuffedValue alternative
+    public int getBuffedValue(int value, StatType statType, string specificTo, List<Stat> abilityStats)
+    {
+        return Mathf.FloorToInt(getBuffedValue((float)value, new List<StatType>() { statType }, specificTo, abilityStats));
+    }
+
+    public int getBuffedValue(int value, List<StatType> statTypes, string specificTo, List<Stat> abilityStats)
+    {
+        return Mathf.FloorToInt(getBuffedValue((float)value, statTypes, specificTo, abilityStats));
+    }
+
+    public float getBuffedValue(float value, StatType statType, string specificTo, List<Stat> abilityStats)
+    {
+        return Mathf.FloorToInt(getBuffedValue(value, new List<StatType>() { statType }, specificTo, abilityStats));
+    }
+    #endregion
+
+    /// <summary>
+    /// get the buffed value by the being stat and the ability stats
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="statTypes"></param>
+    /// <param name="specificTo"></param>
+    /// <param name="abilityStats"></param>
+    /// <returns></returns>
+    public float getBuffedValue(float value, List<StatType> statTypes, string specificTo, List<Stat> abilityStats)
+    {
+        float pureBonus = 0;
+        float additionalBonus = 0;
+        float multipliedBonus = 0;
+
+        List<List<Stat>> statsToUse = new List<List<Stat>>() { statList, abilityStats };
+
+        foreach(List<Stat> stats in statsToUse)
+            foreach (StatType statType in statTypes)
+                for (int i = 0; i < stats.Count; i++)
+                {
+                    Stat currentStat = stats[i];
+                    // get the stat value if the stat is of the same type as asked and 
+                    // if the stat is no specific
+                    // or if it's specific and match the specific To paramater
+                    if (currentStat.statType == statType && (!currentStat.isSpecific || (currentStat.isSpecific && currentStat.isSpecificTo == specificTo)))
+                    {
+                        float influenceFactor = 1;
+
+                        if (currentStat.isInfluencedBy != StatInfluencedBy.Nothing)
+                        {
+                            influenceFactor = getInflencedFactor(currentStat);
+                            influenceFactor = Mathf.FloorToInt(influenceFactor / currentStat.influencedEvery);
+                        }
+
+                        switch (currentStat.bonusType)
+                        {
+                            case StatBonusType.Pure: pureBonus += currentStat.value * influenceFactor; break;
+                            case StatBonusType.additional: additionalBonus += currentStat.value * influenceFactor; break;
+                            case StatBonusType.Multiplied: multipliedBonus += currentStat.value * influenceFactor; break;
+                        }
+                    }
+                }
+
+        float buffedValue = ((value + pureBonus) + ((value + pureBonus) * (additionalBonus / 100))) * (1 + (multipliedBonus / 100));
+        return buffedValue;
+    }
+
     /// <summary>
     /// Return the value buffed by the player stats
     /// </summary>
@@ -59,16 +123,22 @@ public class BeingStats : Stats
         float multipliedBonus = 0;
 
         foreach (StatType statType in statTypes)
-            for (int i = 0; i < stats.Count; i++)
+            for (int i = 0; i < statList.Count; i++)
             {
-                Stat currentStat = stats[i];
+                Stat currentStat = statList[i];
                 // get the stat value if the stat is of the same type as asked and 
                 // if the stat is no specific
                 // or if it's specific and match the specific To paramater
                 if (currentStat.statType == statType && (!currentStat.isSpecific || (currentStat.isSpecific && currentStat.isSpecificTo == specificTo)))
                 {
-                    float influenceFactor = getInflencedFactor(currentStat);
-                    influenceFactor = Mathf.FloorToInt(influenceFactor / currentStat.influencedEvery);
+                    float influenceFactor = 1;
+
+                    if (currentStat.isInfluencedBy != StatInfluencedBy.Nothing)
+                    {
+                        influenceFactor = getInflencedFactor(currentStat);
+                        influenceFactor = Mathf.FloorToInt(influenceFactor / currentStat.influencedEvery);
+                    }
+
                     switch (currentStat.bonusType)
                     {
                         case StatBonusType.Pure: pureBonus += currentStat.value * influenceFactor; break;
@@ -92,8 +162,39 @@ public class BeingStats : Stats
             case StatInfluencedBy.Strength: return strength;
             case StatInfluencedBy.Dexterity: return dexterity;
             case StatInfluencedBy.MaxLife: return maxLife;
-            case StatInfluencedBy.Level: return _currentLevel;
-            default: return 0;
+            case StatInfluencedBy.Level: return currentLevel;
+            default: return 1;
         }
+    }
+
+    public List<string> getBonusListFor(Ability ability)
+    {
+        List<string> bonusStat = new List<string>();
+        List<StatType> statTypes = new List<StatType>();
+
+        foreach (AbilityTag tag in ability.abilityAttributs.abilityTags)
+        {
+            statTypes.AddRange(AbilityTagCorrespondance.getStatTypesToDescribeFor(tag));
+        }
+
+        foreach(StatType statType in statTypes){
+            bonusStat.Add(getStatTypeDesription(0, statType, ability));
+        }
+        return bonusStat;
+    }
+
+    /// <summary>
+    /// return a string describing the stat
+    /// </summary>
+    /// <param name="value">base value (0 if there is no base value)</param>
+    /// <param name="statType"></param>
+    /// <param name="ability"></param>
+    /// <returns></returns>
+    public string getStatTypeDesription(float value, StatType statType, Ability ability)
+    {
+        float bonusValue = getBuffedValue(value, statType, ability.getName(), ability.abilityAttributs.stats.statList);
+        if (bonusValue == 0 || bonusValue - value == 0)
+            return "";
+        return StatDescription.getStatDescription(bonusValue - value, statType);
     }
 }

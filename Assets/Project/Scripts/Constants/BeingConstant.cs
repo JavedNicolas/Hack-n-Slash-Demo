@@ -5,4 +5,5 @@ using UnityEngine;
 public static class BeingConstant
 {
     public static float baseMoveSpeed = 10;
+    public static string ClassBaseSourceName = "Base Class Stat";
 }
