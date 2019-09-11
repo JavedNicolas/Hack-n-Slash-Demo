@@ -38,18 +38,20 @@ public abstract class Ability : DatabaseElement
     float[] getAbilityExpTable()
     {
         float[] expTable;
-        int indexStep = abilityAttributs.levelNeeded + abilityAttributs.maxLevel / ((LevelExperienceTable.levelExperienceNeeded.Length) / 2);
+        int indexStep = Mathf.CeilToInt((float)(LevelExperienceTable.levelExperienceNeeded.Length / 2) / (float)abilityAttributs.maxLevel);
 
         // if the level experience table does not have enought length then the expTable will shorten
         if(LevelExperienceTable.levelExperienceNeeded.Length < (abilityAttributs.maxLevel - 1)* indexStep)
-            expTable = new float[LevelExperienceTable.levelExperienceNeeded.Length / indexStep + 1];
+            expTable = new float[LevelExperienceTable.levelExperienceNeeded.Length / indexStep];
         else
             expTable = new float[abilityAttributs.maxLevel];
 
         expTable[0] = 0;
         for (int i = 1; i < expTable.Length; i++)
         {
-            expTable[i] = LevelExperienceTable.levelExperienceNeeded[indexStep + i];
+            int indexToUse = (abilityAttributs.levelNeeded + indexStep * i) -1;
+            expTable[i] = LevelExperienceTable.levelExperienceNeeded[indexToUse];
+            Debug.Log("Level : " + i + " need " + LevelExperienceTable.levelExperienceNeeded[indexToUse] + " xp to level up");
         }
 
         return expTable;
@@ -82,9 +84,10 @@ public abstract class Ability : DatabaseElement
 
     void levelUp(float[] expTable)
     {
+        //Debug.Log("currentXP On LvlUP from lvl " + stats.currentLevel + " to " + (stats.currentLevel + 1) +" is : " + stats.currentLevelExp+ " Xp needed was : " + expTable[stats.currentLevel]);
         stats.levelUp();
         stats.setCurrentExperience(stats.currentLevelExp - expTable[stats.currentLevel - 1]);
-        hasLeveledUP();
+        //hasLeveledUP();
     }
     #endregion
 
