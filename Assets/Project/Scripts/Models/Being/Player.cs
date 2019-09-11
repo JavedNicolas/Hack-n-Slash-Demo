@@ -5,10 +5,6 @@ using UnityEngine;
 public class Player : Being
 {
     #region attributs
-    [Header("Levels")]
-    private float _currentLevelExp;
-    public float currentLevelExp { get => _currentLevelExp; }
-
     [Header("Inventory")]
     private Inventory _inventory = new Inventory();
     public Inventory inventory { get { return _inventory; } }
@@ -17,20 +13,19 @@ public class Player : Being
     [SerializeField] private float _currentMana;
     public float currentMana { get => _currentMana; }
 
-
     public new PlayerStats stats { get => (PlayerStats)_stats; }
     #endregion
 
-    #region delegate
-    public delegate void HasLevelUp();
-    public HasLevelUp hasLevelUp;
+    #region levelUp delegate
+    public delegate void  HasLeveledUP();
+    public HasLeveledUP hasLeveledUP;
     #endregion
-
 
     public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab, int currentLevel) :
         base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilities, prefab)
     {
-        _stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, currentLevel);
+        _stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed);
+        setLevelUpDelegate();
         this._currentMana = stats.maxMana;
         setBaseStat();
     }
@@ -38,10 +33,11 @@ public class Player : Being
     public Player(Player player) : base(player.name,
         player._stats.maxLife, player._stats.attackSpeed, player._stats.castSpeed, player._stats.attackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
     {
-        _stats = new PlayerStats(player.stats.maxLife, player.stats.maxMana, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, 1);
-        this._currentLevelExp = player.currentLevelExp;
+        _stats = new PlayerStats(player.stats);
+        setLevelUpDelegate();
         this._inventory = player.inventory;
         this._currentMana = player.currentMana;
+        
         setBaseStat();
     }
 
@@ -57,6 +53,11 @@ public class Player : Being
         _stats.addStat(new Stat(StatType.Strength, StatBonusType.Pure, 3, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
     }
 
+    void setLevelUpDelegate()
+    {
+        
+    }
+
     /// <summary>
     /// Spend an amount of mana
     /// </summary>
@@ -64,6 +65,25 @@ public class Player : Being
     public void spendMana(float mana)
     {
         _currentMana = Mathf.Clamp(_currentMana - mana, 0, stats.maxMana);
+    }
+
+    /// <summary>
+    /// Add experience to the player and th
+    /// </summary>
+    /// <param name="value"></param>
+    public void addAllExperience(float value)
+    {
+        addExperience(value);
+        foreach (Ability ability in abilities)
+        {
+            ability.addExperience(value);
+        }
+    }
+
+    public float getPlayerCurrentExpAsFloatPercentage()
+    {
+        int index = stats.currentLevel == LevelExperienceTable.levelExperienceNeeded.Length ? stats.currentLevel -1 : stats.currentLevel;
+        return stats.currentLevelExp / LevelExperienceTable.levelExperienceNeeded[index];
     }
 
     /// <summary>
@@ -75,30 +95,26 @@ public class Player : Being
         // if this is not the last level then add the exp 
         //and level up if the current xp is above the level requirement
         if (stats.currentLevel != LevelExperienceTable.levelExperienceNeeded.Length)
-        { 
-            _currentLevelExp += value;
-            if (_currentLevelExp >= LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1])
-            {
+        {
+            stats.setCurrentExperience(stats.currentLevelExp + value);
+            if (stats.currentLevelExp >= LevelExperienceTable.levelExperienceNeeded[stats.currentLevel])
                 levelUp();
-            }
         }
 
         // if the level is the maxium then leave the currentXP at max
         if (stats.currentLevel == LevelExperienceTable.levelExperienceNeeded.Length)
-        {
-            _currentLevelExp = LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1];
-        }
+            stats.setCurrentExperience(LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1]);
     }
 
     void levelUp()
     {
-        _currentLevelExp = _currentLevelExp - LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1];
         stats.levelUp();
+        stats.setCurrentExperience(stats.currentLevelExp - LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1]);
 
         _currentMana = stats.maxMana;
         _currentLife = stats.maxLife;
 
-        hasLevelUp();
+        hasLeveledUP();
     }
 
 }

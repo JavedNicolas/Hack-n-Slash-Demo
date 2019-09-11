@@ -9,6 +9,7 @@ public class AbilityAttributs : ScriptableObject
     [SerializeField] private string _name;
     [SerializeField] private string _description;
     [SerializeField] private Sprite _icon;
+    [SerializeField] private int _levelNeeded;
     [SerializeField] private int _maxLevel;
     [SerializeField] private List<AbilityTag> _abilityTags;
 
@@ -21,18 +22,15 @@ public class AbilityAttributs : ScriptableObject
     [Header("Effects")]
     [SerializeField] private List<AbilityEffectAndValue> _effectAndValues = new List<AbilityEffectAndValue>();
 
-    [Header("Base Stat")]
-    [SerializeField] protected Stats _stats = new Stats();
-
     public new string name { get => _name;}
     public string description { get => _description; }
+    public int levelNeeded{ get => _levelNeeded; }
     public int maxLevel { get => _maxLevel; }
     public Sprite icon { get => _icon; }
     public float manaCost { get => _manaCost; }
     public AbilityCoolDownType coolDownType { get => _coolDownType; }
     public bool needTarget { get => _needTarget;}
     public bool canBeCastedOnSelf { get => _canBeCastedOnSelf; }
-    public Stats stats { get => _stats; }
     public List<AbilityTag> abilityTags { get => _abilityTags; }
     public List<AbilityEffectAndValue> effectAndValues { get => _effectAndValues; }
 }

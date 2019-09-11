@@ -19,7 +19,6 @@ public class DamageEffect : Effect
         {
             BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
             targetScript.takeDamage(value, effectOrigin, sender);
-            Debug.Log(value);
         }
     }
 }

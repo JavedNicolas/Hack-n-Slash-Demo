@@ -5,8 +5,34 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Stats
 {
+    [Header("Levels")]
+    private float _currentLevelExp = 0;
+    public float currentLevelExp { get => _currentLevelExp; }
+
+    [SerializeField] protected int _currentLevel = 1;
+    public int currentLevel { get => _currentLevel == 0 ? 1 : _currentLevel; }
+
     [SerializeField] protected List<Stat> _stats = new List<Stat>();
     public List<Stat> statList { get => _stats; }
+
+    public Stats() { }
+
+    public Stats(Stats stats)
+    {
+        _currentLevel = stats.currentLevel;
+        _currentLevelExp = stats.currentLevelExp;
+        _stats = stats.statList;
+    }
+
+    public void setCurrentExperience(float value)
+    {
+        _currentLevelExp = value;
+    }
+
+    public void levelUp()
+    {
+        _currentLevel++;
+    }
 
     /// <summary>
     /// try to add a stat to the player
@@ -48,6 +74,7 @@ public class Stats
         return true;
     }
 
+    #region buffed value
     /// <summary>
     /// Return the value buffed by the player stats as an int
     /// </summary>
@@ -115,5 +142,5 @@ public class Stats
 
         return buffedValue;
     }
-
+    #endregion
 }

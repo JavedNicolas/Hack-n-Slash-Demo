@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class LightningBall : Ability
 {
-    public LightningBall() {}
+    public LightningBall() { setBaseStats(); }
 
-    public LightningBall(LightningBall lightningBall)
+    public LightningBall(LightningBall lightningBall) : base(lightningBall)
     {
         this._abilityAttributs = lightningBall.abilityAttributs;
+        setBaseStats();
+    }
+
+    public override void setBaseStats()
+    {
+        _stats.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, AbilityConstant.abilityBaseSourceName, StatInfluencedBy.Intelligence, 10, getName()));
     }
 
     public override void animation()

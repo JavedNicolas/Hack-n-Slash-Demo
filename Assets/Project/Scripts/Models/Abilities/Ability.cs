@@ -5,18 +5,93 @@ using UnityEngine;
 
 [System.Serializable]
 public abstract class Ability : DatabaseElement
-{
+{ 
     // attributs
     // handle the cooldown
     protected float lastTimeUsed = 0f;
 
-    // Level
-    [SerializeField] protected int _currentLevel;
-    public int currentLevel { get => _currentLevel == 0 ? 1 : _currentLevel; }
-
     // Ability attributs
     [SerializeField] protected AbilityAttributs _abilityAttributs;
     public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
+
+    // Stats
+    [SerializeField] protected Stats _stats = new Stats();
+    public Stats stats { get => _stats; }
+
+    #region levelUp delegate
+    public delegate void HasLeveledUP();
+    public HasLeveledUP hasLeveledUP;
+    #endregion
+
+    public Ability()
+    {
+
+    }
+
+    public Ability(Ability ability)
+    {
+        _abilityAttributs = ability.abilityAttributs;
+        _stats = ability.stats;
+    }
+
+    #region exp and level
+    float[] getAbilityExpTable()
+    {
+        float[] expTable;
+        int indexStep = abilityAttributs.levelNeeded + abilityAttributs.maxLevel / ((LevelExperienceTable.levelExperienceNeeded.Length) / 2);
+
+        // if the level experience table does not have enought length then the expTable will shorten
+        if(LevelExperienceTable.levelExperienceNeeded.Length < (abilityAttributs.maxLevel - 1)* indexStep)
+            expTable = new float[LevelExperienceTable.levelExperienceNeeded.Length / indexStep + 1];
+        else
+            expTable = new float[abilityAttributs.maxLevel];
+
+        expTable[0] = 0;
+        for (int i = 1; i < expTable.Length; i++)
+        {
+            expTable[i] = LevelExperienceTable.levelExperienceNeeded[indexStep + i];
+        }
+
+        return expTable;
+    }
+
+    /// <summary>
+    /// Add experience to the player
+    /// </summary>
+    /// <param name="value">The experience to add</param>
+    public void addExperience(float value)
+    {
+        float[] expTable = getAbilityExpTable();
+
+        // if this is not the last level then add the exp 
+        //and level up if the current xp is above the level requirement
+        if (stats.currentLevel != expTable.Length)
+        {
+            stats.setCurrentExperience(stats.currentLevelExp + value);
+            if (stats.currentLevelExp >= expTable[stats.currentLevel])
+                if(stats.currentLevel < abilityAttributs.maxLevel)
+                    levelUp(expTable);
+        }
+
+        // if the level is the maxium then leave the currentXP at max
+        if (stats.currentLevel == expTable.Length)
+        {
+            stats.setCurrentExperience(expTable[stats.currentLevel - 1]);
+        }
+    }
+
+    void levelUp(float[] expTable)
+    {
+        stats.levelUp();
+        stats.setCurrentExperience(stats.currentLevelExp - expTable[stats.currentLevel - 1]);
+        hasLeveledUP();
+    }
+    #endregion
+
+    /// <summary>
+    /// Set the ability base stats
+    /// </summary>
+    public abstract void setBaseStats();
 
     /// <summary>
     /// Start the sender animation for this ability
@@ -115,18 +190,5 @@ public abstract class Ability : DatabaseElement
     public override string getDescription(Being owner)
     {
         return abilityAttributs.description;
-    }
-
-    /// <summary>
-    /// Increase the level of the ability if the level isn't maxed
-    /// </summary>
-    /// <returns></returns>
-    public bool levelUp()
-    {
-        if (currentLevel == abilityAttributs.maxLevel - 1)
-            return false;
-
-        _currentLevel++;
-        return true;
     }
 }

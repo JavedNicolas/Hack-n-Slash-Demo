@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
         playerTMp.abilities.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
-        playerTMp.addStat(new Stat(StatType.Lightning, StatBonusType.Pure, 2, "Test2", StatInfluencedBy.Intelligence, 1));
         playerTMp.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
     }
 

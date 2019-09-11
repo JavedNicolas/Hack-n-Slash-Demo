@@ -31,19 +31,27 @@ public class BeingStats : Stats
     [SerializeField] float _castSpeed;
     public float castSpeed { get => getBuffedValue(_castSpeed, StatType.CastSpeed); }
 
-    [SerializeField] protected int _currentLevel;
-    public int currentLevel { get => _currentLevel; }
-
     public BeingStats() { }
 
-    public BeingStats(float maxLife, float attackSpeed, float castSpeed, float attackRange, float movementSpeed, int currentLevel)
+    public BeingStats(BeingStats stats) : base(stats)
+    {
+        _intelligence = stats.intelligence;
+        _strength = stats.strength;
+        _dexterity = stats.dexterity;
+        _maxLife = stats.maxLife;
+        _attackRange = stats.attackRange;
+        _movementSpeed = stats.movementSpeed;
+        _attackSpeed = stats.attackSpeed;
+        _castSpeed = stats.castSpeed;
+    }
+
+    public BeingStats(float maxLife, float attackSpeed, float castSpeed, float attackRange, float movementSpeed)
     {
         this._maxLife = maxLife;
         this._attackSpeed = attackSpeed;
         this._castSpeed = castSpeed;
         this._attackRange = attackRange;
         this._movementSpeed = movementSpeed;
-        this._currentLevel = currentLevel;
     }
 
     #region getBuffedValue alternative
@@ -192,7 +200,7 @@ public class BeingStats : Stats
     /// <returns></returns>
     public string getStatTypeDesription(float value, StatType statType, Ability ability)
     {
-        float bonusValue = getBuffedValue(value, statType, ability.getName(), ability.abilityAttributs.stats.statList);
+        float bonusValue = getBuffedValue(value, statType, ability.getName(), ability.stats.statList);
         if (bonusValue == 0 || bonusValue - value == 0)
             return "";
         return StatDescription.getStatDescription(bonusValue - value, statType);

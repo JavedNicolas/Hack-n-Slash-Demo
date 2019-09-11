@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7fe211217fe54448ba844d5f00bdaef, type: 3}
   m_Name: IceDamageOnHitEffect
   m_EditorClassIdentifier: 
-  _description: Deal {0} fire damage to an enemy.
+  _description: Deal {0} ice damage to an enemy.
   _effectTargetType: 1

@@ -29,19 +29,19 @@ public class Being : Interactable
     #endregion
 
     #region init
+    public Being() { }
+
     public Being(string name, float baseLife,  float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<Ability> abilities, GameObject prefab)
     {
         this.name = name;
-        this._stats = new BeingStats(baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed, 1);
+        this._stats = new BeingStats(baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed);
         this._ability = abilities;
         this._prefab = prefab;
         this._basicAttack = new BasicAttack();
         this._currentLife = _stats.maxLife;
     }
 
-    public Being() { }
-
-    # endregion
+    #endregion
 
     /// <summary>
     /// Apply damage to the being

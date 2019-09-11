@@ -45,7 +45,7 @@ public class PlayerBehavior : BeingBehavior
 
     private void Start()
     {
-        being.hasLevelUp = launchlevelUpAnimation;
+        being.hasLeveledUP = launchlevelUpAnimation;
         _interactOnce = !autoAttack;
 
         getUIElements();
@@ -190,7 +190,7 @@ public class PlayerBehavior : BeingBehavior
 
     public void addExperience(float value)
     {
-        being.addExperience(value);
+        being.addAllExperience(value);
     }
 
 

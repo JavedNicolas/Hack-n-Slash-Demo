@@ -66,7 +66,7 @@ public class AbilityEffectAndValue
     /// <returns></returns>
     int getCurrentLevel(Ability effectOrigin)
     {
-        return effectOrigin.currentLevel;
+        return effectOrigin.stats.currentLevel;
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public class AbilityEffectAndValue
     /// <returns></returns>
     List<Stat> getStat(Ability effectOrigin)
     {
-        return effectOrigin.abilityAttributs.stats.statList;
+        return effectOrigin.stats.statList;
     }
 
     public string getName()
@@ -101,7 +101,10 @@ public class AbilityEffectAndValue
     /// <returns></returns>
     float getValueForCurrentLevel(int currentLevel)
     {
-        return valuesByLevel[currentLevel - 1];
+        if(currentLevel <= valuesByLevel.Count)
+            return valuesByLevel[currentLevel - 1];
+
+        return valuesByLevel[valuesByLevel.Count - 1];
     }
 }
 

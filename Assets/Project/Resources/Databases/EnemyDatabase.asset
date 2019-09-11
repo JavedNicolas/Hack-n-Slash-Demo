@@ -17,6 +17,7 @@ MonoBehaviour:
     _databaseID: 2
     _interactibleType: 0
     _stats:
+      _currentLevel: 1
       _stats: []
       _intelligence: 0
       _strength: 0
@@ -26,7 +27,6 @@ MonoBehaviour:
       _movementSpeed: 10
       _attackSpeed: 1
       _castSpeed: 1
-      _currentLevel: 0
     _prefab: {fileID: 7699618545951562393, guid: 539abc4bc8423374ea56e4d48393cccc,
       type: 3}
     _possibleLoot:
@@ -90,11 +90,12 @@ MonoBehaviour:
       changeToDrop: 20
       quantity: 2
       isRandom: 0
-    _experience: 50
+    _experience: 150
   - _name: Enemy2
     _databaseID: 2
     _interactibleType: 0
     _stats:
+      _currentLevel: 1
       _stats: []
       _intelligence: 0
       _strength: 0
@@ -104,7 +105,6 @@ MonoBehaviour:
       _movementSpeed: 10
       _attackSpeed: 1
       _castSpeed: 1
-      _currentLevel: 0
     _prefab: {fileID: 7699618545951562393, guid: 32c51c63ea64b644c931f9d6d037aeac,
       type: 3}
     _possibleLoot:

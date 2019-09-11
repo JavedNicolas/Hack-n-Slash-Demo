@@ -17,7 +17,7 @@ public class UITopBar : MonoBehaviour
 
     private void updateBar()
     {
-        float expPercentage = _player.currentLevelExp / LevelExperienceTable.levelExperienceNeeded[_player.stats.currentLevel - 1];
+        float expPercentage = _player.getPlayerCurrentExpAsFloatPercentage();
 
         _expBar.updateExpDisplay(expPercentage);
         _levelDisplayerText.text = _player.stats.currentLevel.ToString();

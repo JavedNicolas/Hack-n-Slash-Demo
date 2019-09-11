@@ -115,8 +115,8 @@ public class AbilityManager : MonoBehaviour
     public void launchProjectile(Ability ability, List<AbilityEffectAndValue> projectileEffectValues, Vector3 targetedPosition)
     {
         IProjectileAttributs projectileAttributs = (IProjectileAttributs)ability.abilityAttributs;
-        int numberOfProjectile = abilitySender.being.stats.getBuffedValue(1, StatType.NumberOfProjectile, ability.getName(), ability.abilityAttributs.stats.statList);
-        float projectileSpeed = abilitySender.being.stats.getBuffedValue(projectileAttributs.baseProjectileSpeed, StatType.ProjectileSpeed, ability.getName(), ability.abilityAttributs.stats.statList);
+        int numberOfProjectile = abilitySender.being.stats.getBuffedValue(1, StatType.NumberOfProjectile, ability.getName(), ability.stats.statList);
+        float projectileSpeed = abilitySender.being.stats.getBuffedValue(projectileAttributs.baseProjectileSpeed, StatType.ProjectileSpeed, ability.getName(), ability.stats.statList);
 
         for (int i = 0; i < numberOfProjectile; i++)
         {

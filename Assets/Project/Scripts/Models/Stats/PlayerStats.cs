@@ -9,17 +9,17 @@ public class PlayerStats : BeingStats
     [SerializeField] private int _currentJobLevel;
     public int currentJobLevel { get => _currentJobLevel; }
 
+    public PlayerStats(PlayerStats stats) : base(stats)
+    {
+        _maxMana = stats.maxMana;
+        _currentJobLevel = stats.currentJobLevel;
+    }
 
-    public PlayerStats(float maxLife,float maxMana,  float attackSpeed, float castSpeed, float attackRange, float movementSpeed, int currentLevel) : 
-        base(maxLife, attackSpeed, castSpeed, attackRange, movementSpeed, currentLevel)
+    public PlayerStats(float maxLife,float maxMana,  float attackSpeed, float castSpeed, float attackRange, float movementSpeed) : 
+        base(maxLife, attackSpeed, castSpeed, attackRange, movementSpeed)
     {
         this._maxMana = maxMana;
         this._currentJobLevel = 0;
-    }
-
-    public void levelUp()
-    {
-        _currentLevel++;
     }
 
     protected override float getInflencedFactor(Stat stat)

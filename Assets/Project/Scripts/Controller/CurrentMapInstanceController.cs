@@ -22,7 +22,7 @@ public class CurrentMapInstanceController
 
     void spawnEnemies()
     {
-        int numberOfEnemies = Random.Range(7, 20);
+        int numberOfEnemies = Random.Range(30, 100);
 
         for (int i = 0; i < numberOfEnemies; i++)
         {

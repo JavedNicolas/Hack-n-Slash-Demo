@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Lighning Ball
   _description: Launch a lightning in front of you.
   _icon: {fileID: 21300000, guid: 6d254a407afa0b1498389ee33e5649d6, type: 3}
+  _levelNeeded: 0
   _maxLevel: 10
   _abilityTags: 020000000100000008000000
   _manaCost: 5
@@ -22,33 +23,22 @@ MonoBehaviour:
   _needTarget: 0
   _canBeCastedOnSelf: 0
   _effectAndValues:
-  - effectValues:
-    - valuesByLevel:
-      - 25
-      statTypes: 080000000d000000
-    - valuesByLevel:
-      - 25
-      statTypes: 070000000d000000
+  - valuesByLevel:
+    - 25
+    - 50
+    statTypes: 080000000d000000
     effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
     effectType: 1
+  - valuesByLevel:
+    - 25
+    - 40
+    - 70
+    statTypes: 070000000d000000
+    effect: {fileID: 11400000, guid: ee4809c43a44e094aa717cac25555356, type: 2}
+    effectType: 1
   _stats:
+    _currentLevel: 4
     _stats:
-    - statType: 15
-      bonusType: 0
-      isInfluencedBy: 0
-      influencedEvery: 0
-      value: 1
-      sourceName: 
-      isSpecific: 0
-      isSpecificTo: 
-    - statType: 14
-      bonusType: 0
-      isInfluencedBy: 0
-      influencedEvery: 0
-      value: 20
-      sourceName: 
-      isSpecific: 0
-      isSpecificTo: 
     - statType: 14
       bonusType: 0
       isInfluencedBy: 0
@@ -62,3 +52,4 @@ MonoBehaviour:
   _formType: 0
   _offsetBetweenProjectile: 10
   _projectileLife: 1
+  _baseProjectileSpeed: 0
