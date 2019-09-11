@@ -51,7 +51,6 @@ public abstract class Ability : DatabaseElement
         {
             int indexToUse = (abilityAttributs.levelNeeded + indexStep * i) -1;
             expTable[i] = LevelExperienceTable.levelExperienceNeeded[indexToUse];
-            Debug.Log("Level : " + i + " need " + LevelExperienceTable.levelExperienceNeeded[indexToUse] + " xp to level up");
         }
 
         return expTable;

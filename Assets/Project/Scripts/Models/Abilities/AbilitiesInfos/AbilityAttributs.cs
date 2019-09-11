@@ -19,7 +19,6 @@ public class AbilityAttributs : ScriptableObject
     [SerializeField] private bool _needTarget;
     [SerializeField] private bool _canBeCastedOnSelf;
 
-    [Header("Effects")]
     [SerializeField] private List<AbilityEffectAndValue> _effectAndValues = new List<AbilityEffectAndValue>();
 
     public new string name { get => _name;}

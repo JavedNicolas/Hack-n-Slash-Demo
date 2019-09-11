@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class AbilityEffectAndValue
 {
     [Header("Effect and values")]
-    [SerializeField] public List<float> valuesByLevel;
+    [SerializeField] public List<float> valuesByLevel = new List<float>();
     [SerializeField] public List<StatType> statTypes = new List<StatType>();
 
     [SerializeField] public Effect effect;

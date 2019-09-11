@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = ScriptableObjectConstant.abilityAttributsMenuName + "Lightning Ball", fileName = "Lightning Ball")]
 public class LightningBallAttributs : AbilityAttributs, IProjectileAttributs
 {
+    [Header("Projectile")]
     [SerializeField] GameObject _projectilePrefab;
     [SerializeField] ProjectileFormType _formType;
     [SerializeField] float _offsetBetweenProjectile ;

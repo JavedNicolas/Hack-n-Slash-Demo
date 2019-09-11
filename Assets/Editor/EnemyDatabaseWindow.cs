@@ -21,13 +21,15 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     float movementSpeed;
     InteractableObjectType interactableType;
 
+    bool displayLoot = false;
+
     // loot
     int numberOfLoot;
     List<Loot> possibleLoots = new List<Loot>();
     List<int> lootID = new List<int>();
 
     //xp
-    [Range(0,100)]float xp;
+    float xp;
 
     private void OnEnable()
     {
@@ -60,7 +62,18 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
         interactableType = InteractableObjectType.Enemy;
         numberOfLoot = EditorGUILayout.IntField("Number Of Loot :", numberOfLoot);
         updateLootListsSize(numberOfLoot);
+
+        // display of hide loot button
         if (numberOfLoot != 0)
+        {
+            string displayButtonText = displayLoot ? "Hide" : "Show";
+            if (GUILayout.Button(displayButtonText + " loots"))
+            {
+                displayLoot = !displayLoot;
+            }
+        }
+
+        if (numberOfLoot != 0 && displayLoot)
             for (int i = 0; i < numberOfLoot; i++)
                 displayLootForm(i);
 
@@ -76,45 +89,39 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     /// <param name="index"></param>
     public void displayLootForm(int index)
     {
+        EditorGUILayout.BeginVertical(GUILayout.MaxWidth(300));
         EditorGUILayout.LabelField("Loot n° " + index + " : ", centerTitle);
 
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Item :");
         EditorGUILayout.BeginVertical("Box");
+
+        EditorGUILayout.LabelField("Item :", centerTitle);
         possibleLoots[index].isRandom = EditorGUILayout.Toggle("Is a random Item :", possibleLoots[index].isRandom);
         if (!possibleLoots[index].isRandom)
         {
             if (possibleLoots[index].item != null)
                 lootID[index] = possibleLoots[index].item.databaseID;
-            lootID[index] = EditorGUILayout.IntField(lootID[index]);
-            if (lootID[index] != -1)
-            {
-                Item item = itemDatabase.getElementWithDBID(lootID[index]);
-                if(item != null)
+                lootID[index] = EditorGUILayout.IntField("Item Database Id : ", lootID[index]);
+                if (lootID[index] != -1)
                 {
-                    EditorGUILayout.LabelField(item.name);
-                    possibleLoots[index].item = item;
-                }else
-                    EditorGUILayout.LabelField("Can't find this item...");
-
-            }
+                    Item item = itemDatabase.getElementWithDBID(lootID[index]);
+                    if(item != null)
+                    {
+                        EditorGUILayout.LabelField("Item name : ", item.name, new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold }); ;
+                        possibleLoots[index].item = item;
+                    }else
+                        EditorGUILayout.LabelField("Can't find this item...");
+                }
         }
 
-        EditorGUILayout.EndVertical();
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Chance to drop :");
+        EditorGUILayout.LabelField("Chance to drop :", centerTitle);
         possibleLoots[index].changeToDrop = EditorGUILayout.FloatField(possibleLoots[index].changeToDrop);
-        EditorGUILayout.EndHorizontal();
-
         if (!possibleLoots[index].isRandom)
         {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Quantity :");
+            EditorGUILayout.LabelField("Quantity :", centerTitle);
             possibleLoots[index].quantity = EditorGUILayout.IntField(possibleLoots[index].quantity);
-            EditorGUILayout.EndHorizontal();
         }
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndVertical();
     }
 
     void updateLootListsSize(int size)

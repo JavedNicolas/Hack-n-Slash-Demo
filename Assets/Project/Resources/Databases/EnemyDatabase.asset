@@ -109,22 +109,23 @@ MonoBehaviour:
       type: 3}
     _possibleLoot:
     - item:
-        _name: Life potion
-        _databaseID: 0
+        _name: test item
+        _databaseID: 1
         _interactibleType: 1
-        _itemIcon: {fileID: 21300000, guid: f128ea2283adf8846af2958d4ee0efe9, type: 3}
-        _itemModel: {fileID: 0}
+        _itemIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+        _itemModel: {fileID: 4611060930209723367, guid: 6342c2e676e182b4996f5eb7dd8627cf,
+          type: 3}
         _isConsomable: 1
         _isStackable: 1
         _maxStackableSize: 10
-        _targetType: 0
+        _targetType: 1
         _effects:
-        - value: 20
-          effect: {fileID: 11400000, guid: 82cab90200104f04e999a40bfbea33f8, type: 2}
+        - value: 0
+          effect: {fileID: 11400000, guid: b96bbc83cbb72204da3f2c567a09a490, type: 2}
           startingTime: 0
           effectType: 0
           statTypes: 
-        _canBeRecycle: 1
+        _canBeRecycle: 0
       changeToDrop: 30
       quantity: 1
       isRandom: 1

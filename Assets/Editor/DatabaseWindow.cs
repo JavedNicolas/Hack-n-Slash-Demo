@@ -23,6 +23,7 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     protected int databaseID;
 
     protected GUIStyle centerTitle;
+    protected GUIStyle leftTitle;
 
     struct DBElements
     {
@@ -54,6 +55,7 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     void OnGUI()
     {
         centerTitle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold };
+        leftTitle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold };
         EditorGUILayout.BeginHorizontal();
         displayDatabaseContent();
         displayForm();
