@@ -24,33 +24,19 @@ MonoBehaviour:
   _canBeCastedOnSelf: 0
   _effectAndValues:
   - valuesByLevel:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    statTypes: 
-    effect: {fileID: 0}
-    effectType: 0
-  - valuesByLevel:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    statTypes: 
-    effect: {fileID: 0}
-    effectType: 0
+    - 10
+    - 25
+    - 50
+    - 70
+    - 120
+    - 200
+    - 290
+    - 400
+    - 550
+    - 700
+    statTypes: 080000000d000000
+    effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
+    effectType: 1
   _projectilePrefab: {fileID: 233050881289928282, guid: 28560739714ed0e4d9bd0383c2431c85,
     type: 3}
   _formType: 0

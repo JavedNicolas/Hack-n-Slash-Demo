@@ -132,7 +132,7 @@ public class BeingBehavior : InteractableObject
     /// <param name="target">The targeted being behavior</param>
     public void useAbility(Ability ability, Vector3 targetedPosition, BeingBehavior target)
     {
-        if(_abilityManager.tryToPerformAbility(target, targetedPosition, ability))
+        if(abilityManager.tryToPerformAbility(target, targetedPosition, ability))
         {
             abilityUsed(targetedPosition, target, ability);
         }

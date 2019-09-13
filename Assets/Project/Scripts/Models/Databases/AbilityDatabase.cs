@@ -11,7 +11,8 @@ public class AbilityDatabase : Database<Ability>
     {
         _elements = new List<Ability>()
         {
-            new LightningBall()
+            new LightningBall(),
+            new ArcaneArea()
         };
         setAbilitiesAttributs();
     }

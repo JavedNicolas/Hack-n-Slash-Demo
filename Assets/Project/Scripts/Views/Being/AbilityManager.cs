@@ -12,56 +12,9 @@ public class AbilityManager : MonoBehaviour
         _abilitySender = GetComponent<BeingBehavior>();
     }
 
+    #region ability usage
     /// <summary>
-    /// Try to perform the ability (used for player)
-    /// </summary>
-    /// <param name="mouseHit">Mouse position</param>
-    /// <param name="ability">The ability</param>
-    /// <param name="senderBehavior">The sender BeingBehavior</param>
-    /// <returns></returns>
-    public bool tryToPerformAbility(RaycastHit mouseHit, Ability ability)
-    {
-        if (ability.isAbilityAvailable(abilitySender.being))
-        {
-            if(ability.abilityAttributs.needTarget)
-            {
-                BeingBehavior targetScript = mouseHit.transform.GetComponent<BeingBehavior>();
-                if (targetScript != null)
-                {
-                    bool canBeUsed = false;
-                    if (targetScript.being == abilitySender.being && ability.abilityAttributs.canBeCastedOnSelf)
-                        canBeUsed = true;
-
-                    if(canBeUsed)
-                        canBeUsed = checkMana(ability);
-
-                    if (canBeUsed)
-                    {
-                        ability.performAbility(abilitySender, targetScript);
-                        if (abilitySender.being is Player)
-                            ((Player)abilitySender.being).spendMana(ability.abilityAttributs.manaCost);
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                if (checkMana(ability))
-                {
-                    ability.performAbility(abilitySender, mouseHit.point);
-                    if (abilitySender.being is Player)
-                        ((Player)abilitySender.being).spendMana(ability.abilityAttributs.manaCost);
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    /// <summary>
-    /// Try to perform the ability (used for AI)
+    /// Try to perform the ability
     /// </summary>
     /// <param name="targetBehavior">The targeted beingBehavior script</param>
     /// <param name="targetedPosition">Mouse position</param>
@@ -74,29 +27,57 @@ public class AbilityManager : MonoBehaviour
         {
             if (ability.abilityAttributs.needTarget)
             {
-                if (targetBehavior != null)
-                {
-                    bool canBeUsed = false;
-                    if (targetBehavior.being == abilitySender.being && ability.abilityAttributs.canBeCastedOnSelf)
-                        canBeUsed = true;
-                    else if (targetBehavior.being != abilitySender.being)
-                        canBeUsed = true;
-
-                    if (canBeUsed)
-                    {
-                        ability.performAbility(abilitySender, targetBehavior);
-                        return true;
-                    }
-                }
+                return tryPerformTargetedAbility(targetBehavior, ability);
             }
             else
             {
-                ability.performAbility(abilitySender, targetedPosition);
-                return true;
+                return tryPerformNotTargetedAbility(targetedPosition, ability);
             }
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Try to perform a targeted ability
+    /// </summary>
+    /// <param name="targetedTransform"></param>
+    /// <param name="ability"></param>
+    /// <returns>return false if the ability could not be used, else return true</returns>
+    protected virtual bool tryPerformTargetedAbility(BeingBehavior targetedBehavior, Ability ability)
+    {
+        if (targetedBehavior != null)
+        {
+            bool canBeUsed = false;
+            if (targetedBehavior.being == abilitySender.being && ability.abilityAttributs.canBeCastedOnSelf)
+                canBeUsed = true;
+            else if (targetedBehavior.being != abilitySender.being)
+                canBeUsed = true;
+
+            if (canBeUsed)
+                canBeUsed = checkMana(ability);
+
+            if (canBeUsed)
+            {
+                ability.performAbility(abilitySender, targetedBehavior);
+                if (abilitySender.being is Player)
+                    ((Player)abilitySender.being).spendMana(ability.abilityAttributs.manaCost);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// try to perform a not targeted ability
+    /// </summary>
+    /// <param name="targetedPosition"></param>
+    /// <param name="ability"></param>
+    /// <returns>return true if the ability could be used</returns>
+    protected virtual bool tryPerformNotTargetedAbility(Vector3 targetedPosition, Ability ability)
+    {
+        ability.performAbility(abilitySender, targetedPosition);
+        return true;
     }
 
     public bool checkMana(Ability ability)
@@ -111,7 +92,33 @@ public class AbilityManager : MonoBehaviour
         }
         return true;
     }
+    #endregion
 
+    #region spawn abilities
+    /// <summary>
+    /// Spawn an area for an ability
+    /// </summary>
+    /// <param name="ability"></param>
+    /// <param name="areaEffectAndValues">The effect the area will do on collision</param>
+    /// <param name="targetedPosition"></param>
+    public void spawnArea(Ability ability, List<AbilityEffectAndValue> areaEffectAndValues, Vector3 targetedPosition)
+    {
+        IAreaAttributs areaAttributs = (IAreaAttributs)ability.abilityAttributs;
+        GameObject area = Instantiate(areaAttributs.areaPrefab);
+        area.transform.position = targetedPosition;
+
+        if(area.GetComponent<Area>() != null)
+        {
+            area.GetComponent<Area>().setArea(ability, areaEffectAndValues, _abilitySender);
+        }
+    }
+
+    /// <summary>
+    /// Send projectile for an ability
+    /// </summary>
+    /// <param name="ability"></param>
+    /// <param name="projectileEffectValues">The effect the projectiles do make on collision</param>
+    /// <param name="targetedPosition"></param>
     public void launchProjectile(Ability ability, List<AbilityEffectAndValue> projectileEffectValues, Vector3 targetedPosition)
     {
         IProjectileAttributs projectileAttributs = (IProjectileAttributs)ability.abilityAttributs;
@@ -195,4 +202,5 @@ public class AbilityManager : MonoBehaviour
 
         return direction;
     }
+    #endregion
 }

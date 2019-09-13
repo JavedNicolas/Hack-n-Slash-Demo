@@ -26,6 +26,6 @@ public class BasicAttack : Ability
 
     public override void setBaseStats()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

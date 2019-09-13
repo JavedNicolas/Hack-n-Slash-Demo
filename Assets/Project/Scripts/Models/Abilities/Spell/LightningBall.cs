@@ -5,13 +5,9 @@ using UnityEngine;
 
 public class LightningBall : Ability
 {
-    public LightningBall() { setBaseStats(); }
+    public LightningBall() { }
 
-    public LightningBall(LightningBall lightningBall) : base(lightningBall)
-    {
-        this._abilityAttributs = lightningBall.abilityAttributs;
-        setBaseStats();
-    }
+    public LightningBall(LightningBall lightningBall) : base(lightningBall) { }
 
     public override void setBaseStats()
     {

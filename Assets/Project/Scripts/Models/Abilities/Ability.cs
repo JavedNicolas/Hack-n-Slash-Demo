@@ -25,13 +25,14 @@ public abstract class Ability : DatabaseElement
 
     public Ability()
     {
-
+        setBaseStats();
     }
 
     public Ability(Ability ability)
     {
         _abilityAttributs = ability.abilityAttributs;
-        _stats = ability.stats;
+        _stats = new Stats(ability.stats);
+        setBaseStats();
     }
 
     #region exp and level
@@ -111,9 +112,9 @@ public abstract class Ability : DatabaseElement
     /// Perform Ability (used for projectile)
     /// </summary>
     /// <param name="sender">The sender being model</param>
-    /// <param name="targedPosition">The ability targeted position</param>
+    /// <param name="targetedPosition">The ability targeted position</param>
     /// <param name="senderGameObject">The sender gameObject</param>
-    abstract public void performAbility(BeingBehavior sender, Vector3 targedPosition);
+    abstract public void performAbility(BeingBehavior sender, Vector3 targetedPosition);
 
     /// <summary>
     /// Use every effect for the effectType

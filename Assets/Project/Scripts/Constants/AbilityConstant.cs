@@ -30,6 +30,11 @@ public enum AbilityTag
     Attack, Spell, Projectile, Area, Heal, Support, Physic, Elemental, Lightning, Fire, Wind, Ice, Movement
 }
 
+public enum AreaType
+{
+    Burst, DamageOverTime
+}
+
 
 
 

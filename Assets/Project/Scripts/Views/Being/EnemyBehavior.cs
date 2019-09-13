@@ -38,7 +38,7 @@ public class EnemyBehavior : BeingBehavior
     {
         Enemy enemy = (Enemy)being;
         loot = enemy.generateLoot();
-        being.abilities.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
+        being.abilities.Add(new ArcaneArea((ArcaneArea)GameManager.instance.getAbilityOfType(typeof(ArcaneArea))));
 
         lifeUI.setBeing(being);
 
@@ -71,18 +71,15 @@ public class EnemyBehavior : BeingBehavior
     {
         if (enemies.Count > 0)
         {
-            if(closestEnemy == null)
-            {
-                int closestEnemyIndex = enemies.FindIndex(x => x.teamID != teamID && canBeAttacked);
-                closestEnemy = (closestEnemyIndex < enemies.Count ? enemies[closestEnemyIndex] : null);
-            }
-
-            if (closestEnemy == null)
+            if(closestEnemy == null || closestEnemy.being.isDead())
             {
                 stopMoving();
+                int closestEnemyIndex = enemies.FindIndex(x => x.teamID != teamID && canBeAttacked);
+                closestEnemy = (closestEnemyIndex < enemies.Count ? enemies[closestEnemyIndex] : null);
                 return;
             }
-                
+
+
             float currentClosestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
 
             for (int i = 1; i < enemies.Count; i++)

@@ -10,8 +10,9 @@ public class PlayerBehavior : BeingBehavior
     [Header("Camera Rotation")]
     [SerializeField] float cameraRotation = 30f;
 
-    [Header("Movement Mask")]
+    [Header("Raycast Masks")]
     [SerializeField] LayerMask movementMask;
+    [SerializeField] LayerMask abilitySpawnMask;
 
     [Header("Clicks")]
     float dropItemMaxDistance = 20f;
@@ -19,7 +20,11 @@ public class PlayerBehavior : BeingBehavior
     [Header("Animation")]
     [SerializeField] ParticleSystem[] levelUPParticules;
 
-    public new PlayerAbilityManager abilityManager { get => (PlayerAbilityManager)_abilityManager; }
+    // camera
+    [SerializeField] Camera _playerCamera;
+    public Camera playerCamera { get => _playerCamera; }
+
+    public new PlayerAbilityManager abilityManager { get => (PlayerAbilityManager)_abilityManager;}
 
     // UIs
     UITopBar _topBarUI;
@@ -47,9 +52,14 @@ public class PlayerBehavior : BeingBehavior
     {
         being.hasLeveledUP = launchlevelUpAnimation;
         _interactOnce = !autoAttack;
-
+        _abilityManager = GetComponent<PlayerAbilityManager>();
         getUIElements();
         initPlayerUI();
+
+        if(_playerCamera == null)
+        {
+            _playerCamera = Camera.main;
+        }
 
         GameManager.instance.leftClickDelegate += LeftClick;
         GameManager.instance.rightClickDelegate += RightClick;
@@ -91,8 +101,7 @@ public class PlayerBehavior : BeingBehavior
             return;
         }
             
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementMask))
         {
@@ -125,18 +134,24 @@ public class PlayerBehavior : BeingBehavior
             if (Input.GetButton(skillSlot.inputName))
                 if (skillSlot.ability != null)
                 {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
                     RaycastHit mouseHit;
+                    // cast a ray on the mouse position from the camera
                     if (Physics.Raycast(ray, out mouseHit))
-                        if (_abilityManager.tryToPerformAbility(mouseHit, skillSlot.ability))
+                    {
+                        Vector3 targetedPosition = mouseHit.point;
+
+                        // get the position of the ground at the targeted position
+                        RaycastHit abilitySpawnHit;
+                        if(Physics.Raycast(ray, out abilitySpawnHit, Mathf.Infinity, abilitySpawnMask))
+                            targetedPosition.y = abilitySpawnHit.point.y;
+
+                        BeingBehavior targetedBehavior = mouseHit.transform.GetComponent<BeingBehavior>();
+                        if (abilityManager.tryToPerformAbility(targetedBehavior, targetedPosition, skillSlot.ability))
                         {
-                            BeingBehavior target = null;
-                            if (skillSlot.ability.abilityAttributs.needTarget)
-                                target = mouseHit.transform.GetComponent<BeingBehavior>();
-
-                            abilityUsed(mouseHit.point, target, skillSlot.ability);
+                            abilityUsed(mouseHit.point, targetedBehavior, skillSlot.ability);
                         }
-
+                    }
                 }
         }
     }
@@ -193,5 +208,9 @@ public class PlayerBehavior : BeingBehavior
         being.addAllExperience(value);
     }
 
+    protected override void die()
+    {
+        
+    }
 
 }

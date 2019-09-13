@@ -31,7 +31,13 @@ public enum StatType
 
     // Area
     AreaDamage,
+    AreaBurstDamage,
+    AreaOverTimeDamage,
     AreaSize,
+    AreaOverTimeDelay,
+
+    // Degen
+    Degen,
 
     // Movement
     MovementSpeed

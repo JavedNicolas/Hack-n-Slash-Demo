@@ -33,7 +33,7 @@ public static class AbilityTagCorrespondance
             case AbilityTag.Attack: return new List<StatType>() { };
             case AbilityTag.Spell: return new List<StatType>() { };
             case AbilityTag.Projectile: return new List<StatType>() { StatType.ProjectileSpeed, StatType.NumberOfProjectile };
-            case AbilityTag.Area: return new List<StatType>() { StatType.AreaSize };
+            case AbilityTag.Area: return new List<StatType>() { StatType.AreaSize, StatType.AreaDamage, StatType.AreaOverTimeDelay };
             case AbilityTag.Heal: return new List<StatType>() { };
             case AbilityTag.Support: return new List<StatType>() { };
             case AbilityTag.Physic: return new List<StatType>() {};

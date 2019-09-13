@@ -67,7 +67,7 @@ public class BeingStats : Stats
 
     public float getBuffedValue(float value, StatType statType, string specificTo, List<Stat> abilityStats)
     {
-        return Mathf.FloorToInt(getBuffedValue(value, new List<StatType>() { statType }, specificTo, abilityStats));
+        return getBuffedValue(value, new List<StatType>() { statType }, specificTo, abilityStats);
     }
     #endregion
 

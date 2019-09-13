@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         playerTMp = new Player("Player Test", 200, 100, 1, 1, 10, new List<Ability>(), playerPrefab,1);
         playerTMp.abilities.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
+        playerTMp.abilities.Add(new ArcaneArea((ArcaneArea)GameManager.instance.getAbilityOfType(typeof(ArcaneArea))));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));

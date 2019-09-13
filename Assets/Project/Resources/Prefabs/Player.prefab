@@ -14554,7 +14554,7 @@ GameObject:
   - component: {fileID: 3814854363101766748}
   - component: {fileID: 611912048}
   - component: {fileID: 6872138980982141078}
-  - component: {fileID: 183059988900791029}
+  - component: {fileID: 1932733834129486976}
   m_Layer: 9
   m_Name: PlayerModel
   m_TagString: Player
@@ -14626,12 +14626,16 @@ MonoBehaviour:
   movementMask:
     serializedVersion: 2
     m_Bits: 1024
+  abilitySpawnMask:
+    serializedVersion: 2
+    m_Bits: 1024
   levelUPParticules:
   - {fileID: 453404143213531545}
   - {fileID: 5928743515510913849}
   - {fileID: 5904384717903025744}
+  _playerCamera: {fileID: 8251357967158934507}
   autoAttack: 1
---- !u!114 &183059988900791029
+--- !u!114 &1932733834129486976
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14640,7 +14644,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7869963577138430954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9562967307e26846809c4f1f8efce0c, type: 3}
+  m_Script: {fileID: 11500000, guid: feb640108907e5d4aa28f96d561fdfe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8251357967158934505
