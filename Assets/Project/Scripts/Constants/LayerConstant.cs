@@ -4,5 +4,6 @@ using UnityEngine;
 
 public enum LayersIndex
 {
-    Ground = 10
+    Ground = 10,
+    Environment = 11
 }

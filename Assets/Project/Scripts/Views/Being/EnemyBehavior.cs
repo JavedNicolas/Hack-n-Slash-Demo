@@ -38,7 +38,7 @@ public class EnemyBehavior : BeingBehavior
     {
         Enemy enemy = (Enemy)being;
         loot = enemy.generateLoot();
-        being.abilities.Add(new ArcaneArea((ArcaneArea)GameManager.instance.getAbilityOfType(typeof(ArcaneArea))));
+        being.abilities.Add(being.basicAttack);
 
         lifeUI.setBeing(being);
 

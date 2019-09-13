@@ -20,6 +20,7 @@ public class BeingBehavior : InteractableObject
     protected NavMeshPath _navMeshPath;
     protected Vector3 _yOffset;
 
+
     //Ability manager
     protected AbilityManager _abilityManager;
     public AbilityManager abilityManager { get => _abilityManager; }

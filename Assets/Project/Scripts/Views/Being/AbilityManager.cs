@@ -4,12 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(BeingBehavior))]
 public class AbilityManager : MonoBehaviour
 {
+    [Header("Field of view")]
+    static protected LayerMask _blockingElements;
+
     protected BeingBehavior _abilitySender;
     public BeingBehavior abilitySender { get => _abilitySender; }
 
     private void Awake()
     {
         _abilitySender = GetComponent<BeingBehavior>();
+        _blockingElements = LayerMask.GetMask(LayersIndex.Environment.ToString());
     }
 
     #region ability usage
@@ -25,17 +29,37 @@ public class AbilityManager : MonoBehaviour
     {
         if (ability.isAbilityAvailable(abilitySender.being))
         {
-            if (ability.abilityAttributs.needTarget)
-            {
-                return tryPerformTargetedAbility(targetBehavior, ability);
-            }
-            else
-            {
-                return tryPerformNotTargetedAbility(targetedPosition, ability);
-            }
+            if(isInRange(ability, targetBehavior == null ? targetedPosition : targetBehavior.transform.position))
+                if (ability.abilityAttributs.needTarget)
+                {
+                    return tryPerformTargetedAbility(targetBehavior, ability);
+                }
+                else
+                {
+                    return tryPerformNotTargetedAbility(targetedPosition, ability);
+                }
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// check if the target or targeted position is in range and not blocked
+    /// </summary>
+    /// <returns></returns>
+    bool isInRange(Ability ability, Vector3 positionToCheck)
+    {
+        if (!ability.abilityAttributs.checkForRange)
+            return true;
+
+        Vector3 senderPosition = abilitySender.transform.position;
+        if(Vector3.Distance(positionToCheck, senderPosition) > ability.abilityAttributs.range)
+            return false;
+
+        if(Physics.Linecast(senderPosition, positionToCheck, _blockingElements))
+            return false;
+
+        return true;
     }
 
     /// <summary>
@@ -54,7 +78,7 @@ public class AbilityManager : MonoBehaviour
             else if (targetedBehavior.being != abilitySender.being)
                 canBeUsed = true;
 
-            if (canBeUsed)
+            if (canBeUsed && abilitySender.being is Player)
                 canBeUsed = checkMana(ability);
 
             if (canBeUsed)
