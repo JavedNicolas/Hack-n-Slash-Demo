@@ -48,7 +48,7 @@ public class Item : Interactable
 
     public Item(Item item)
     {
-        this._databaseID = item.databaseID;
+        this.databaseID = item.databaseID;
         this.name = item.name;
         this._itemIcon = item.itemIcon;
         this._itemModel = item.itemModel;

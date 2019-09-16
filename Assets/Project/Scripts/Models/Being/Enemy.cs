@@ -1,33 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class Enemy : Being
 {
     #region attributs
-    [SerializeField] List<Loot> _possibleLoot = new List<Loot>();
-    public List<Loot> possibleLoot { get => _possibleLoot; }
+    [SerializeField] public List<Loot> possibleLoot = new List<Loot>();
+
+    [SerializeField] List<AbilityUsageFrequence> _abilityUsageFrequency = new List<AbilityUsageFrequence>();
+    public List<AbilityUsageFrequence> abilityUsageFrequency { get => _abilityUsageFrequency; }
 
     [SerializeField] float _experience;
     public float experience { get => _experience; }
     #endregion
 
-    public Enemy(string name, float baseLife, float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, 
-        List<Ability> abilities, GameObject prefab, List<Loot> possibleLoot, float experience) :
-        base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed, abilities, prefab)
-    {
-        this._possibleLoot = possibleLoot;
-        this._experience = experience;
-    }
-
     public Enemy(){ }
 
     public Enemy(Enemy enemy) :
-        base(enemy.name, enemy._stats.maxLife, enemy._stats.attackSpeed, enemy._stats.castSpeed, enemy._stats.attackRange, enemy._stats.movementSpeed, enemy.abilities, enemy.prefab)
+        base(enemy.name, enemy.stats.maxLife, enemy.stats.attackSpeed, enemy.stats.castSpeed, enemy.stats.attackRange, enemy.stats.movementSpeed, enemy.abilityIDs, enemy.prefab)
     {
-        this._possibleLoot = enemy._possibleLoot;
+        this.possibleLoot = enemy.possibleLoot;
         this._experience = enemy.experience;
+        this._abilityUsageFrequency = enemy.abilityUsageFrequency;
+    }
+
+    public Enemy(string name, float baseLife, float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed,
+    List<int> abilityIDs, List<AbilityUsageFrequence> abilityUsageFrequences, GameObject prefab, List<Loot> possibleLoot, float experience) :
+    base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed, abilityIDs, prefab)
+    {
+        this.possibleLoot = new List<Loot>(possibleLoot);
+        this._experience = experience;
+        this._abilityUsageFrequency = abilityUsageFrequences;
     }
 
     /// <summary>
@@ -37,11 +40,11 @@ public class Enemy : Being
     public List<Loot> generateLoot()
     {
         List<Loot> loot = new List<Loot>();
-        for(int i =0; i < _possibleLoot.Count; i++)
+        for(int i =0; i < possibleLoot.Count; i++)
         {
             //Get a random number between 0 and 100 with a precision of 1
             float randomRoll = Random.Range(0.0f, 100.0f);
-            if (randomRoll > 0 && _possibleLoot[i].changeToDrop >= randomRoll)
+            if (randomRoll > 0 && possibleLoot[i].changeToDrop >= randomRoll)
                 loot.Add(new Loot(getLootAt(i)));
         }
         return loot;
@@ -54,8 +57,6 @@ public class Enemy : Being
     /// <returns>a loot</returns>
     Loot getLootAt(int i)
     {
-        if (_possibleLoot[i].isRandom)
-            _possibleLoot[i].getRandomItem();
-        return _possibleLoot[i];
+        return possibleLoot[i];
     }
 }

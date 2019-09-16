@@ -11,7 +11,7 @@ public class LightningBall : Ability
 
     public override void setBaseStats()
     {
-        _stats.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, AbilityConstant.abilityBaseSourceName, StatInfluencedBy.Intelligence, 10, getName()));
+        stats.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, AbilityConstant.abilityBaseSourceName, StatInfluencedBy.Intelligence, 10, getName()));
     }
 
     public override void animation()

@@ -29,7 +29,7 @@ public class AbilityManager : MonoBehaviour
     {
         if (ability.isAbilityAvailable(abilitySender.being))
         {
-            if(isInRange(ability, targetBehavior == null ? targetedPosition : targetBehavior.transform.position))
+            if (isInRange(ability, targetBehavior == null ? targetedPosition : targetBehavior.transform.position))
                 if (ability.abilityAttributs.needTarget)
                 {
                     return tryPerformTargetedAbility(targetBehavior, ability);

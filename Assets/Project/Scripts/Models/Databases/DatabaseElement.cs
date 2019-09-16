@@ -5,15 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class DatabaseElement : IDescribable
 {
-    [SerializeField] protected string _name;
-    public string name { get => _name; set => _name = value; }
-
-    [SerializeField] protected int _databaseID;
-    public int databaseID { get => _databaseID; set => _databaseID = value; }
+    [SerializeField] public string name;
+    [SerializeField] public int databaseID = -1;
 
     public virtual string getName()
     {
-        return _name;
+        return name;
     }
 
     public virtual string getDescription(Being owner)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu(menuName = ScriptableObjectConstant.abilityAttributsMenuName + "Arcane Area", fileName = "ArcaneAreaAttributs")]
+[CreateAssetMenu(fileName = "ArcanaAttributs", menuName = ScriptableObjectConstant.abilityAttributsMenuName + "Arcana")]
 public class ArcaneAreaAttributs : AbilityAttributs, IAreaAttributs
 {
     [SerializeField] private GameObject _areaPrefab;

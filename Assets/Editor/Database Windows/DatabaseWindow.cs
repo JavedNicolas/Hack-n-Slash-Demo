@@ -20,39 +20,22 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
 
     protected T element;
     protected int databaseIndex = -1;
-    protected int databaseID;
+    protected int databaseID = -1;
 
     protected GUIStyle centerTitle;
     protected GUIStyle leftTitle;
 
-    struct DBElements
-    {
-        public int index;
-        public T element;
-        public DBElements(int index, T element)
-        {
-            this.index = index;
-            this.element = element;
-        }
-    }
-
-    private void OnDisable()
-    {
-        saveDB();
-    }
     /// <summary>
     /// Display windows
     /// </summary>
-    public void showWindows()
+    public virtual void initDB()
     {
-        this.Show();
-        this.minSize = new Vector2(contentListWidth * 3, contentListWidth);
         database = Resources.Load<Database<T>>(databasePath);
+        database.loadDB();
         databaseID = database.getFreeId();
-        saveDB();
     }
 
-    void OnGUI()
+    public void displayDB()
     {
         centerTitle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold };
         leftTitle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold };
@@ -68,6 +51,13 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     void displayDatabaseContent()
     {
         EditorGUILayout.BeginVertical("Box", GUILayout.Width(contentListWidth));
+        if (GUILayout.Button("Save Change made to DB"))
+        {
+            saveDB();
+        }
+
+        EditorGUILayout.Space();
+
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(contentListWidth));
         for (int i = 0; i < database.getDatabaseSize(); i++)
         {
@@ -145,7 +135,6 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
         EditorGUI.FocusTextInControl("");
         databaseIndex = -1;
         databaseID = database.getFreeId();
-        saveDB();
     }
 
     #endregion
@@ -157,12 +146,12 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     /// <returns>The name</returns>
     protected virtual string getNameAtIndex(int index)
     {
-        return database.elements[index].name;
+        return database.elements[index].getName();
     }
 
-    void saveDB()
+    protected void saveDB()
     {
-        EditorUtility.SetDirty(database);
+        database.saveDB();
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

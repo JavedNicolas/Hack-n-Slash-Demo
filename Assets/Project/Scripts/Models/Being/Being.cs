@@ -12,12 +12,13 @@ public class Being : Interactable
     public float currentLife { get { return _currentLife; } }
 
     [Header("Stats")]
-    [SerializeField] protected BeingStats _stats = new BeingStats();
-    public BeingStats stats { get => _stats; }
+    [SerializeField] public BeingStats stats = new BeingStats();
 
-    [Header("Skills")]
-    [SerializeField] private List<Ability> _ability = new List<Ability>();
-    public List<Ability> abilities { get { return _ability; } }
+    [Header("Abilities")]
+    [SerializeField] List<Ability> _abilities = new List<Ability>();
+    [SerializeField] public List<Ability> abilities { get { return _abilities; } }
+
+    [SerializeField] public List<int> abilityIDs = new List<int>();
 
     private BasicAttack _basicAttack;
     public BasicAttack basicAttack{ get { return _basicAttack;}}
@@ -31,14 +32,21 @@ public class Being : Interactable
     #region init
     public Being() { }
 
-    public Being(string name, float baseLife,  float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<Ability> abilities, GameObject prefab)
+    public Being(string name, float baseLife,  float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<int> abilityIndexes, GameObject prefab)
     {
         this.name = name;
-        this._stats = new BeingStats(baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed);
-        this._ability = abilities;
+        this.stats = new BeingStats(baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed);
+        this.abilityIDs = abilityIndexes;
         this._prefab = prefab;
         this._basicAttack = new BasicAttack();
-        this._currentLife = _stats.maxLife;
+        this._currentLife = stats.maxLife;
+        setAbilities();
+    }
+
+    void setAbilities()
+    {
+        for(int i = 0; i < abilityIDs.Count; i++)
+            addAbility(abilityIDs[i]);
     }
 
     #endregion
@@ -49,12 +57,28 @@ public class Being : Interactable
     /// <param name="damage">the damage to apply</param>
     public void takeDamage(float damage)
     {
-        _currentLife = Mathf.Clamp(_currentLife - damage, 0, _stats.maxLife);
+        _currentLife = Mathf.Clamp(_currentLife - damage, 0, stats.maxLife);
     }
 
     public void heal(float life)
     {
-        _currentLife = Mathf.Clamp(_currentLife + life, 0, _stats.maxLife);
+        _currentLife = Mathf.Clamp(_currentLife + life, 0, stats.maxLife);
+    }
+
+    /// <summary>
+    /// Add an ability to the being ability list
+    /// </summary>
+    /// <param name="abilityID">The databaseId of the ability</param>
+    /// <returns></returns>
+    public bool addAbility(int abilityID, bool permantlyAdd = false) {
+        if (abilities.Exists(x => x.databaseID == abilityID))
+            return false;
+
+        if (permantlyAdd)
+            abilityIDs.Add(abilityID);
+
+        _abilities.Add(GameManager.instance.abilityDatabase.getElementWithDBID(abilityID));
+        return true;
     }
 
     /// <summary>
@@ -64,7 +88,7 @@ public class Being : Interactable
     /// <returns></returns>
     public bool addStat(Stat stat)
     {
-        return _stats.addStat(stat);
+        return stats.addStat(stat);
     }
 
     /// <summary>
@@ -74,7 +98,7 @@ public class Being : Interactable
     /// <returns></returns>
     public bool removeStat(string sourceName)
     {
-        return _stats.removeStat(sourceName);
+        return stats.removeStat(sourceName);
     }
 
     /// <summary>

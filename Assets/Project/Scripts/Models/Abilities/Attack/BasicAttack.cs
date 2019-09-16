@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BasicAttack : Ability
 {
+
     public BasicAttack()
     {
         setAttributs(Resources.Load<BasicAttackAttributs>(AbilityConstant.attributsFolder + "BasicAttackAttributs"));

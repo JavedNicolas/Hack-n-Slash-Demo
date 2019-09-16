@@ -24,13 +24,6 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     int numberOfEffect;
     List<ItemEffectAndValue> effects = new List<ItemEffectAndValue>();
 
-    [MenuItem("Database/Item")]
-    public static void databadeMenuFunction()
-    {
-        windows = new ItemDatabaseWindow();
-        windows.showWindows();
-    }
-
     #region Right panel (The form)
     protected override void displayForm()
     {
@@ -78,22 +71,25 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
     }
-    #endregion
 
     void updateEffectsListsSize(int size)
     {
-        while(effects.Count != size)
+        while (effects.Count != size)
         {
-            if(effects.Count < size)
+            if (effects.Count < size)
             {
                 effects.Add(new ItemEffectAndValue());
-            }else if(effects.Count > size)
+            }
+            else if (effects.Count > size)
             {
                 effects.RemoveAt(effects.Count - 1);
             }
         }
 
     }
+    #endregion
+
+
 
     protected override void setFieldWithElementValues()
     {

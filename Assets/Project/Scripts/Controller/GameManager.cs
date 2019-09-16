@@ -42,17 +42,18 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(this);
-        playerTMp = new Player("Player Test", 200, 100, 1, 1, 10, new List<Ability>(), playerPrefab,1);
-        playerTMp.abilities.Add(new LightningBall((LightningBall)GameManager.instance.getAbilityOfType(typeof(LightningBall))));
-        playerTMp.abilities.Add(new ArcaneArea((ArcaneArea)GameManager.instance.getAbilityOfType(typeof(ArcaneArea))));
-        playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
-        playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
-        playerTMp.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        loadDatabases();
+
+        playerTMp = new Player("Player Test", 200, 100, 1, 1, 10, new List<int>() { 0, 1 }, playerPrefab, 1);
+        playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
+        playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
+        playerTMp.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
+
         CurrentMapInstanceController.instance.loadZone();
         spawnPlayer();
     }
@@ -61,6 +62,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         getMouseClick();
+    }
+
+    void loadDatabases()
+    {
+        _enemyDatabase.loadDB();
+        _abilityDatabase.loadDB();
+        _itemDatabase.loadDB();
     }
 
     /// <summary>
@@ -108,5 +116,4 @@ public class GameManager : MonoBehaviour
     }
     public PlayerBehavior GetPlayerBehavior() { return player.GetComponentInChildren<PlayerBehavior>(); }
     public Inventory getPlayerInventory() { return getPlayer().inventory; }
-    public Ability getAbilityOfType(Type abilityType) { return _abilityDatabase.getAbilityOfType(abilityType); }
 }

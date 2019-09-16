@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91570da2cb7241842bbae548a789e3cd, type: 3}
   m_Name: AbilityDatabase
   m_EditorClassIdentifier: 
+  _file: {fileID: 4900000, guid: 21c5262e6bcdf4f4c9ebc254867ffd59, type: 3}
   attributs:
-  - {fileID: 11400000, guid: 6c2604b2c65d21646a52162c5098e90b, type: 2}
-  - {fileID: 11400000, guid: 1e41182fdec742c4cba1de3b93ea3528, type: 2}
+  - abilityName: LightningBall
+    abilityAttributs: {fileID: 11400000, guid: be361b5f22236a047a2293dd90a66d99, type: 2}
+    id: 0
+  - abilityName: ArcaneArea
+    abilityAttributs: {fileID: 0}
+    id: 1

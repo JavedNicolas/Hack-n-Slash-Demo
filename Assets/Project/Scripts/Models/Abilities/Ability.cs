@@ -5,18 +5,17 @@ using UnityEngine;
 
 [System.Serializable]
 public abstract class Ability : DatabaseElement
-{ 
+{
     // attributs
     // handle the cooldown
     protected float lastTimeUsed = 0f;
 
     // Ability attributs
-    [SerializeField] protected AbilityAttributs _abilityAttributs;
-    public AbilityAttributs abilityAttributs { get => _abilityAttributs; }
+    [SerializeField] public AbilityAttributs abilityAttributs;
 
     // Stats
-    [SerializeField] protected Stats _stats = new Stats();
-    public Stats stats { get => _stats; }
+    [SerializeField] public Stats stats = new Stats();
+
 
     #region levelUp delegate
     public delegate void HasLeveledUP();
@@ -30,8 +29,8 @@ public abstract class Ability : DatabaseElement
 
     public Ability(Ability ability)
     {
-        _abilityAttributs = ability.abilityAttributs;
-        _stats = new Stats(ability.stats);
+        abilityAttributs = ability.abilityAttributs;
+        stats = new Stats(ability.stats);
         setBaseStats();
     }
 
@@ -84,7 +83,6 @@ public abstract class Ability : DatabaseElement
 
     void levelUp(float[] expTable)
     {
-        //Debug.Log("currentXP On LvlUP from lvl " + stats.currentLevel + " to " + (stats.currentLevel + 1) +" is : " + stats.currentLevelExp+ " Xp needed was : " + expTable[stats.currentLevel]);
         stats.levelUp();
         stats.setCurrentExperience(stats.currentLevelExp - expTable[stats.currentLevel - 1]);
         //hasLeveledUP();
@@ -99,8 +97,7 @@ public abstract class Ability : DatabaseElement
     /// <summary>
     /// Start the sender animation for this ability
     /// </summary>
-    abstract public void animation();
-
+    public abstract void animation();
     /// <summary>
     /// Perform Ability (used for targeted attack)
     /// </summary>
@@ -148,7 +145,7 @@ public abstract class Ability : DatabaseElement
     /// <returns></returns>
     public bool isAbilityAvailable(Being sender)
     {
-        switch (_abilityAttributs.coolDownType)
+        switch (abilityAttributs.coolDownType)
         {
             case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.stats.attackSpeed) ? true : false;
             case AbilityCoolDownType.Cooldown: break;
@@ -164,12 +161,12 @@ public abstract class Ability : DatabaseElement
     /// <returns>A sprite of the icon</returns>
     public Sprite getIcon()
     {
-        return _abilityAttributs.icon;
+        return abilityAttributs.icon;
     }
 
     public void setAttributs(AbilityAttributs attributs)
     {
-        _abilityAttributs = attributs;
+        abilityAttributs = attributs;
     }
 
     /// <summary>
@@ -182,7 +179,7 @@ public abstract class Ability : DatabaseElement
 
     public override string getName()
     {
-        return GetType().ToString();
+        return GetType().Name;
     }
 
     /// <summary>

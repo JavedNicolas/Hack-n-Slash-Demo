@@ -131,12 +131,14 @@ public class BeingBehavior : InteractableObject
     /// <param name="ability">ability to use</param>
     /// <param name="targetedPosition">the targeted position for the ability (use for ability which do not need target but target point)</param>
     /// <param name="target">The targeted being behavior</param>
-    public void useAbility(Ability ability, Vector3 targetedPosition, BeingBehavior target)
+    public bool useAbility(Ability ability, Vector3 targetedPosition, BeingBehavior target)
     {
         if(abilityManager.tryToPerformAbility(target, targetedPosition, ability))
         {
             abilityUsed(targetedPosition, target, ability);
+            return true;
         }
+        return false;
     }
 
     /// <summary>

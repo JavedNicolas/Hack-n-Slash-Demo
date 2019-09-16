@@ -21,7 +21,7 @@ public class EnemyBehavior : BeingBehavior
     // Player detection
     private BeingBehavior closestEnemy;
 
-    LightningBall ability;
+    protected Ability abilityToUse = null;
 
     // override the being
     public new Enemy being
@@ -36,10 +36,7 @@ public class EnemyBehavior : BeingBehavior
 
     void Start()
     {
-        Enemy enemy = (Enemy)being;
-        loot = enemy.generateLoot();
-        being.abilities.Add(being.basicAttack);
-
+        loot = being.generateLoot();
         lifeUI.setBeing(being);
 
         InvokeRepeating("checkForEnemyInRange", 0.0f, 0.1f);
@@ -47,13 +44,17 @@ public class EnemyBehavior : BeingBehavior
 
     private void Update()
     {
-        refreshEnemyList();
-        checkIfEnemyIsInAttackRange();
-        
-        if(being != null && being.currentLife <= 0)
+        IABheavior();
+        if (being != null && being.currentLife <= 0)
         {
             die();
         }
+    }
+
+    protected virtual void IABheavior()
+    {
+        refreshEnemyList();
+        checkIfEnemyIsInAttackRange();
     }
 
     /// <summary>
@@ -62,6 +63,28 @@ public class EnemyBehavior : BeingBehavior
     void refreshEnemyList()
     {
         enemies = FindObjectsOfType<BeingBehavior>().ToList();
+    }
+
+    void pickAbilityToUseNext()
+    {
+        int abilityFrenquency = Random.Range(0, 100);
+        List<int> possibleAbilityIndex = new List<int>();
+
+        for (int i = 0; i < being.abilities.Count; i++)
+        {
+            if ((int)being.abilityUsageFrequency[i] >= abilityFrenquency)
+            {
+                possibleAbilityIndex.Add(i);
+            }   
+        }
+
+        if (possibleAbilityIndex.Count > 0)
+        {
+            int abilityToUseIndex = Random.Range(0, possibleAbilityIndex.Count);
+            abilityToUse = being.abilities[abilityToUseIndex];
+        }
+        else
+            abilityToUse = being.basicAttack;
     }
 
     /// <summary>
@@ -111,11 +134,15 @@ public class EnemyBehavior : BeingBehavior
         if (closestEnemy == null)
             return;
 
+        if(abilityToUse == null)
+            pickAbilityToUseNext();
+
         float closestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
-        if (closestEnemyDistance < attackRange)
-        {
-            useAbility(being.abilities[0], closestEnemy.transform.position, closestEnemy);
-        }
+        if (closestEnemyDistance < attackRange && abilityToUse != null)
+            if(useAbility(abilityToUse, closestEnemy.transform.position, closestEnemy))
+            {
+                abilityToUse = null;
+            }
 
     }
 

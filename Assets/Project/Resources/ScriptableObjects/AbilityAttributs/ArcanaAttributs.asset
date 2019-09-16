@@ -10,31 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 987b575578da85940b8d54aa7815582b, type: 3}
-  m_Name: ArcaneAreaAttributs
+  m_Name: ArcanaAttributs
   m_EditorClassIdentifier: 
   _name: Arcana
-  _description: Spawn an arcane area. Apply a degen of arcane damage during it's
-    duration.
-  _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _description: Spawn a zone which deal damage over time
+  _icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _abilityTags: 
   _levelNeeded: 1
   _maxLevel: 5
-  _abilityTags: 0300000001000000
-  _manaCost: 2
+  _range: 30
+  _manaCost: 1
   _coolDownType: 1
   _needTarget: 0
   _canBeCastedOnSelf: 0
+  _checkForRange: 1
   _effectAndValues:
   - valuesByLevel:
-    - 10
     - 20
     - 30
     - 40
     - 50
-    statTypes: 10000000
-    effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
+    - 60
+    statTypes: 100000001200000014000000
+    effect: {fileID: 11400000, guid: dd738fe9dfc0bd94381edbc76a1b873a, type: 2}
     effectType: 2
   _areaPrefab: {fileID: 3483264203771891727, guid: 8e7ed28881f25964c83ae2854105f6c6,
     type: 3}
-  _areaSize: 3
+  _areaSize: 1
   _areaType: 1
-  _degenDelay: 0.7
+  _degenDelay: 0.4

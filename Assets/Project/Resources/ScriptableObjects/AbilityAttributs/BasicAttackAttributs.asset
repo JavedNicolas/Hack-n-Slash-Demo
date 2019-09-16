@@ -12,14 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908c4d7bba2770b4f8a165586a0ac46f, type: 3}
   m_Name: BasicAttackAttributs
   m_EditorClassIdentifier: 
-  _name: Basic Attack
-  _description: Attack an enemy with a basic blow.
-  _icon: {fileID: 0}
+  _name: Basic attack
+  _description: An atacck
+  _icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _abilityTags: 0000000006000000
+  _levelNeeded: 1
+  _maxLevel: 1
+  _range: 0
   _manaCost: 0
-  _type: 0
-  _effectAndValues:
-  - value: 25
-    effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
   _coolDownType: 0
   _needTarget: 1
   _canBeCastedOnSelf: 0
+  _checkForRange: 0
+  _effectAndValues:
+  - valuesByLevel:
+    - 10
+    statTypes: 05000000
+    effect: {fileID: 11400000, guid: dd738fe9dfc0bd94381edbc76a1b873a, type: 2}
+    effectType: 0

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = (ScriptableObjectConstant.abilityAttributsMenuName + "Basic Attack"), fileName = "Basic Attack")]
+[CreateAssetMenu(fileName = "BasicAttackAttributs", menuName = ScriptableObjectConstant.abilityAttributsMenuName + "Basic Attack")]
 public class BasicAttackAttributs : AbilityAttributs
 {
 

@@ -13,7 +13,7 @@ public class Player : Being
     [SerializeField] private float _currentMana;
     public float currentMana { get => _currentMana; }
 
-    public new PlayerStats stats { get => (PlayerStats)_stats; }
+    public new PlayerStats stats { get => (PlayerStats)base.stats; }
     #endregion
 
     #region levelUp delegate
@@ -21,19 +21,19 @@ public class Player : Being
     public HasLeveledUP hasLeveledUP;
     #endregion
 
-    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<Ability> abilities, GameObject prefab, int currentLevel) :
-        base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilities, prefab)
+    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<int> abilityIDs, GameObject prefab, int currentLevel) :
+        base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilityIDs, prefab)
     {
-        _stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed);
+        base.stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed);
         setLevelUpDelegate();
         this._currentMana = stats.maxMana;
         setBaseStat();
     }
 
     public Player(Player player) : base(player.name,
-        player._stats.maxLife, player._stats.attackSpeed, player._stats.castSpeed, player._stats.attackRange, BeingConstant.baseMoveSpeed, player.abilities, player.prefab)
+        player.stats.maxLife, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, player.abilityIDs, player.prefab)
     {
-        _stats = new PlayerStats(player.stats);
+        base.stats = new PlayerStats(player.stats);
         setLevelUpDelegate();
         this._inventory = player.inventory;
         this._currentMana = player.currentMana;
@@ -44,13 +44,13 @@ public class Player : Being
     void setBaseStat()
     {
         // life and mana
-        _stats.addStat(new Stat(StatType.Life, StatBonusType.Pure, 10, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
-        _stats.addStat(new Stat(StatType.Mana, StatBonusType.Pure, 2, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        base.stats.addStat(new Stat(StatType.Life, StatBonusType.Pure, 10, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        base.stats.addStat(new Stat(StatType.Mana, StatBonusType.Pure, 2, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
 
         // basic stat
-        _stats.addStat(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
-        _stats.addStat(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
-        _stats.addStat(new Stat(StatType.Strength, StatBonusType.Pure, 3, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        base.stats.addStat(new Stat(StatType.Intelligence, StatBonusType.Pure, 10, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        base.stats.addStat(new Stat(StatType.Dexterity, StatBonusType.Pure, 1, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
+        base.stats.addStat(new Stat(StatType.Strength, StatBonusType.Pure, 3, BeingConstant.ClassBaseSourceName, StatInfluencedBy.Level));
     }
 
     void setLevelUpDelegate()

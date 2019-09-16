@@ -76,7 +76,6 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
             color.a = 1;
             _itemImage.color = color;
             _itemImage.sprite = updatedslot.item.itemIcon;
-            _parent = parent;
             if (updatedslot.item.isStackable)
                 _itemQuantityText.text = updatedslot.quantity.ToString();
         }
@@ -89,6 +88,8 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
             color.a = 0;
             _itemImage.color = color;
         }
+
+        _parent = parent;
 
         _inventorySlot = updatedslot;
     }

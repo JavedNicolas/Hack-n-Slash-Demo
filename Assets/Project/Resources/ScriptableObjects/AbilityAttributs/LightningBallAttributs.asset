@@ -12,28 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac89b1a413550704698b7c5d888f085b, type: 3}
   m_Name: LightningBallAttributs
   m_EditorClassIdentifier: 
-  _name: Lighning Ball
-  _description: Launch a lightning in front of you.
+  _name: LightningBall
+  _description: Launch a Lightning ball
   _icon: {fileID: 21300000, guid: 6d254a407afa0b1498389ee33e5649d6, type: 3}
+  _abilityTags: 01000000020000000700000008000000
   _levelNeeded: 1
   _maxLevel: 10
-  _abilityTags: 020000000100000008000000
-  _manaCost: 5
+  _range: 9999
+  _manaCost: 2
   _coolDownType: 1
   _needTarget: 0
   _canBeCastedOnSelf: 0
+  _checkForRange: 0
   _effectAndValues:
   - valuesByLevel:
     - 10
-    - 25
+    - 20
+    - 30
+    - 40
     - 50
+    - 60
     - 70
-    - 120
-    - 200
-    - 290
-    - 400
-    - 550
-    - 700
+    - 80
+    - 90
+    - 100
     statTypes: 080000000d000000
     effect: {fileID: 11400000, guid: 225605c0b9cc9c848984a00363140890, type: 2}
     effectType: 1
@@ -42,4 +44,4 @@ MonoBehaviour:
   _formType: 0
   _offsetBetweenProjectile: 10
   _projectileLife: 1
-  _baseProjectileSpeed: 40
+  _baseProjectileSpeed: 25
