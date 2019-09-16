@@ -606,7 +606,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -0.3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -19142,6 +19142,8 @@ MonoBehaviour:
   particleSystems:
   - {fileID: 3688556833290820157}
   - {fileID: 3644014373018268295}
+  areaSizeController: {fileID: 3644463928718975199}
+  areaCollider: {fileID: 3793620314755697340}
   lifeduration: 3.7
   delayBeforeEffect: 0.9
 --- !u!136 &3793620314755697340

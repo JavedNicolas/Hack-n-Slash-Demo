@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         playerTMp = new Player("Player Test", 200, 100, 1, 1, 10, new List<int>() { 0, 1 }, playerPrefab, 1);
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
         playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
+        playerTMp.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
         playerTMp.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
 
         CurrentMapInstanceController.instance.loadZone();

@@ -7,6 +7,8 @@ public class Area : MonoBehaviour
 {
     // particule which that make the area
     [SerializeField] ParticleSystem[] particleSystems;
+    [SerializeField] protected ParticleSystem areaSizeController;
+    [SerializeField] CapsuleCollider areaCollider;
 
     [SerializeField] float lifeduration;
     [SerializeField] float delayBeforeEffect;
@@ -27,6 +29,7 @@ public class Area : MonoBehaviour
         this._origin = origin;
         this._abilityEffectAndValues = abilityEffectAndValues;
         this._senderBehavior = senderBehavior;
+        increaseArea();
 
         foreach (ParticleSystem particleSystem in particleSystems)
         {
@@ -103,5 +106,16 @@ public class Area : MonoBehaviour
             if (beingInArea[i] != null && !beingInArea[i].being.isDead())
                 foreach (AbilityEffectAndValue effectAndValue in _abilityEffectAndValues)
                     effectAndValue.useEffect(_senderBehavior, beingInArea[i].gameObject, _origin);
+    }
+
+    protected virtual void increaseArea()
+    {
+        if (areaCollider != null && areaSizeController != null)
+        {
+            areaCollider.radius = _senderBehavior.being.stats.getBuffedValue(areaCollider.radius, StatType.AreaSize, _origin.getName(), _origin.stats.statList);
+            var main = areaSizeController.main;
+            main.startSize = _senderBehavior.being.stats.getBuffedValue(main.startSize.constant, StatType.AreaSize, _origin.getName(), _origin.stats.statList); ;
+        }
+            
     }
 }
