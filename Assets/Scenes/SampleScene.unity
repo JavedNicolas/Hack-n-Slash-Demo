@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 198675984}
   - component: {fileID: 198675983}
   - component: {fileID: 198675982}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (3)
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -722,7 +722,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.8e-43, y: 0, z: 2.3509887e-38, w: 2.0364e-41}
+  m_BoundingSphereOverride: {x: 9.983e-42, y: 1.01e-43, z: 2.9106495e-11, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1744,7 +1744,7 @@ GameObject:
   - component: {fileID: 1036239158}
   - component: {fileID: 1036239157}
   - component: {fileID: 1036239156}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2170,7 +2170,7 @@ GameObject:
   - component: {fileID: 1443224939}
   - component: {fileID: 1443224938}
   - component: {fileID: 1443224937}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (1)
   m_TagString: Environment
   m_Icon: {fileID: 0}
@@ -2739,7 +2739,7 @@ GameObject:
   - component: {fileID: 1792822896}
   - component: {fileID: 1792822895}
   - component: {fileID: 1792822894}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (2)
   m_TagString: Environment
   m_Icon: {fileID: 0}

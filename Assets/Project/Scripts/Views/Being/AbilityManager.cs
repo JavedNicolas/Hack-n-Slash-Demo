@@ -47,7 +47,7 @@ public class AbilityManager : MonoBehaviour
     /// check if the target or targeted position is in range and not blocked
     /// </summary>
     /// <returns></returns>
-    bool isInRange(Ability ability, Vector3 positionToCheck)
+    public bool isInRange(Ability ability, Vector3 positionToCheck)
     {
         if (!ability.abilityAttributs.checkForRange)
             return true;

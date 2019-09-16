@@ -33,6 +33,9 @@ public class PlayerBehavior : BeingBehavior
     UILife _lifeUI;
     UIMana _manaUI;
 
+    //ability Buffer
+    Ability abilityBuffer;
+
     // override the being
     public new Player being
     {
@@ -105,6 +108,8 @@ public class PlayerBehavior : BeingBehavior
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementMask))
         {
+            if (abilityBuffer != null)
+                abilityBuffer = null;
             moveTo(hit.point);
             _interactionTarget = null;
         }
@@ -118,6 +123,8 @@ public class PlayerBehavior : BeingBehavior
         if (!GameManager.instance.canRightClick)
             return;
 
+        if (abilityBuffer != null)
+            abilityBuffer = null;
 
         moveToInteractableTarget();
     }
@@ -147,12 +154,31 @@ public class PlayerBehavior : BeingBehavior
                             targetedPosition.y = abilitySpawnHit.point.y;
 
                         BeingBehavior targetedBehavior = mouseHit.transform.GetComponent<BeingBehavior>();
-                        if (abilityManager.tryToPerformAbility(targetedBehavior, targetedPosition, skillSlot.ability))
-                        {
-                            abilityUsed(mouseHit.point, targetedBehavior, skillSlot.ability);
-                        }
+                        IEnumerator coroutine = useAbility(targetedBehavior, targetedPosition, skillSlot.ability);
+                        StartCoroutine(coroutine);
                     }
                 }
+        }
+    }
+
+    IEnumerator useAbility(BeingBehavior target, Vector3 targetedPosition, Ability ability)
+    {
+        if(!abilityManager.isInRange(ability, targetedPosition))
+        {
+            abilityBuffer = ability;
+            moveTo(targetedPosition);
+            yield return new WaitUntil(() => abilityManager.isInRange(ability, targetedPosition) || abilityBuffer == null);
+        }
+
+        if (abilityBuffer == null)
+            yield return null;
+
+        stopMoving();
+
+        if (abilityManager.tryToPerformAbility(target, targetedPosition, ability))
+        {
+            abilityUsed(targetedPosition, target, ability);
+            abilityBuffer = null;
         }
     }
 
