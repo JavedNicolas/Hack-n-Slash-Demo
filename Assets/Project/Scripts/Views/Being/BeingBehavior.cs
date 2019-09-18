@@ -241,6 +241,11 @@ public class BeingBehavior : InteractableObject
         }
     }
 
+    protected virtual bool isBeingInRange(BeingBehavior beingBehavior, float distance)
+    {
+        return Vector3.Distance(beingBehavior.transform.position, transform.position) <= distance;
+    }
+
     protected virtual void die()
     {
         Destroy(gameObject);

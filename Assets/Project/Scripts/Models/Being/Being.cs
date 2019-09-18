@@ -77,6 +77,9 @@ public class Being : Interactable
         if (permantlyAdd)
             abilityIDs.Add(abilityID);
 
+        if (GameManager.instance == null)
+            return false;
+
         _abilities.Add(GameManager.instance.abilityDatabase.getElementWithDBID(abilityID));
         return true;
     }

@@ -16,10 +16,13 @@ public class EnemyBehavior : BeingBehavior
     public static float lootExplosionStrength = 10f;
     public List<Loot> loot;
 
-    private List<BeingBehavior> enemies = new List<BeingBehavior>();
+    private List<EnemyAndAggro> enemies = new List<EnemyAndAggro>();
 
-    // Player detection
-    private BeingBehavior closestEnemy;
+    // Enemy detection
+    private EnemyAndAggro currentTarget = null;
+    /// Out of range target are target that the enemy will follow when not in range enemy match the target criteria
+    /// like in range, or have aggro
+    private EnemyAndAggro outOfRangeAggroTarget = null;
 
     protected Ability abilityToUse = null;
 
@@ -39,7 +42,7 @@ public class EnemyBehavior : BeingBehavior
         loot = being.generateLoot();
         lifeUI.setBeing(being);
 
-        InvokeRepeating("checkForEnemyInRange", 0.0f, 0.1f);
+        InvokeRepeating("checkForTarget", 0.0f, 0.1f);
     }
 
     private void Update()
@@ -54,7 +57,7 @@ public class EnemyBehavior : BeingBehavior
     protected virtual void IABheavior()
     {
         refreshEnemyList();
-        checkIfEnemyIsInAttackRange();
+        checkIfTargetIsInAttackRange();
     }
 
     /// <summary>
@@ -62,7 +65,15 @@ public class EnemyBehavior : BeingBehavior
     /// </summary>
     void refreshEnemyList()
     {
-        enemies = FindObjectsOfType<BeingBehavior>().ToList();
+        List<BeingBehavior> enemyList = FindObjectsOfType<BeingBehavior>().ToList();
+        for(int i = 0; i < enemyList.Count; i++)
+        {
+            if(!enemies.Exists(x => x.beingBehavior == enemyList[i]) && enemyList[i] != null && 
+                !enemyList[i].being.isDead() && enemyList[i].teamID != teamID)
+            {
+                enemies.Add(new EnemyAndAggro(enemyList[i], 0));
+            }
+        }
     }
 
     void pickAbilityToUseNext()
@@ -88,63 +99,123 @@ public class EnemyBehavior : BeingBehavior
     }
 
     /// <summary>
-    /// Check if the closest Player is in the detection Range
+    /// Check if the closest enemy or enemy with the max aggro value is in the detection Range
     /// </summary>
-    void checkForEnemyInRange()
+    void checkForTarget()
     {
-        if (enemies.Count > 0)
+        int inRangeEnemy = 0;
+        for(int i =0; i < enemies.Count; i ++)
         {
-            if(closestEnemy == null || closestEnemy.being.isDead())
+            // if the outOfRangeTarget gets in range
+            if (outOfRangeAggroTarget == enemies[i] && currentTarget == null && isBeingInRange(outOfRangeAggroTarget.beingBehavior, dectetionRange))
             {
-                stopMoving();
-                int closestEnemyIndex = enemies.FindIndex(x => x.teamID != teamID && canBeAttacked);
-                closestEnemy = (closestEnemyIndex < enemies.Count ? enemies[closestEnemyIndex] : null);
-                return;
+                setcurrentTarget(enemies[i]);
             }
 
-
-            float currentClosestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
-
-            for (int i = 1; i < enemies.Count; i++)
+            if (enemies[i].aggro > 0 && (outOfRangeAggroTarget == null || enemies[i].aggro > outOfRangeAggroTarget.aggro) && (currentTarget == null || enemies[i].aggro > currentTarget.aggro))
             {
-                if (enemies[i] == null)
-                    continue;
-
-                float distance = Vector3.Distance(transform.position, enemies[i].transform.position);
-
-                if (currentClosestEnemyDistance > distance && enemies[i].teamID != teamID)
-                {
-                    closestEnemy = enemies[i];
-                    currentClosestEnemyDistance = distance;
-                }
+                setcurrentTarget(enemies[i]);
+            }
+            else if(isBeingInRange(enemies[i].beingBehavior, dectetionRange) &&
+                (outOfRangeAggroTarget == null || enemies[i].aggro > outOfRangeAggroTarget.aggro) && (currentTarget == null || currentTarget.aggro < enemies[i].aggro))
+            {
+                setcurrentTarget(enemies[i]);
             }
 
-            if (currentClosestEnemyDistance < dectetionRange && currentClosestEnemyDistance > attackRange && closestEnemy != null)
+            if (isBeingInRange(enemies[i].beingBehavior, dectetionRange))
             {
-                moveTo(closestEnemy.transform.position, attackRange);
+                inRangeEnemy++;
+                // add aggro based on the distance from the target
+                float inRangeAggroValue = BeingConstant.distanceAggroFactor / Vector3.Distance(enemies[i].beingBehavior.transform.position, transform.position);
+                enemies[i].addAggro(inRangeAggroValue);
             }
         }
+
+        if (inRangeEnemy == 0)
+        {
+            currentTarget = null;
+            if (outOfRangeAggroTarget == null)
+            {
+                resetAggro();
+            }  
+        }
+
+        // move to the target
+        if (outOfRangeAggroTarget != null && !isBeingInRange(outOfRangeAggroTarget.beingBehavior, attackRange))
+            moveTo(outOfRangeAggroTarget.beingBehavior.transform.position, attackRange);
+        else if (currentTarget != null && !isBeingInRange(currentTarget.beingBehavior, attackRange))
+            moveTo(currentTarget.beingBehavior.transform.position, attackRange);
+    }
+
+    void setcurrentTarget(EnemyAndAggro enemy)
+    {
+        currentTarget = enemy;
+        outOfRangeAggroTarget = null;
     }
 
     /// <summary>
     /// Check if the player is in attack range if so attack
     /// </summary>
-    void checkIfEnemyIsInAttackRange()
+    void checkIfTargetIsInAttackRange()
     {
-        if (closestEnemy == null)
+        if (currentTarget == null)
             return;
 
         if(abilityToUse == null)
             pickAbilityToUseNext();
 
-        float closestEnemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
-        if (closestEnemyDistance < attackRange && abilityToUse != null)
-            if(useAbility(abilityToUse, closestEnemy.transform.position, closestEnemy))
+        float targetedEnemyDistance = Vector3.Distance(transform.position, currentTarget.beingBehavior.transform.position);
+        if (targetedEnemyDistance < attackRange && abilityToUse != null)
+        {
+            if (useAbility(abilityToUse, currentTarget.beingBehavior.transform.position, currentTarget.beingBehavior))
             {
                 abilityToUse = null;
+                outOfRangeAggroTarget = null;
             }
-
+        }
     }
+
+    public override void takeDamage(float damage, DatabaseElement damageOrigin, BeingBehavior damageDealer)
+    {
+        base.takeDamage(damage, damageOrigin, damageDealer);
+        addAggro(damage / BeingConstant.damageAggroFactor, damageDealer);
+    }
+
+    /// <summary>
+    /// Add aggro to an being behavior in the enemy list
+    /// </summary>
+    /// <param name="value">The aggro value</param>
+    /// <param name="aggroTarget">The being which generate the aggro</param>
+    void addAggro(float value, BeingBehavior aggroTarget)
+    {
+        if (currentTarget == null)
+        {
+            if(outOfRangeAggroTarget == null || outOfRangeAggroTarget.aggro < enemies.Find(x => x.beingBehavior == aggroTarget).aggro)
+            {
+                outOfRangeAggroTarget = enemies.Find(x => x.beingBehavior == aggroTarget);
+                CancelInvoke("removeOutOfRangeTarget");
+                Invoke("removeOutOfRangeTarget", BeingConstant.outOfRangeTargetTimer);
+            }
+        }
+
+        int index = enemies.FindIndex(x => x.beingBehavior == aggroTarget);
+        enemies[index].addAggro(value);
+    }
+
+    void resetAggro()
+    {
+        for (int i = 0; i < enemies.Count; i++)
+            enemies[i].aggro = 0;
+    }
+
+    /// <summary>
+    /// Remove the out of range target
+    /// </summary>
+    void removeOutOfRangeTarget()
+    {
+        outOfRangeAggroTarget = null;
+    }
+
 
     void dropLoot()
     {
