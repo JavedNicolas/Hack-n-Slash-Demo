@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Button))]
-public class UISkillSlot : MonoBehaviour, IPopUpOnHovering
+public class UISkillSlot : MonoBehaviour, IPopUpOnHovering, IPointerDownHandler
 {
     Ability _skill;
     public Ability ability
@@ -19,13 +18,9 @@ public class UISkillSlot : MonoBehaviour, IPopUpOnHovering
     }
 
     public bool isChoiceIcon = false;
+    public Image skillIcon;
     public GameObject keyDisplayer;
     public string inputName;
-
-    private void Awake()
-    {
-        GetComponent<Button>().onClick.AddListener(onClick);
-    }
 
     private void Start()
     {
@@ -43,41 +38,39 @@ public class UISkillSlot : MonoBehaviour, IPopUpOnHovering
         displayPopUp(false);
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (isChoiceIcon)
+            {
+                UISkillChoice.instance.updateSkillWithChoice(_skill);
+                UISkillChoice.instance.gameObject.SetActive(false);
+                displayPopUp(false);
+            }
+            else
+            {
+                GameObject choiceObject = UISkillChoice.instance.gameObject;
+
+                if (UISkillChoice.instance.skillSlotToChange == this)
+                    choiceObject.SetActive(!choiceObject.activeSelf);
+                else
+                {
+                    UISkillChoice.instance.displaySkills(this);
+                    choiceObject.SetActive(true);
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Set the icon of the ability
     /// </summary>
     /// <param name="ability"></param>
     void setIcon(Ability ability)
     {
-        GetComponent<Image>().sprite = ability.getIcon();
-    }
-
-    /// <summary>
-    /// Display The skill choice UI or choose the skill
-    /// </summary>
-    public void onClick()
-    {
-        if (isChoiceIcon)
-        {
-            UISkillChoice.instance.updateSkillWithChoice(_skill);
-            UISkillChoice.instance.gameObject.SetActive(false);
-            displayPopUp(false);
-        }
-        else
-        {
-            GameObject choiceObject = UISkillChoice.instance.gameObject;
-
-            if(UISkillChoice.instance.skillSlotToChange == this)
-                choiceObject.SetActive(!choiceObject.activeSelf);
-            else
-            {
-                UISkillChoice.instance.displaySkills(this);
-                choiceObject.SetActive(true);
-            }
-                
-
-        }
-
+        skillIcon.sprite = ability.getIcon();
+        skillIcon.enabled = true;
     }
 
     public void displayPopUp(bool display)
