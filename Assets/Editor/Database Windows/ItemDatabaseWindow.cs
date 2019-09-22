@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-public class ItemDatabaseWindow : DatabaseWindows<Item>
+public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
 {
     // database
     protected override string databasePath { get => "Databases/ItemDatabase"; }
@@ -89,38 +89,43 @@ public class ItemDatabaseWindow : DatabaseWindows<Item>
     }
     #endregion
 
-
-
     protected override void setFieldWithElementValues()
     {
         if (element != null)
         {
+            Item item = element.databaseModelToItem(resourcesList);
             databaseID = element.databaseID;
-            itemName = element.name;
-            itemIcon = element.itemIcon;
-            itemModel = element.itemModel;
-            isConsomable = element.isConsomable;
-            isStackable = element.isStackable;
-            canBeRecycle = element.canBeRecycle;
-            maxStackableSize = element.maxStackableSize;
-            interactableType = element.interactibleType;
-            targetType = element.targetType;
-            numberOfEffect = element.effects.Count;
-            effects = element.effects;
+            itemName = item.name;
+            itemIcon = item.itemIcon;
+            itemModel = item.itemModel;
+            isConsomable = item.isConsomable;
+            isStackable = item.isStackable;
+            canBeRecycle = item.canBeRecycle;
+            maxStackableSize = item.maxStackableSize;
+            interactableType = item.interactibleType;
+            targetType = item.targetType;
+            numberOfEffect = item.effects.Count;
+            effects = item.effects;
         }
     }
 
     protected override void updateElementWithFormValues()
     {
-        element = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, canBeRecycle,targetType,effects);
-        element.interactibleType = interactableType;
-        element.databaseID = databaseID;
+        string spriteGUID = resourcesList.addObjects(itemIcon);
+        string modelGUID = resourcesList.addObjects(itemModel);
+        List<ItemEffectAndValuesDatabaseModel> itemEffectAndValuesDatabaseModels = new List<ItemEffectAndValuesDatabaseModel>();
+        foreach(ItemEffectAndValue itemEffectAndValue in effects)
+        {
+            string effectGUID = resourcesList.addObjects(itemEffectAndValue.effect);
+            itemEffectAndValuesDatabaseModels.Add(new ItemEffectAndValuesDatabaseModel(itemEffectAndValue.value, effectGUID, itemEffectAndValue.startingTime, itemEffectAndValue.statTypes));
+        }
+        element = new ItemDatabaseModel(databaseID, itemName, spriteGUID, modelGUID, isConsomable, isStackable, canBeRecycle, maxStackableSize, targetType, interactableType, itemEffectAndValuesDatabaseModels);
     }
 
     protected override void clearForm()
     {
         base.clearForm();
-        element = new Item();
+        element = null;
         databaseID = database.getFreeId();
         itemName = "";
         itemIcon = null;

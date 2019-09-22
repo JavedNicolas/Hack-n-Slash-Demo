@@ -12,6 +12,8 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     // database
     protected abstract string databasePath { get; }
 
+    protected DatabaseResourcesList resourcesList;
+
     // scroll position
     Vector2 scrollPos;
 
@@ -28,8 +30,9 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     /// <summary>
     /// Display windows
     /// </summary>
-    public virtual void initDB()
+    public virtual void initDB(DatabaseResourcesList resourcesList)
     {
+        this.resourcesList = resourcesList;
         database = Resources.Load<Database<T>>(databasePath);
         database.loadDB();
         databaseID = database.getFreeId();
@@ -85,8 +88,11 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
         }
         if (GUILayout.Button("X"))
         {
-            database.removeElement(database.getElementAt(i));
-            clearForm();
+            if (EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete " + database.elements[i].getName()+ " from the ressources list ?", "Yes", "No"))
+            {
+                database.removeElement(database.getElementAt(i));
+                clearForm();
+            }
         }
         EditorGUILayout.EndHorizontal();
     }

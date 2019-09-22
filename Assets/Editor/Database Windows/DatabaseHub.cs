@@ -5,6 +5,7 @@ public class DatabaseHub : EditorWindow
 {
     // windows 
     protected static DatabaseHub hub;
+    public static DatabaseResourcesList resourcesList;
     static EnemyDatabaseWindow enemyDatabaseWindow;
     static AbilityDatabaseWindow abilityDatabaseWindow;
     static ItemDatabaseWindow itemDatabaseWindow;
@@ -14,12 +15,13 @@ public class DatabaseHub : EditorWindow
     static void init()
     {
         hub = new DatabaseHub();
+        resourcesList = Resources.Load<DatabaseResourcesList>(ScriptableObjectConstant.resourceListPath);
         enemyDatabaseWindow = new EnemyDatabaseWindow();
-        enemyDatabaseWindow.initDB();
+        enemyDatabaseWindow.initDB(resourcesList);
         abilityDatabaseWindow = new AbilityDatabaseWindow();
-        abilityDatabaseWindow.initDB();
+        abilityDatabaseWindow.initDB(resourcesList);
         itemDatabaseWindow = new ItemDatabaseWindow();
-        itemDatabaseWindow.initDB();
+        itemDatabaseWindow.initDB(resourcesList);
         hub.minSize = new Vector2(300 * 3, 300);
         hub.Show();
     }

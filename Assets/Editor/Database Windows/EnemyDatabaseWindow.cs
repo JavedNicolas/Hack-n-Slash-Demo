@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
+public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
 {
     // database
     protected override string databasePath { get => "Databases/EnemyDatabase"; }
@@ -19,6 +19,12 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     GameObject prefab;
     float movementSpeed;
     InteractableObjectType interactableType;
+    int numberOfLoot;
+    int numberOfAbility;
+    List<int> lootID = new List<int>();
+    List<int> abilityIDs = new List<int>();
+    bool displayLootAndAbility = false;
+    float xp;
 
     // loot
     List<Loot> possibleLoots = new List<Loot>();
@@ -29,15 +35,6 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     // display ability and loot
     ItemDatabase itemDatabase;
     AbilityDatabase abilityDatabase;
-
-    int numberOfLoot;
-    int numberOfAbility;
-    List<int> lootID = new List<int>();
-    List<int> abilityIDs = new List<int>();
-    bool displayLootAndAbility = false;
-
-    //xp
-    float xp;
 
     private void OnEnable()
     {
@@ -106,16 +103,13 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
             possibleLoots[index].isRandom = EditorGUILayout.Toggle("Is a random Item :", possibleLoots[index].isRandom);
             if (!possibleLoots[index].isRandom)
             {
-                if (possibleLoots[index].item != null && lootID[index] == -1)
-                    lootID[index] = possibleLoots[index].item.databaseID;
                 lootID[index] = EditorGUILayout.IntField("Item Database Id : ", lootID[index]);
                 if (lootID[index] != -1)
                 {
-                    Item item = itemDatabase.getElementWithDBID(lootID[index]);
-                    if (item != null)
+                    ItemDatabaseModel itemDatabaseModel = itemDatabase.getElementWithDBID(lootID[index]);
+                    if (itemDatabaseModel != null)
                     {
-                        EditorGUILayout.LabelField("Item name : ", item.name, new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold }); ;
-                        possibleLoots[index].item = item;
+                        EditorGUILayout.LabelField("Item name : ", itemDatabaseModel.name, new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold }); ;
                     }
                     else
                         EditorGUILayout.LabelField("Can't find this item...");
@@ -148,16 +142,12 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
 
             abilityIDs[index] = EditorGUILayout.IntField("Skill Database Id : ", abilityIDs[index]);
 
-            if (abilities[index] != null && abilityIDs[index] == -1)
-                abilityIDs[index] = abilities[index].databaseID;
-
             if (abilityIDs[index] != -1)
             {
-                Ability ability = abilityDatabase.getElementWithDBID(abilityIDs[index]);
+                AbilityDatabaseModel ability = abilityDatabase.getElementWithDBID(abilityIDs[index]);
                 if (ability != null)
                 {
                     EditorGUILayout.LabelField("Ability name : ", ability.getName(), new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold }); ;
-                    this.abilities[index] = ability;
                 }
                 else
                     EditorGUILayout.LabelField("Can't find this Ability...");
@@ -251,39 +241,35 @@ public class EnemyDatabaseWindow : DatabaseWindows<Enemy>
     { 
         if(element != null)
         {
-            databaseID = element.databaseID;
-            enemyName = element.name;
-            xp = element.experience;
-            baseLife = element.stats.maxLife;
-            castSpeed = element.stats.castSpeed;
-            attackSpeed = element.stats.attackSpeed;
-            movementSpeed = element.stats.movementSpeed;
-            prefab = element.prefab;
-            numberOfLoot = element.possibleLoot.Count;
-            possibleLoots = element.possibleLoot;
-            numberOfAbility = element.abilityIDs.Count;
-            abilityIDs = element.abilityIDs;
+            Enemy enemy = element.databaseModelToEnemy(resourcesList);
+            databaseID = enemy.databaseID;
+            enemyName = enemy.name;
+            xp = enemy.experience;
+            baseLife = enemy.stats.maxLife;
+            castSpeed = enemy.stats.castSpeed;
+            attackSpeed = enemy.stats.attackSpeed;
+            movementSpeed = enemy.stats.movementSpeed;
+            prefab = enemy.prefab;
+            numberOfLoot = enemy.possibleLoot.Count;
+            possibleLoots = enemy.possibleLoot;
+            numberOfAbility = enemy.abilityIDs.Count;
+            abilityIDs = enemy.abilityIDs;
             abilities = new List<Ability>();
-            foreach (int id in abilityIDs)
-            {
-                abilities.Add(abilityDatabase.getElementWithDBID(id));
-            }
-            abilityFrequency = element.abilityUsageFrequency;
+            abilityFrequency = enemy.abilityUsageFrequency;
         }
     }
 
     protected override void updateElementWithFormValues()
     {
-        element = new Enemy(enemyName, baseLife, attackSpeed, castSpeed, 20, movementSpeed, abilityIDs, abilityFrequency, prefab, possibleLoots, xp);
-        element.interactibleType = interactableType;
-        element.databaseID = databaseID;
+        BeingStats stats = new BeingStats(baseLife, attackSpeed, castSpeed, attackSpeed, movementSpeed);
+        element = new EnemyDatabaseModel(databaseID, enemyName, interactableType, stats, abilityIDs, possibleLoots, abilityFrequency, resourcesList.addObjects(prefab), xp); 
     }
 
     protected override void clearForm()
     {
         base.clearForm();
-        element = new Enemy();
         databaseID = database.getFreeId();
+        element = null;
         enemyName = "";
         xp = 0;
         baseLife = 0;

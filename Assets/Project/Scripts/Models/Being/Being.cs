@@ -80,7 +80,9 @@ public class Being : Interactable
         if (GameManager.instance == null)
             return false;
 
-        _abilities.Add(GameManager.instance.abilityDatabase.getElementWithDBID(abilityID));
+        Ability ability = GameManager.instance.abilityDatabase.getAbilityFromDatabaseID(abilityID, GameManager.instance.resourcesList);
+
+        _abilities.Add(ability);
         return true;
     }
 

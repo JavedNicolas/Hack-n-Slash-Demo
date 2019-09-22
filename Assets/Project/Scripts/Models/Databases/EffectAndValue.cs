@@ -11,19 +11,17 @@ public class ItemEffectAndValue
 
     [Header("Starting time")]
     [SerializeField] public EffectType startingTime;
-    [SerializeField] public EffectType effectType;
 
     [Header("Start influencing the value")]
     [SerializeField] public List<StatType> statTypes;
 
     public ItemEffectAndValue() { }
 
-    public ItemEffectAndValue(float value, Effect effect, EffectType startingTime, EffectType effectType, List<StatType> statTypes)
+    public ItemEffectAndValue(float value, Effect effect, EffectType startingTime, List<StatType> statTypes)
     {
         this.value = value;
         this.effect = effect;
         this.startingTime = startingTime;
-        this.effectType = effectType;
         this.statTypes = statTypes;
     }
 

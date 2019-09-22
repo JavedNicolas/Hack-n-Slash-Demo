@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public AbilityDatabase abilityDatabase { get => _abilityDatabase; }
     [SerializeField] ItemDatabase _itemDatabase;
     public ItemDatabase itemDatabase { get => _itemDatabase; }
+    [SerializeField] DatabaseResourcesList _resourcesList;
+    public DatabaseResourcesList resourcesList { get => _resourcesList; }
 
     [SerializeField] GameObject _itemObject;
     public GameObject itemObjetPrefab { get => _itemObject; }

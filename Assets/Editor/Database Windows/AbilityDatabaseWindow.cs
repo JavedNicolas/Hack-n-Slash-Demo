@@ -4,12 +4,18 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-public class AbilityDatabaseWindow : DatabaseWindows<Ability>
+public class AbilityDatabaseWindow : DatabaseWindows<AbilityDatabaseModel>
 {
     // database
     protected override string databasePath { get => "Databases/AbilityDatabase"; }
 
     AbilityAttributs attributs;
+
+    public override void initDB(DatabaseResourcesList resourcesList)
+    {
+        base.initDB(resourcesList);
+        ((AbilityDatabase)database).initElements(resourcesList);
+    }
 
     #region Left panel (The content list)
     protected override void displayContentListButtons(int i)
@@ -64,13 +70,14 @@ public class AbilityDatabaseWindow : DatabaseWindows<Ability>
 
     protected override void setFieldWithElementValues()
     {
+        Ability ability = ((AbilityDatabase)database).abilities.Find(x => x.getName() == element.name);
         databaseID = element.databaseID;
-        attributs = element.abilityAttributs;
+        attributs = (AbilityAttributs)resourcesList.getObject<ScriptableObject>(element.attributsGuid);
     }
 
     protected override void updateElementWithFormValues()
     {
-        element.abilityAttributs = attributs;
+        element.attributsGuid = resourcesList.addObjects(attributs);
     }
 
     #endregion
