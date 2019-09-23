@@ -15,7 +15,6 @@ public class EnemyAndAggro
     public void addAggro(float value)
     {
         aggro += value;
-        Debug.Log(aggro + " : " + value);
     }
 }
 

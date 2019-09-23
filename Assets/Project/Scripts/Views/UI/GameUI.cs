@@ -15,6 +15,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] public UILife lifeUI;
     [SerializeField] public UIMana manaUI;
     [SerializeField] public UITopBar topBar;
+    [SerializeField] UILevelUpDisplayer levelUpDisplayer; 
 
     [Header("Description")]
     [SerializeField] public Canvas detailPopUPCanvas;
@@ -42,6 +43,11 @@ public class GameUI : MonoBehaviour
 
         abilityDetailPopUp = Instantiate(abilityPopUpPrefab);
         abilityDetailPopUp.gameObject.SetActive(false);
+    }
+
+    public void displayLevelUp(int level)
+    {
+        levelUpDisplayer.displayLevelUp(level);
     }
 
     /// <summary>
@@ -108,4 +114,5 @@ public class GameUI : MonoBehaviour
         abilityDetailPopUp.gameObject.SetActive(display);
 
     }
+
 }

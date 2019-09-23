@@ -223,10 +223,7 @@ public class PlayerBehavior : BeingBehavior
 
     void launchlevelUpAnimation()
     {
-        for(int i= 0; i < levelUPParticules.Length; i++)
-        {
-            levelUPParticules[i].Play();
-        }
+        GameUI.instance.displayLevelUp(being.stats.currentLevel);
     }
 
     public void addExperience(float value)

@@ -27,8 +27,6 @@ MonoBehaviour:
     id: 5faa9662-4737-495a-b902-6c0197fb10cf
   - obj: {fileID: 4611060930209723367, guid: 6342c2e676e182b4996f5eb7dd8627cf, type: 3}
     id: c79adadf-ac75-4fa6-ad3c-dc1e56aadf1c
-  - obj: {fileID: 4301830696263116068, guid: 81b79f5c1e924a042b11bd03c03b08e6, type: 3}
-    id: 11094cc5-a73c-4b8b-9fd8-e6f9fc15b670
   - obj: {fileID: 7699618545951562393, guid: 539abc4bc8423374ea56e4d48393cccc, type: 3}
     id: fd3c56eb-6783-4cd3-b81c-1caca6a4c986
   - obj: {fileID: 7699618545951562393, guid: 32c51c63ea64b644c931f9d6d037aeac, type: 3}
