@@ -17,9 +17,6 @@ public class PlayerBehavior : BeingBehavior
     [Header("Clicks")]
     float dropItemMaxDistance = 20f;
 
-    [Header("Animation")]
-    [SerializeField] ParticleSystem[] levelUPParticules;
-
     // camera
     [SerializeField] Camera _playerCamera;
     public Camera playerCamera { get => _playerCamera; }

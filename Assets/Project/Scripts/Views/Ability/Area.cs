@@ -9,6 +9,7 @@ public class Area : MonoBehaviour
     [SerializeField] ParticleSystem[] particleSystems;
     [SerializeField] protected ParticleSystem areaSizeController;
     [SerializeField] CapsuleCollider areaCollider;
+    [SerializeField] RadiusDisplayer radiusDisplayer;
 
     [SerializeField] float lifeduration;
     [SerializeField] float delayBeforeEffect;
@@ -114,7 +115,9 @@ public class Area : MonoBehaviour
         {
             areaCollider.radius = _senderBehavior.being.stats.getBuffedValue(areaCollider.radius, StatType.AreaSize, _origin.getName(), _origin.stats.statList);
             var main = areaSizeController.main;
-            main.startSize = _senderBehavior.being.stats.getBuffedValue(main.startSize.constant, StatType.AreaSize, _origin.getName(), _origin.stats.statList); ;
+            main.startSize = _senderBehavior.being.stats.getBuffedValue(main.startSize.constant, StatType.AreaSize, _origin.getName(), _origin.stats.statList);
+            if (radiusDisplayer != null)
+                radiusDisplayer.updateRadius(_senderBehavior.being.stats.getBuffedValue(radiusDisplayer.radius, StatType.AreaSize, _origin.getName(), _origin.stats.statList));
         }
             
     }
