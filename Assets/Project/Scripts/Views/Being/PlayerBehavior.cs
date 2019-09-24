@@ -50,7 +50,7 @@ public class PlayerBehavior : BeingBehavior
 
     private void Start()
     {
-        being.hasLeveledUP = launchlevelUpAnimation;
+        being.stats.hasLeveledUP = launchlevelUpAnimation;
         _interactOnce = !autoAttack;
         _abilityManager = GetComponent<PlayerAbilityManager>();
         getUIElements();

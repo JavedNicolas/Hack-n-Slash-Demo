@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 [CreateAssetMenu(menuName = ScriptableObjectConstant.abilityAttributsMenuName + "Lightning Ball", fileName = "LightningBallAttributs")]
 public class LightningBallAttributs : AbilityAttributs, IProjectileAttributs
 {

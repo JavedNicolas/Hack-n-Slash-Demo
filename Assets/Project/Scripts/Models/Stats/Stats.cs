@@ -15,7 +15,17 @@ public class Stats
     [SerializeField] protected List<Stat> _stats = new List<Stat>();
     public List<Stat> statList { get => _stats; }
 
-    public Stats() { }
+    #region levelUp delegate
+    public delegate void HasLeveledUP();
+    public HasLeveledUP hasLeveledUP;
+    #endregion
+
+    public Stats(int currentLevel = 1) 
+    {
+        _currentLevelExp = 0;
+        _currentLevel = currentLevel;
+        _stats = new List<Stat>();
+    }
 
     public Stats(Stats stats)
     {
@@ -29,9 +39,32 @@ public class Stats
         _currentLevelExp = value;
     }
 
+    /// <summary>
+    /// Add experience to the player
+    /// </summary>
+    /// <param name="value">The experience to add</param>
+    public void addExperience(float value, float[] expTable)
+    {
+        // if this is not the last level then add the exp 
+        //and level up if the current xp is above the level requirement
+        if (currentLevel != expTable.Length)
+        {
+            setCurrentExperience(currentLevelExp + value);
+            if (currentLevelExp >= expTable[currentLevel])
+                levelUp();
+        }
+
+        // if the level is the maxium then leave the currentXP at max
+        if (currentLevel == expTable.Length)
+            setCurrentExperience(expTable[currentLevel - 1]);
+    }
+
     public void levelUp()
     {
         _currentLevel++;
+        setCurrentExperience(currentLevelExp - LevelExperienceTable.levelExperienceNeeded[currentLevel - 1]);
+
+        hasLeveledUP?.Invoke();
     }
 
     /// <summary>

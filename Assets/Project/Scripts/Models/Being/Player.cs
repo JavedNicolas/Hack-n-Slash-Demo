@@ -16,15 +16,10 @@ public class Player : Being
     public new PlayerStats stats { get => (PlayerStats)base.stats; }
     #endregion
 
-    #region levelUp delegate
-    public delegate void  HasLeveledUP();
-    public HasLeveledUP hasLeveledUP;
-    #endregion
-
-    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<int> abilityIDs, GameObject prefab, int currentLevel) :
+    public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<int> abilityIDs, GameObject prefab, int currentLevel = 1) :
         base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilityIDs, prefab)
     {
-        base.stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed);
+        base.stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, currentLevel);
         setLevelUpDelegate();
         this._currentMana = stats.maxMana;
         setBaseStat();
@@ -37,7 +32,6 @@ public class Player : Being
         setLevelUpDelegate();
         this._inventory = player.inventory;
         this._currentMana = player.currentMana;
-        
         setBaseStat();
     }
 
@@ -55,7 +49,7 @@ public class Player : Being
 
     void setLevelUpDelegate()
     {
-        
+        stats.hasLeveledUP = levelUp;
     }
 
     /// <summary>
@@ -73,7 +67,7 @@ public class Player : Being
     /// <param name="value"></param>
     public void addAllExperience(float value)
     {
-        addExperience(value);
+        stats.addExperience(value, LevelExperienceTable.levelExperienceNeeded);
         foreach (Ability ability in abilities)
         {
             ability.addExperience(value);
@@ -86,35 +80,10 @@ public class Player : Being
         return stats.currentLevelExp / LevelExperienceTable.levelExperienceNeeded[index];
     }
 
-    /// <summary>
-    /// Add experience to the player
-    /// </summary>
-    /// <param name="value">The experience to add</param>
-    public void addExperience(float value)
-    {
-        // if this is not the last level then add the exp 
-        //and level up if the current xp is above the level requirement
-        if (stats.currentLevel != LevelExperienceTable.levelExperienceNeeded.Length)
-        {
-            stats.setCurrentExperience(stats.currentLevelExp + value);
-            if (stats.currentLevelExp >= LevelExperienceTable.levelExperienceNeeded[stats.currentLevel])
-                levelUp();
-        }
-
-        // if the level is the maxium then leave the currentXP at max
-        if (stats.currentLevel == LevelExperienceTable.levelExperienceNeeded.Length)
-            stats.setCurrentExperience(LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1]);
-    }
-
     void levelUp()
     {
-        stats.levelUp();
-        stats.setCurrentExperience(stats.currentLevelExp - LevelExperienceTable.levelExperienceNeeded[stats.currentLevel - 1]);
-
         _currentMana = stats.maxMana;
         _currentLife = stats.maxLife;
-
-        hasLeveledUP();
     }
 
 }

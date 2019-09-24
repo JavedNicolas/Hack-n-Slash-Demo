@@ -5,7 +5,7 @@ using UnityEngine;
 public class BasicAttack : Ability
 {
 
-    public BasicAttack()
+    public BasicAttack() : base()
     {
         setAttributs(Resources.Load<BasicAttackAttributs>(AbilityConstant.attributsFolder + "BasicAttackAttributs"));
     }

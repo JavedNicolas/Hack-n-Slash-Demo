@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 [System.Serializable]
@@ -25,9 +27,17 @@ public abstract class Ability : DatabaseElement
     public Ability()
     {
         setBaseStats();
+        stats = new Stats();
     }
 
     public Ability(Ability ability)
+    {
+        abilityAttributs = ability.abilityAttributs;
+        stats = new Stats(ability.stats);
+        setBaseStats();
+    }
+
+    public void copyAttributs(Ability ability)
     {
         abilityAttributs = ability.abilityAttributs;
         stats = new Stats(ability.stats);
@@ -62,23 +72,7 @@ public abstract class Ability : DatabaseElement
     /// <param name="value">The experience to add</param>
     public void addExperience(float value)
     {
-        float[] expTable = getAbilityExpTable();
-
-        // if this is not the last level then add the exp 
-        //and level up if the current xp is above the level requirement
-        if (stats.currentLevel != expTable.Length)
-        {
-            stats.setCurrentExperience(stats.currentLevelExp + value);
-            if (stats.currentLevelExp >= expTable[stats.currentLevel])
-                if(stats.currentLevel < abilityAttributs.maxLevel)
-                    levelUp(expTable);
-        }
-
-        // if the level is the maxium then leave the currentXP at max
-        if (stats.currentLevel == expTable.Length)
-        {
-            stats.setCurrentExperience(expTable[stats.currentLevel - 1]);
-        }
+        stats.addExperience(value, getAbilityExpTable());
     }
 
     void levelUp(float[] expTable)

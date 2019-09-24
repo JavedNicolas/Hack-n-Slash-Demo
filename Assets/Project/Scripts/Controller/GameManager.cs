@@ -7,13 +7,13 @@ public class GameManager : MonoBehaviour
 {
     [Header("Database")]
     [SerializeField] EnemyDatabase _enemyDatabase;
-    public EnemyDatabase enemyDatabase { get => _enemyDatabase; }
+    public EnemyDatabase enemyDatabase { get => _enemyDatabase; set => _enemyDatabase = value; }
     [SerializeField] AbilityDatabase _abilityDatabase;
-    public AbilityDatabase abilityDatabase { get => _abilityDatabase; }
+    public AbilityDatabase abilityDatabase { get => _abilityDatabase; set => _abilityDatabase = value; }
     [SerializeField] ItemDatabase _itemDatabase;
-    public ItemDatabase itemDatabase { get => _itemDatabase; }
+    public ItemDatabase itemDatabase { get => _itemDatabase; set => _itemDatabase = value; }
     [SerializeField] DatabaseResourcesList _resourcesList;
-    public DatabaseResourcesList resourcesList { get => _resourcesList; }
+    public DatabaseResourcesList resourcesList { get => _resourcesList; set => _resourcesList = value; }
 
     [SerializeField] GameObject _itemObject;
     public GameObject itemObjetPrefab { get => _itemObject; }
@@ -52,10 +52,10 @@ public class GameManager : MonoBehaviour
         loadDatabases();
 
         playerTMp = new Player("Player Test", 200, 100, 1, 1, 10, new List<int>() { 0, 1 }, playerPrefab, 1);
-        playerTMp.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
-        playerTMp.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
-        playerTMp.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
-        playerTMp.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
+        playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
+        playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
+        playerTMp.stats.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
+        playerTMp.stats.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
 
         CurrentMapInstanceController.instance.loadZone();
         spawnPlayer();

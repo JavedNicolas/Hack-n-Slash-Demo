@@ -126,7 +126,7 @@ public class EnemyBehavior : BeingBehavior
             {
                 inRangeEnemy++;
                 // add aggro based on the distance from the target
-                float inRangeAggroValue = BeingConstant.distanceAggroFactor / Vector3.Distance(enemies[i].beingBehavior.transform.position, transform.position);
+                float inRangeAggroValue = BeingConstant.distanceAggroFactor / (Vector3.Distance(enemies[i].beingBehavior.transform.position, transform.position) + 0.01f);
                 enemies[i].addAggro(inRangeAggroValue);
             }
         }

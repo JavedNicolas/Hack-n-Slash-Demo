@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,10 +33,10 @@ public class Being : Interactable
     #region init
     public Being() { }
 
-    public Being(string name, float baseLife,  float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<int> abilityIndexes, GameObject prefab)
+    public Being(string name, float baseLife,  float baseASPD, float baseCastSpeed, float baseAttackRange, float baseMovementSpeed, List<int> abilityIndexes, GameObject prefab, int currentLevel = 1)
     {
         this.name = name;
-        this.stats = new BeingStats(baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed);
+        this.stats = new BeingStats(baseLife, baseASPD, baseCastSpeed, baseAttackRange, baseMovementSpeed, currentLevel);
         this.abilityIDs = abilityIndexes;
         this._prefab = prefab;
         this._basicAttack = new BasicAttack();
@@ -70,30 +71,23 @@ public class Being : Interactable
     /// </summary>
     /// <param name="abilityID">The databaseId of the ability</param>
     /// <returns></returns>
-    public bool addAbility(int abilityID, bool permantlyAdd = false) {
-        if (abilities.Exists(x => x.databaseID == abilityID))
-            return false;
+    public void addAbility(int abilityID, bool permantlyAdd = false) {
+        if (abilities.Count > 0 && abilities.Exists(x => x.databaseID == abilityID))
+            return;
 
         if (permantlyAdd)
             abilityIDs.Add(abilityID);
 
         if (GameManager.instance == null)
-            return false;
+            return;
 
-        Ability ability = GameManager.instance.abilityDatabase.getAbilityFromDatabaseID(abilityID, GameManager.instance.resourcesList);
+        Ability AbilityBuffer = GameManager.instance.abilityDatabase.getAbilityFromDatabaseID(abilityID, GameManager.instance.resourcesList);
+        // Make a new instance of this ability 
+        Ability ability = (Ability)Activator.CreateInstance(AbilityBuffer.GetType());
+        ability.copyAttributs(AbilityBuffer);
 
         _abilities.Add(ability);
-        return true;
-    }
-
-    /// <summary>
-    /// Add a stat
-    /// </summary>
-    /// <param name="stat"></param>
-    /// <returns></returns>
-    public bool addStat(Stat stat)
-    {
-        return stats.addStat(stat);
+        return;
     }
 
     /// <summary>

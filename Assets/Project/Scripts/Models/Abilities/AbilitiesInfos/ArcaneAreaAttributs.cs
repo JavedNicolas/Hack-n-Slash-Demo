@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 [CreateAssetMenu(fileName = "ArcanaAttributs", menuName = ScriptableObjectConstant.abilityAttributsMenuName + "Arcana")]
 public class ArcaneAreaAttributs : AbilityAttributs, IAreaAttributs
 {

@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class ArcaneArea : Ability
 {
-    public ArcaneArea() { }
+    public ArcaneArea() : base() { }
 
     public ArcaneArea(ArcaneArea arcaneArea) : base(arcaneArea){}
 

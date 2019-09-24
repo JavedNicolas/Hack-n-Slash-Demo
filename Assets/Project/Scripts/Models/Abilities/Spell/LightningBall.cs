@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class LightningBall : Ability
 {
-    public LightningBall() { }
+    public LightningBall() : base() { }
 
     public LightningBall(LightningBall lightningBall) : base(lightningBall) { }
 

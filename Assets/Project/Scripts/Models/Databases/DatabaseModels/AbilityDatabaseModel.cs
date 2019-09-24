@@ -7,6 +7,13 @@ public class AbilityDatabaseModel : DatabaseElement
 {
     [SerializeField] public string attributsGuid;
 
+    public AbilityDatabaseModel(Ability ability, string attributsGUID)
+    {
+        this.databaseID = ability.databaseID;
+        this.name = ability.getName();
+        this.attributsGuid = attributsGUID;
+    }
+
     public AbilityDatabaseModel(int databaseID, string name, string attributsGuid)
     {
         this.databaseID = databaseID;

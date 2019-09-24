@@ -31,7 +31,9 @@ public class BeingStats : Stats
     [SerializeField] float _castSpeed;
     public float castSpeed { get => getBuffedValue(_castSpeed, StatType.CastSpeed); }
 
-    public BeingStats() { }
+    public BeingStats(int currentLevel = 1) : base(currentLevel) 
+    {
+    }
 
     public BeingStats(BeingStats stats) : base(stats)
     {
@@ -45,7 +47,7 @@ public class BeingStats : Stats
         _castSpeed = stats.castSpeed;
     }
 
-    public BeingStats(float maxLife, float attackSpeed, float castSpeed, float attackRange, float movementSpeed)
+    public BeingStats(float maxLife, float attackSpeed, float castSpeed, float attackRange, float movementSpeed, int currentLevel = 1) : base(currentLevel)
     {
         this._maxLife = maxLife;
         this._attackSpeed = attackSpeed;

@@ -14,9 +14,22 @@ public class EnemyDatabaseModel : DatabaseElement
     [SerializeField] public List<int> abilityIDs = new List<int>();
     [SerializeField] public string prefabGUID;
     [SerializeField] public float experience;
-    [SerializeField] public InteractableObjectType interactableType;
+    [SerializeField] public InteractableObjectType interactbileType;
 
-    public EnemyDatabaseModel(int databaseID, string name, InteractableObjectType interactableType, BeingStats stats, List<int> abilityIDs, List<Loot> possibleLoot, List<AbilityUsageFrequence> abilityUsageFrequency, string prefabGUI, float experience)
+    public EnemyDatabaseModel(Enemy enemy, string prefabGUI)
+    {
+        this.databaseID = enemy.databaseID;
+        this.name = enemy.name;
+        this.possibleLoot = enemy.possibleLoot;
+        this.abilityUsageFrequency = enemy.abilityUsageFrequency;
+        this.stats = enemy.stats;
+        this.abilityIDs = enemy.abilityIDs;
+        this.prefabGUID = prefabGUI;
+        this.experience = enemy.experience;
+        this.interactbileType = enemy.interactibleType;
+    }
+
+    public EnemyDatabaseModel(int databaseID, string name, InteractableObjectType interactibleType, BeingStats stats, List<int> abilityIDs, List<Loot> possibleLoot, List<AbilityUsageFrequence> abilityUsageFrequency, string prefabGUI, float experience)
     {
         this.databaseID = databaseID;
         this.name = name;
@@ -26,7 +39,7 @@ public class EnemyDatabaseModel : DatabaseElement
         this.abilityIDs = abilityIDs;
         this.prefabGUID = prefabGUI;
         this.experience = experience;
-        this.interactableType = interactableType;
+        this.interactbileType = interactibleType;
     }
 
     public Enemy databaseModelToEnemy(DatabaseResourcesList resourcesList)
@@ -35,7 +48,7 @@ public class EnemyDatabaseModel : DatabaseElement
         Enemy enemy = new Enemy(name, stats.maxLife, stats.attackSpeed, stats.castSpeed, stats.attackRange,
             stats.movementSpeed, abilityIDs, abilityUsageFrequency, prefab, possibleLoot, experience);
         enemy.databaseID = databaseID;
-        enemy.interactibleType = interactableType;
+        enemy.interactibleType = interactbileType;
         return enemy;
     }
 
