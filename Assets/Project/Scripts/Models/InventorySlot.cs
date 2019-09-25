@@ -22,6 +22,10 @@ public struct InventorySlot
         quantity = -1;
     }
 
+    public void updateIndex(int index)
+    {
+        this._index = index;
+    }
 
     /// <summary>
     /// Copy the slot into the current one 

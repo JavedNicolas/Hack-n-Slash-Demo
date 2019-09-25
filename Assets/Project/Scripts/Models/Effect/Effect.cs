@@ -9,7 +9,7 @@ public abstract class Effect : ScriptableObject
     public string description { get { return _description; } }
 
     [SerializeField] EffectTargetType _effectTargetType;
-    public EffectTargetType effectTargetType { get { return _effectTargetType; } }
+    public EffectTargetType effectTargetType { get => _effectTargetType; set => _effectTargetType = value; }
 
     /// <summary>
     /// Apply the effect
@@ -31,7 +31,7 @@ public abstract class Effect : ScriptableObject
     /// <param name="sender">The sender</param>
     /// <param name="target">The target</param>
     /// <returns>return true if the target is correct</returns>
-    protected bool isCorrectTarget(BeingBehavior sender, GameObject target)
+    protected bool isCorrectTarget(BeingBehavior sender, BeingBehavior target)
     {
         BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
 

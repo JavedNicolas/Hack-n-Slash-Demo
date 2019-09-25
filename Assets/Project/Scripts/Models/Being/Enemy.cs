@@ -45,7 +45,7 @@ public class Enemy : Being
         {
             //Get a random number between 0 and 100 with a precision of 1
             float randomRoll = Random.Range(0.0f, 100.0f);
-            if (randomRoll > 0 && possibleLoot[i].changeToDrop >= randomRoll)
+            if (randomRoll > 0 && possibleLoot[i].chanceToDrop >= randomRoll)
                 loot.Add(new Loot(getLootAt(i)));
         }
         return loot;

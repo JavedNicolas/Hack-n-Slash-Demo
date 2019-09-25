@@ -5,8 +5,8 @@ using System.Collections;
 public class Loot 
 {
     public Item item = null;
-    [SerializeField] int itemID;
-    [SerializeField] [Range(0,100)] public float changeToDrop;
+    [SerializeField] public int itemDatabaseID = -1;
+    [SerializeField] [Range(0,100)] public float chanceToDrop;
     [SerializeField] public int quantity;
     [SerializeField] public bool isRandom;
 
@@ -16,17 +16,18 @@ public class Loot
     /// <param name="loot"></param>
     public Loot(Loot loot)
     {
-        this.itemID = loot.item.databaseID;
-        if (itemID == -1)
+        if (loot.itemDatabaseID == -1 || loot.item == null || isRandom)
             getRandomItem();
         else
         {
             this.quantity = loot.quantity;
-            ItemDatabaseModel itemDatabaseModel = GameManager.instance.itemDatabase.getElementWithDBID(itemID);
+            ItemDatabaseModel itemDatabaseModel = GameManager.instance.itemDatabase.getElementWithDBID(itemDatabaseID);
             this.item = new Item(itemDatabaseModel.databaseModelToItem(GameManager.instance.resourcesList));
+            this.itemDatabaseID = loot.item.databaseID;
         }
-           
-        this.changeToDrop = loot.changeToDrop;
+
+        this.chanceToDrop = loot.chanceToDrop;
+        this.quantity = loot.quantity == 0 ? 1 : loot.quantity;  
         this.isRandom = loot.isRandom;
     }
 
@@ -34,21 +35,32 @@ public class Loot
     /// Use for database editor
     /// </summary>
     /// <param name="item"></param>
-    /// <param name="changeToDrop"></param>
+    /// <param name="chanceToDrop"></param>
     /// <param name="quantity"></param>
-    public Loot(Item item, float changeToDrop, int quantity)
+    public Loot(Item item, float chanceToDrop, int quantity, bool isRandom = false)
     {
         if (item != null)
-            this.itemID = item.databaseID;
-        this.changeToDrop = changeToDrop;
+            this.itemDatabaseID = item.databaseID;
+        this.chanceToDrop = chanceToDrop;
         this.quantity = quantity;
+        this.isRandom = isRandom;
+    }
+
+    /// <summary>
+    /// Generate a random Loot
+    /// </summary>
+    public Loot(float changeToDrop = 100, int quantity = 1)
+    {
+        getRandomItem();
+        this.chanceToDrop = changeToDrop;
+        this.quantity = quantity;
+        this.isRandom = true;
     }
 
     void getRandomItem()
     {
         ItemDatabaseModel itemDatabaseModel = GameManager.instance.itemDatabase.getRandomElement();
         this.item = new Item(itemDatabaseModel.databaseModelToItem(GameManager.instance.resourcesList));
-        itemID = item.databaseID;
-        quantity = 1;
+        itemDatabaseID = item.databaseID;
     }
 }

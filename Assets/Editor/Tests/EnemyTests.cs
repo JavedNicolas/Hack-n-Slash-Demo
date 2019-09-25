@@ -33,7 +33,7 @@ namespace Tests
         public void WhenLoadingEnemyFromDatabase_ThenEnemyIsInitializedWithTheDatabaseValues()
         {
             // assign 
-            Enemy dbEnemy = GameManager.instance.enemyDatabase.getRandomElement().databaseModelToEnemy(GameManager.instance.resourcesList);
+            Enemy dbEnemy = GameManager.instance.enemyDatabase.getRandomElement().databaseModelToEnemy(GameManager.instance.resourcesList, GameManager.instance.itemDatabase);
 
             // act
             enemy = new Enemy(dbEnemy);
@@ -43,32 +43,15 @@ namespace Tests
             Assert.AreEqual(dbEnemy.databaseID, enemy.databaseID);
         }
 
-        [Test]
-        public void WhenGeneratingLoot_TheyComeFromPossibleLootList()
-        {
-            //assign 
-            enemy = GameManager.instance.enemyDatabase.getRandomElement().databaseModelToEnemy(GameManager.instance.resourcesList);
-
-            //act
-            List<Loot> loots = enemy.generateLoot();
-
-            //assert
-            for(int i = 0; i < loots.Count; i++)
-            {
-                Assert.IsTrue(enemy.possibleLoot.Contains(loots[i]));
-            }
-            
-        }
-
         // Testing enemy database Model
         [Test]
         public void WhenWeNeedToSaveEnemyInDatabase_ThenConvertItToEnemyDatabaseModel()
         {
             // assign
-            enemy = GameManager.instance.enemyDatabase.getRandomElement().databaseModelToEnemy(GameManager.instance.resourcesList);
+            enemy = GameManager.instance.enemyDatabase.getRandomElement().databaseModelToEnemy(GameManager.instance.resourcesList, GameManager.instance.itemDatabase);
 
             // act
-            EnemyDatabaseModel enemyDatabaseModel = new EnemyDatabaseModel(enemy, "GUID");
+            EnemyDatabaseModel enemyDatabaseModel = new EnemyDatabaseModel(enemy, "GUID", null);
 
             // assert
             Assert.IsNotNull(enemyDatabaseModel);
@@ -82,7 +65,7 @@ namespace Tests
             EnemyDatabaseModel enemyDatabaseModel = GameManager.instance.enemyDatabase.getRandomElement();
 
             // act
-            Enemy enemy = enemyDatabaseModel.databaseModelToEnemy(GameManager.instance.resourcesList);
+            Enemy enemy = enemyDatabaseModel.databaseModelToEnemy(GameManager.instance.resourcesList, GameManager.instance.itemDatabase);
 
             // Assert
             Assert.IsNotNull(enemy);

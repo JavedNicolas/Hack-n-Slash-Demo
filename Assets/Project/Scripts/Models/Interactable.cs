@@ -7,7 +7,6 @@ public abstract class Interactable : DatabaseElement
     float distanceToInteract;
 
     // true if the movement has been initiated
-    bool moveHasStarted = false;
     [SerializeField] protected InteractableObjectType _interactibleType;
     public InteractableObjectType interactibleType { get => _interactibleType; set => _interactibleType = value; }
 

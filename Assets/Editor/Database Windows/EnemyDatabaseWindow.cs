@@ -21,7 +21,6 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
     InteractableObjectType interactableType;
     int numberOfLoot;
     int numberOfAbility;
-    List<int> lootID = new List<int>();
     List<int> abilityIDs = new List<int>();
     bool displayLootAndAbility = false;
     float xp;
@@ -103,10 +102,10 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
             possibleLoots[index].isRandom = EditorGUILayout.Toggle("Is a random Item :", possibleLoots[index].isRandom);
             if (!possibleLoots[index].isRandom)
             {
-                lootID[index] = EditorGUILayout.IntField("Item Database Id : ", lootID[index]);
-                if (lootID[index] != -1)
+                possibleLoots[index].itemDatabaseID = EditorGUILayout.IntField("Item Database Id : ", possibleLoots[index].itemDatabaseID);
+                if (possibleLoots[index].itemDatabaseID != -1)
                 {
-                    ItemDatabaseModel itemDatabaseModel = itemDatabase.getElementWithDBID(lootID[index]);
+                    ItemDatabaseModel itemDatabaseModel = itemDatabase.getElementWithDBID(possibleLoots[index].itemDatabaseID);
                     if (itemDatabaseModel != null)
                     {
                         EditorGUILayout.LabelField("Item name : ", itemDatabaseModel.name, new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold }); ;
@@ -115,9 +114,13 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
                         EditorGUILayout.LabelField("Can't find this item...");
                 }
             }
+            else
+            {
+                possibleLoots[index].itemDatabaseID = -1;
+            }
 
             EditorGUILayout.LabelField("Chance to drop :", centerTitle);
-            possibleLoots[index].changeToDrop = EditorGUILayout.FloatField(possibleLoots[index].changeToDrop);
+            possibleLoots[index].chanceToDrop = EditorGUILayout.FloatField(possibleLoots[index].chanceToDrop);
             if (!possibleLoots[index].isRandom)
             {
                 EditorGUILayout.LabelField("Quantity :", centerTitle);
@@ -178,18 +181,6 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
                 possibleLoots.RemoveAt(possibleLoots.Count - 1);
             }
         }
-
-        while (lootID.Count != size)
-        {
-            if (lootID.Count < size)
-            {
-                lootID.Add(-1);
-            }
-            else if (lootID.Count > size)
-            {
-                lootID.RemoveAt(lootID.Count - 1);
-            }
-        }
     }
 
     /// <summary>
@@ -241,7 +232,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
     { 
         if(element != null)
         {
-            Enemy enemy = element.databaseModelToEnemy(resourcesList);
+            Enemy enemy = element.databaseModelToEnemy(resourcesList, itemDatabase);
             databaseID = enemy.databaseID;
             enemyName = enemy.name;
             xp = enemy.experience;
@@ -262,7 +253,16 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
     protected override void updateElementWithFormValues()
     {
         BeingStats stats = new BeingStats(baseLife, attackSpeed, castSpeed, attackSpeed, movementSpeed);
-        element = new EnemyDatabaseModel(databaseID, enemyName, interactableType, stats, abilityIDs, possibleLoots, abilityFrequency, resourcesList.addObjects(prefab), xp); 
+
+        // generate lootDatabaseModel
+        List<LootDatabaseModel> lootsDatabaseModel = new List<LootDatabaseModel>();
+        foreach(Loot possibleLoot in possibleLoots)
+        {
+            lootsDatabaseModel.Add(new LootDatabaseModel(possibleLoot.itemDatabaseID, possibleLoot.chanceToDrop, possibleLoot.quantity, possibleLoot.isRandom));
+        }
+
+        // create the enemyDatabase Model
+        element = new EnemyDatabaseModel(databaseID, enemyName, interactableType, stats, abilityIDs, lootsDatabaseModel, abilityFrequency, resourcesList.addObjects(prefab), xp); 
     }
 
     protected override void clearForm()

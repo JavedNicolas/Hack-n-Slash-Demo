@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public abstract class BaseUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
 {
-
     float clicked = 0;
     float clicktime = 0;
     float clickdelay = 0.1f;

@@ -94,7 +94,7 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
         if (element != null)
         {
             Item item = element.databaseModelToItem(resourcesList);
-            databaseID = element.databaseID;
+            databaseID = item.databaseID;
             itemName = item.name;
             itemIcon = item.itemIcon;
             itemModel = item.itemModel;

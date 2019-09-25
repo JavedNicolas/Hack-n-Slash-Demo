@@ -20,19 +20,20 @@ public class Player : Being
         base(name, baseLife, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, abilityIDs, prefab)
     {
         base.stats = new PlayerStats(baseLife, baseMana, baseASPD, baseCastSpeed, baseAttackRange, BeingConstant.baseMoveSpeed, currentLevel);
-        setLevelUpDelegate();
         this._currentMana = stats.maxMana;
         setBaseStat();
+        setLevelUpDelegate();
+        setCurrentManaAndLife();
     }
 
     public Player(Player player) : base(player.name,
         player.stats.maxLife, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, player.abilityIDs, player.prefab)
     {
         base.stats = new PlayerStats(player.stats);
-        setLevelUpDelegate();
         this._inventory = player.inventory;
-        this._currentMana = player.currentMana;
         setBaseStat();
+        setLevelUpDelegate();
+        setCurrentManaAndLife();
     }
 
     void setBaseStat()
@@ -49,7 +50,7 @@ public class Player : Being
 
     void setLevelUpDelegate()
     {
-        stats.hasLeveledUP = levelUp;
+        stats.hasLeveledUP += setCurrentManaAndLife;
     }
 
     /// <summary>
@@ -80,7 +81,7 @@ public class Player : Being
         return stats.currentLevelExp / LevelExperienceTable.levelExperienceNeeded[index];
     }
 
-    void levelUp()
+    void setCurrentManaAndLife()
     {
         _currentMana = stats.maxMana;
         _currentLife = stats.maxLife;
