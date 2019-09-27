@@ -23,8 +23,10 @@ public class EnemyBehavior : BeingBehavior
     /// Out of range target are target that the enemy will follow when not in range enemy match the target criteria
     /// like in range, or have aggro
     private EnemyAndAggro outOfRangeAggroTarget = null;
-
     protected Ability abilityToUse = null;
+
+    // delay between to idleMovement
+    float idleDelay;
 
     // override the being
     public new Enemy being
@@ -41,6 +43,7 @@ public class EnemyBehavior : BeingBehavior
     {
         loot = being.generateLoot();
         lifeUI.setBeing(being);
+        idleDelay = Time.time + 10f;
 
         InvokeRepeating("checkForTarget", 0.0f, 0.1f);
     }
@@ -56,6 +59,7 @@ public class EnemyBehavior : BeingBehavior
 
     protected virtual void IABheavior()
     {
+        idleMovement();
         refreshEnemyList();
         checkIfTargetIsInAttackRange();
     }
@@ -96,6 +100,24 @@ public class EnemyBehavior : BeingBehavior
         }
         else
             abilityToUse = being.basicAttack;
+    }
+
+    void idleMovement()
+    {
+        if(currentTarget == null && outOfRangeAggroTarget == null && idleDelay <= Time.time)
+        {
+            // get idle movement Range
+            float radius = Random.Range(1f, 20f);
+            float randomPositionOnTheRadius = Random.Range(0, 360f);
+
+            float rad = Mathf.Deg2Rad * randomPositionOnTheRadius;
+
+            Vector3 positionToMoveTo = new Vector3(Mathf.Sin(rad) * radius, 1, Mathf.Cos(rad) * radius);
+            positionToMoveTo += transform.position;
+
+            moveTo(positionToMoveTo);
+            idleDelay = Time.time + Random.Range(5f, 30f);
+        }
     }
 
     /// <summary>
@@ -149,8 +171,12 @@ public class EnemyBehavior : BeingBehavior
 
     void setcurrentTarget(EnemyAndAggro enemy)
     {
-        currentTarget = enemy;
-        outOfRangeAggroTarget = null;
+        // check if the view is not blocked before setting the enemy as target
+        if (Physics.Linecast(transform.position, enemy.beingBehavior.transform.position, LayerMask.GetMask(LayersIndex.Environment.ToString())))
+            return;
+
+            currentTarget = enemy;
+            outOfRangeAggroTarget = null;
     }
 
     /// <summary>
