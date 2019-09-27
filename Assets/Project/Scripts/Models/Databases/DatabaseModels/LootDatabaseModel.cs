@@ -9,12 +9,12 @@ public class LootDatabaseModel
     [SerializeField] public int quantity;
     [SerializeField] public bool isRandom;
 
-    public LootDatabaseModel(int itemDatabaseID, float chanceToDrop, int quantity, bool isRandom)
+    public LootDatabaseModel(Loot loot)
     {
-        this.itemDatabaseID = itemDatabaseID;
-        this.chanceToDrop = chanceToDrop;
-        this.quantity = quantity;
-        this.isRandom = isRandom;
+        this.itemDatabaseID = loot.itemDatabaseID;
+        this.chanceToDrop = loot.chanceToDrop;
+        this.quantity = loot.quantity;
+        this.isRandom = loot.isRandom;
     }
 
 

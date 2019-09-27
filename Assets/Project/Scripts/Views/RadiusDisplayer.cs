@@ -8,7 +8,7 @@ public class RadiusDisplayer : MonoBehaviour
     [SerializeField] float lineWidth;
     [SerializeField] Color lineColor;
     [SerializeField] LineRenderer line;
-    public float radius { get => _radius; } 
+    public float radius { get => _radius; }
 
     private void Start()
     {

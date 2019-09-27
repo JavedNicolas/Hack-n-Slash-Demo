@@ -19,7 +19,13 @@ public class DatabaseResourcesList : ScriptableObject
 {
     [SerializeField] public List<ObjectAndID> objects = new List<ObjectAndID>();
 
-    public string addObjects(Object obj)
+
+    /// <summary>
+    /// Get the unique id for this object, if this object does not exist in the ressources databse then add it a return is GUID
+    /// </summary>
+    /// <param name="obj">Object to search for</param>
+    /// <returns>The unique id of this object</returns>
+    public string getGUIDFor(Object obj)
     {
         if (!objects.Exists(x => x.obj == obj))
         { 

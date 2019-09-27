@@ -18,11 +18,12 @@ namespace Tests
             GameManager.instance.abilityDatabase = Resources.Load<AbilityDatabase>(DatabaseConstant.abilityDatabasePath);
             GameManager.instance.itemDatabase = Resources.Load<ItemDatabase>(DatabaseConstant.itemDatabasePath);
             GameManager.instance.enemyDatabase = Resources.Load<EnemyDatabase>(DatabaseConstant.databaseFolder + DatabaseConstant.enemyDatabaseFileName);
-            GameManager.instance.resourcesList = Resources.Load<DatabaseResourcesList>(ScriptableObjectConstant.resourceListPath);
+            GameManager.instance.resourcesList = (DatabaseResourcesList)ScriptableObject.CreateInstance(typeof(DatabaseResourcesList));
         }
 
+
         [SetUp]
-        public void setPlayer()
+        public void setEnemy()
         {
             enemy = new Enemy("Enemy", 100, 1, 1, 10, 10, new List<int>(), new List<AbilityUsageFrequence>(), null, new List<Loot>(), 20f) ;
         }
@@ -51,7 +52,7 @@ namespace Tests
             enemy = GameManager.instance.enemyDatabase.getRandomElement().databaseModelToEnemy(GameManager.instance.resourcesList, GameManager.instance.itemDatabase);
 
             // act
-            EnemyDatabaseModel enemyDatabaseModel = new EnemyDatabaseModel(enemy, "GUID", null);
+            EnemyDatabaseModel enemyDatabaseModel = new EnemyDatabaseModel(enemy, GameManager.instance.resourcesList);
 
             // assert
             Assert.IsNotNull(enemyDatabaseModel);

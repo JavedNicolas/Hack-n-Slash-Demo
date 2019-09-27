@@ -111,15 +111,8 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
 
     protected override void updateElementWithFormValues()
     {
-        string spriteGUID = resourcesList.addObjects(itemIcon);
-        string modelGUID = resourcesList.addObjects(itemModel);
-        List<ItemEffectAndValuesDatabaseModel> itemEffectAndValuesDatabaseModels = new List<ItemEffectAndValuesDatabaseModel>();
-        foreach(ItemEffectAndValue itemEffectAndValue in effects)
-        {
-            string effectGUID = resourcesList.addObjects(itemEffectAndValue.effect);
-            itemEffectAndValuesDatabaseModels.Add(new ItemEffectAndValuesDatabaseModel(itemEffectAndValue.value, effectGUID, itemEffectAndValue.startingTime, itemEffectAndValue.statTypes));
-        }
-        element = new ItemDatabaseModel(databaseID, itemName, spriteGUID, modelGUID, isConsomable, isStackable, canBeRecycle, maxStackableSize, targetType, interactableType, itemEffectAndValuesDatabaseModels);
+        Item item = new Item(name, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, canBeRecycle, targetType, effects);
+        element = new ItemDatabaseModel(item, resourcesList);
     }
 
     protected override void clearForm()

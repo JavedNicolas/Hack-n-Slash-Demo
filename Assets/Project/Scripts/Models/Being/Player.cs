@@ -27,7 +27,7 @@ public class Player : Being
     }
 
     public Player(Player player) : base(player.name,
-        player.stats.maxLife, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, player.abilityIDs, player.prefab)
+        player.stats.maxLife, player.stats.attackSpeed, player.stats.castSpeed, player.stats.attackRange, BeingConstant.baseMoveSpeed, player.abilityIDs, player.model)
     {
         base.stats = new PlayerStats(player.stats);
         this._inventory = player.inventory;

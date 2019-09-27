@@ -26,7 +26,7 @@ public class Being : Interactable
 
     [Header("Game Object")]
     [SerializeField] private GameObject _prefab;
-    public GameObject prefab {  get { return _prefab; } }
+    public GameObject model {  get { return _prefab; } }
 
     #endregion
 

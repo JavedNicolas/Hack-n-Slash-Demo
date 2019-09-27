@@ -15,12 +15,12 @@ public class ItemEffectAndValuesDatabaseModel
     [Header("Start influencing the value")]
     [SerializeField] public List<StatType> statTypes;
 
-    public ItemEffectAndValuesDatabaseModel(float value, string effectID, EffectType startingTime, List<StatType> statTypes)
+    public ItemEffectAndValuesDatabaseModel(ItemEffectAndValue effectAndValue, DatabaseResourcesList resourcesList)
     {
-        this.value = value;
-        this.effectGUID = effectID;
-        this.startingTime = startingTime;
-        this.statTypes = statTypes;
+        effectGUID = resourcesList.getGUIDFor(effectAndValue.effect);
+        value = effectAndValue.value;
+        startingTime = effectAndValue.startingTime;
+        statTypes = effectAndValue.statTypes;
     }
 
     public ItemEffectAndValue dataBaseModelToItemEffectAndValue(DatabaseResourcesList resourcesList)

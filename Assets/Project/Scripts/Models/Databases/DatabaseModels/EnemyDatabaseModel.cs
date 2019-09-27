@@ -16,30 +16,22 @@ public class EnemyDatabaseModel : DatabaseElement
     [SerializeField] public float experience;
     [SerializeField] public InteractableObjectType interactbileType;
 
-    public EnemyDatabaseModel(Enemy enemy, string prefabGUI, List<LootDatabaseModel> lootDatabaseModel)
+    public EnemyDatabaseModel(Enemy enemy, DatabaseResourcesList resourcesList)
     {
         this.databaseID = enemy.databaseID;
         this.name = enemy.name;
-        this.possibleLootsDatabaseModel = lootDatabaseModel;
         this.abilityUsageFrequency = enemy.abilityUsageFrequency;
         this.stats = enemy.stats;
         this.abilityIDs = enemy.abilityIDs;
-        this.prefabGUID = prefabGUI;
+        this.prefabGUID = resourcesList.getGUIDFor(enemy.model);
         this.experience = enemy.experience;
         this.interactbileType = enemy.interactibleType;
-    }
 
-    public EnemyDatabaseModel(int databaseID, string name, InteractableObjectType interactibleType, BeingStats stats, List<int> abilityIDs, List<LootDatabaseModel> possibleLoot, List<AbilityUsageFrequence> abilityUsageFrequency, string prefabGUI, float experience)
-    {
-        this.databaseID = databaseID;
-        this.name = name;
-        this.possibleLootsDatabaseModel = possibleLoot;
-        this.abilityUsageFrequency = abilityUsageFrequency;
-        this.stats = stats;
-        this.abilityIDs = abilityIDs;
-        this.prefabGUID = prefabGUI;
-        this.experience = experience;
-        this.interactbileType = interactibleType;
+        List<LootDatabaseModel> lootDatabaseModels = new List<LootDatabaseModel>();
+        foreach (Loot loot in enemy.possibleLoot)
+            lootDatabaseModels.Add(new LootDatabaseModel(loot));
+
+        this.possibleLootsDatabaseModel = lootDatabaseModels;
     }
 
     public Enemy databaseModelToEnemy(DatabaseResourcesList resourcesList, ItemDatabase itemDatabase)

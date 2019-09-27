@@ -17,7 +17,7 @@ public class Enemy : Being
     public Enemy(){ }
 
     public Enemy(Enemy enemy) :
-        base(enemy.name, enemy.stats.maxLife, enemy.stats.attackSpeed, enemy.stats.castSpeed, enemy.stats.attackRange, enemy.stats.movementSpeed, enemy.abilityIDs, enemy.prefab)
+        base(enemy.name, enemy.stats.maxLife, enemy.stats.attackSpeed, enemy.stats.castSpeed, enemy.stats.attackRange, enemy.stats.movementSpeed, enemy.abilityIDs, enemy.model)
     {
         this.databaseID = enemy.databaseID;
         this.possibleLoot = enemy.possibleLoot;

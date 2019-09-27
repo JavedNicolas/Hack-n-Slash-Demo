@@ -14,11 +14,11 @@ public class AbilityDatabaseModel : DatabaseElement
         this.attributsGuid = attributsGUID;
     }
 
-    public AbilityDatabaseModel(int databaseID, string name, string attributsGuid)
+    public AbilityDatabaseModel(Ability ability, DatabaseResourcesList resourcesList)
     {
-        this.databaseID = databaseID;
-        this.name = name;
-        this.attributsGuid = attributsGuid;
+        this.databaseID = ability.databaseID;
+        this.name = ability.getName();
+        this.attributsGuid = resourcesList.getGUIDFor(ability.abilityAttributs);
     }
 
     public Ability abilityModelToAbility(DatabaseResourcesList resourcesList, AbilityDatabase abilityDatabase)

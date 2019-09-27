@@ -77,7 +77,7 @@ public class AbilityDatabaseWindow : DatabaseWindows<AbilityDatabaseModel>
 
     protected override void updateElementWithFormValues()
     {
-        element.attributsGuid = resourcesList.addObjects(attributs);
+        element.attributsGuid = resourcesList.getGUIDFor(attributs);
     }
 
     #endregion

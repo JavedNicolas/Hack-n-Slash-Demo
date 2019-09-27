@@ -18,7 +18,9 @@ public class AbilityDatabase : Database<AbilityDatabaseModel>
         {
             AbilityDatabaseModel model = elements.Find(x => x.getName() == abilities[i].getName());
             if (model == null){
-                model = new AbilityDatabaseModel(getFreeId(), abilities[i].getName(), "");
+                Ability ability = (Ability)Activator.CreateInstance(abilities[i].GetType());
+                ability.databaseID = getFreeId();
+                model = new AbilityDatabaseModel(ability, resourcesList);
                 elements.Add(model);
             }
         }

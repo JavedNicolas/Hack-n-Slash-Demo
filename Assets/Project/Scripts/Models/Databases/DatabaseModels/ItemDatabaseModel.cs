@@ -15,35 +15,23 @@ public class ItemDatabaseModel : DatabaseElement
     [SerializeField] public InteractableObjectType interactibleType;
     [SerializeField] public List<ItemEffectAndValuesDatabaseModel> effectAndValues = new List<ItemEffectAndValuesDatabaseModel>();
 
-    public ItemDatabaseModel(Item item, string spriteGUID, string modelGUID, List<ItemEffectAndValuesDatabaseModel> itemEffectAndValues)
+    public ItemDatabaseModel(Item item, DatabaseResourcesList resourcesList)
     {
         this.databaseID = item.databaseID;
         this.name = item.name;
-        this.spriteGUID = spriteGUID;
-        this.modelGUID = modelGUID;
+        this.spriteGUID = resourcesList.getGUIDFor(item.itemIcon);
+        this.modelGUID = resourcesList.getGUIDFor(item.itemModel);
         this.isConsomable = item.isConsomable;
         this.isStackable = item.isStackable;
         this.canBeRecycle = item.canBeRecycle;
         this.maxStackableSize = item.maxStackableSize;
         this.targetType = item.targetType;
         this.interactibleType = item.interactibleType;
-        this.effectAndValues = itemEffectAndValues;
-    }
-
-
-    public ItemDatabaseModel(int databaseID, string name, string spriteGUID, string modelGUID, bool isConsomable, bool isStackable, bool canBeRecycle, int maxStackableSize, TargetType targetType,
-        InteractableObjectType interactableType, List<ItemEffectAndValuesDatabaseModel> itemEffectAndValues)
-    {
-        this.databaseID = databaseID;
-        this.name = name;
-        this.spriteGUID = spriteGUID;
-        this.modelGUID = modelGUID;
-        this.isConsomable = isConsomable;
-        this.isStackable = isStackable;
-        this.canBeRecycle = canBeRecycle;
-        this.maxStackableSize = maxStackableSize;
-        this.targetType = targetType;
-        this.interactibleType = interactableType;
+        List<ItemEffectAndValuesDatabaseModel> itemEffectAndValues = new List<ItemEffectAndValuesDatabaseModel>();
+        foreach(ItemEffectAndValue effectAndValue in item.effects)
+        {
+            itemEffectAndValues.Add(new ItemEffectAndValuesDatabaseModel(effectAndValue, resourcesList));
+        }
         this.effectAndValues = itemEffectAndValues;
     }
 

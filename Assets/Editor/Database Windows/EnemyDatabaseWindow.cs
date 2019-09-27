@@ -240,7 +240,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
             castSpeed = enemy.stats.castSpeed;
             attackSpeed = enemy.stats.attackSpeed;
             movementSpeed = enemy.stats.movementSpeed;
-            prefab = enemy.prefab;
+            prefab = enemy.model;
             numberOfLoot = enemy.possibleLoot.Count;
             possibleLoots = enemy.possibleLoot;
             numberOfAbility = enemy.abilityIDs.Count;
@@ -254,15 +254,9 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
     {
         BeingStats stats = new BeingStats(baseLife, attackSpeed, castSpeed, attackSpeed, movementSpeed);
 
-        // generate lootDatabaseModel
-        List<LootDatabaseModel> lootsDatabaseModel = new List<LootDatabaseModel>();
-        foreach(Loot possibleLoot in possibleLoots)
-        {
-            lootsDatabaseModel.Add(new LootDatabaseModel(possibleLoot.itemDatabaseID, possibleLoot.chanceToDrop, possibleLoot.quantity, possibleLoot.isRandom));
-        }
-
+        Enemy enemy = new Enemy(name, baseLife, attackSpeed, castSpeed, 10, movementSpeed, abilityIDs, abilityFrequency, prefab, possibleLoots, xp);
         // create the enemyDatabase Model
-        element = new EnemyDatabaseModel(databaseID, enemyName, interactableType, stats, abilityIDs, lootsDatabaseModel, abilityFrequency, resourcesList.addObjects(prefab), xp); 
+        element = new EnemyDatabaseModel(enemy, resourcesList); 
     }
 
     protected override void clearForm()
