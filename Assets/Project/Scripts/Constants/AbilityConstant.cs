@@ -35,6 +35,11 @@ public enum AreaType
     Burst, DamageOverTime
 }
 
+public enum BeingTargetType
+{
+    Self, Enemy, Allies, AllBeing, SelfAndAllies
+}
+
 
 
 

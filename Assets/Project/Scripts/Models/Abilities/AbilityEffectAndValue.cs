@@ -12,11 +12,11 @@ public class AbilityEffectAndValue
     [SerializeField] public Effect effect;
 
     [Header("Starting time")]
-    [SerializeField] public EffectType effectType;
+    [SerializeField] public EffectUseBy effectType;
 
     public AbilityEffectAndValue() { }
 
-    public AbilityEffectAndValue(List<float> valuesByLevel, Effect effect, EffectType startingTime, EffectType effectType)
+    public AbilityEffectAndValue(List<float> valuesByLevel, Effect effect, EffectUseBy startingTime, EffectUseBy effectType)
     {
         this.valuesByLevel = valuesByLevel;
         this.effect = effect;
@@ -31,34 +31,12 @@ public class AbilityEffectAndValue
     /// <param name="effectOrigin"></param>
     public bool useEffect(BeingBehavior sender, GameObject target, Ability effectOrigin)
     {
-        if (!canBeUsed(sender, target, effectOrigin))
-            return false;
-
         float currentLevelValue = getValueForCurrentLevel(getCurrentLevel(effectOrigin));
         float valueBuffed = sender.being.stats.getBuffedValue(currentLevelValue, statTypes, GetType().Name, getStat(effectOrigin));
         effect.use(sender, target, valueBuffed, effectOrigin);
 
         return true;
     }
-
-
-    /// <summary>
-    /// Check if the effect can be used
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="target"></param>
-    /// <param name="effectOrigin"></param>
-    /// <returns></returns>
-    public bool canBeUsed(BeingBehavior sender, GameObject target, Ability effectOrigin)
-    {
-        float currentLevelValue = getValueForCurrentLevel(getCurrentLevel(effectOrigin));
-        float valueBuffed = sender.being.stats.getBuffedValue(currentLevelValue, statTypes, GetType().Name, getStat(effectOrigin));
-        if (!effect.canBeUsed(sender, target, valueBuffed))
-            return false;
-  
-        return true;
-    }
-
     /// <summary>
     /// get the currentLevel
     /// </summary>

@@ -7,7 +7,12 @@ public enum InteractableObjectType
     Enemy, PickableObject, NPC, Player
 }
 
-public enum TargetType
+public enum ItemType
+{
+    Potion, Equipment, Misc
+}
+
+public enum ItemTargetType
 {
     None, AnyItem, Equipment
 }

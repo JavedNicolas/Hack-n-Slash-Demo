@@ -26,8 +26,11 @@ public class Item : Interactable
     [SerializeField] int _maxStackableSize = 10;
     public int maxStackableSize { get => _maxStackableSize; }
 
-    [SerializeField] TargetType _targetType;
-    public TargetType targetType { get => _targetType; }
+    [SerializeField] ItemType _itemType;
+    public ItemType itemType { get => _itemType; }
+
+    [SerializeField] ItemTargetType _targetType;
+    public ItemTargetType targetType { get => _targetType; }
 
     [SerializeField] List<ItemEffectAndValue> _effects;
     public List<ItemEffectAndValue> effects { get => _effects; }
@@ -55,6 +58,7 @@ public class Item : Interactable
         this._isConsomable = item.isConsomable;
         this._isStackable = item.isStackable;
         this._maxStackableSize = item.maxStackableSize;
+        this._itemType = item.itemType;
         this._targetType = item.targetType;
         this._effects = item.effects;
         this._interactibleType = item.interactibleType;
@@ -63,7 +67,7 @@ public class Item : Interactable
     }
 
     public Item(string name, Sprite itemIcon, GameObject itemModel, bool isConsomable, bool isStackable, int maxStackableSize, bool canBeRecycled,
-        TargetType targetType, List<ItemEffectAndValue> effects)
+        ItemType itemType, ItemTargetType targetType, List<ItemEffectAndValue> effects)
     {
         this.name = name;
         this._itemIcon = itemIcon;
@@ -71,6 +75,7 @@ public class Item : Interactable
         this._isConsomable = isConsomable;
         this._isStackable = isStackable;
         this._maxStackableSize = maxStackableSize;
+        this._itemType = itemType;
         this._targetType = targetType;
         this._effects = effects;
         this._canBeRecycle = canBeRecycled;
@@ -85,19 +90,36 @@ public class Item : Interactable
     /// <returns>True if the item has been used, false if not</returns>
     public virtual bool use(BeingBehavior sender, GameObject target = null)
     {
-        if ((targetType != TargetType.None && target != null) || targetType == TargetType.None)
-        {
-            // check if the the effects can be use
+        if (isCorrectTarget(target)) {
+
             for (int i = 0; i < _effects.Count; i++)
-            {
-                if (!effects[i].canBeUsed(sender, target, this))
+                if (!effects[i].effect.canBeUsed(sender, target, effects[i].value))
                     return false;
-            }
 
             for (int i = 0; i < _effects.Count; i++)
                 effects[i].useEffect(sender, target, this);
         }
         return true;
+    }
+
+    public virtual bool isCorrectTarget(GameObject target)
+    {
+        if (targetType != ItemTargetType.None && target == null)
+            return false;
+
+        switch (targetType)
+        {
+            case ItemTargetType.None: return target == null ? true : false;
+            case ItemTargetType.AnyItem: return true;
+            case ItemTargetType.Equipment:
+                ItemObject itemObject = target.GetComponent<ItemObject>();
+                if (itemObject == null)
+                    return false;
+
+                return itemObject.loot.item.itemType == ItemType.Equipment ? true : false;
+        }
+
+        return false;
     }
 
     public override bool interact(BeingBehavior sender, GameObject objectToInteractWith)

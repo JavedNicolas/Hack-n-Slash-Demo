@@ -11,7 +11,8 @@ public class ItemDatabaseModel : DatabaseElement
     [SerializeField] public bool isStackable = true;
     [SerializeField] public bool canBeRecycle = false;
     [SerializeField] public int maxStackableSize = 10;
-    [SerializeField] public TargetType targetType;
+    [SerializeField] public ItemType itemType;
+    [SerializeField] public ItemTargetType targetType;
     [SerializeField] public InteractableObjectType interactibleType;
     [SerializeField] public List<ItemEffectAndValuesDatabaseModel> effectAndValues = new List<ItemEffectAndValuesDatabaseModel>();
 
@@ -25,6 +26,7 @@ public class ItemDatabaseModel : DatabaseElement
         this.isStackable = item.isStackable;
         this.canBeRecycle = item.canBeRecycle;
         this.maxStackableSize = item.maxStackableSize;
+        this.itemType = item.itemType;
         this.targetType = item.targetType;
         this.interactibleType = item.interactibleType;
         List<ItemEffectAndValuesDatabaseModel> itemEffectAndValues = new List<ItemEffectAndValuesDatabaseModel>();
@@ -46,7 +48,7 @@ public class ItemDatabaseModel : DatabaseElement
             {
                 itemEffectAndValues.Add(databaseModel.dataBaseModelToItemEffectAndValue(resourcesList));
             }
-        Item item = new Item(name, sprite, model, isConsomable, isStackable, maxStackableSize, canBeRecycle, targetType, itemEffectAndValues);
+        Item item = new Item(name, sprite, model, isConsomable, isStackable, maxStackableSize, canBeRecycle, itemType, targetType, itemEffectAndValues);
         item.databaseID = databaseID;
         item.interactibleType = interactibleType;
         return item;

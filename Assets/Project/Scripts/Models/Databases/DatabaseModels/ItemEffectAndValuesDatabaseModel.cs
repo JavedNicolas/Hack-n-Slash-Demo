@@ -10,7 +10,7 @@ public class ItemEffectAndValuesDatabaseModel
     [SerializeField] public string effectGUID;
 
     [Header("Starting time")]
-    [SerializeField] public EffectType startingTime;
+    [SerializeField] public EffectUseBy usedBy;
 
     [Header("Start influencing the value")]
     [SerializeField] public List<StatType> statTypes;
@@ -19,14 +19,14 @@ public class ItemEffectAndValuesDatabaseModel
     {
         effectGUID = resourcesList.getGUIDFor(effectAndValue.effect);
         value = effectAndValue.value;
-        startingTime = effectAndValue.startingTime;
+        usedBy = effectAndValue.usedBy;
         statTypes = effectAndValue.statTypes;
     }
 
     public ItemEffectAndValue dataBaseModelToItemEffectAndValue(DatabaseResourcesList resourcesList)
     {
         Effect effect = (Effect)resourcesList.getObject<ScriptableObject>(effectGUID);
-        ItemEffectAndValue itemEffectAndValue = new ItemEffectAndValue(value, effect, startingTime, statTypes);
+        ItemEffectAndValue itemEffectAndValue = new ItemEffectAndValue(value, effect, usedBy, statTypes);
         return itemEffectAndValue;
     }
 }

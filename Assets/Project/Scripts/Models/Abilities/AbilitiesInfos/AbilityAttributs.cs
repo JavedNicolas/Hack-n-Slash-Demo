@@ -10,6 +10,7 @@ public class AbilityAttributs : ScriptableObject
     [SerializeField] private string _name;
     [SerializeField] private string _description;
     [SerializeField] private Sprite _icon;
+    [SerializeField] BeingTargetType _targetType;
     [SerializeField] private List<AbilityTag> _abilityTags;
 
     [Header("Ability")]
@@ -26,6 +27,9 @@ public class AbilityAttributs : ScriptableObject
 
     [SerializeField] private List<AbilityEffectAndValue> _effectAndValues = new List<AbilityEffectAndValue>();
 
+    
+    
+
     public new string name { get => _name;}
     public string description { get => _description; }
     public int levelNeeded{ get => _levelNeeded; }
@@ -39,5 +43,6 @@ public class AbilityAttributs : ScriptableObject
     public bool checkForRange { get => _checkForRange;  }
     public List<AbilityTag> abilityTags { get => _abilityTags; }
     public List<AbilityEffectAndValue> effectAndValues { get => _effectAndValues; }
+    public BeingTargetType targetType { get => _targetType; set => _targetType = value; }
 
 }

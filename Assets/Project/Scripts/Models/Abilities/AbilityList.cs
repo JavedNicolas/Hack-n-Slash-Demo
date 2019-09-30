@@ -8,7 +8,8 @@ public static class AbilityList
     public static List<Ability> list = new List<Ability>()
     {
         new LightningBall(),
-        new ArcaneArea()
+        new ArcaneArea(),
+        new Goliath()
     };
 }
 

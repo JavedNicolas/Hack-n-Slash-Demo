@@ -14,7 +14,7 @@ namespace Tests
         [SetUp]
         public void setItem()
         {
-            item = new Item("potion", null, new GameObject(), true, true, 10, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
+            item = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.None, new List<ItemEffectAndValue>());
         }
 
         [SetUp]
@@ -55,6 +55,89 @@ namespace Tests
             Assert.AreEqual(item.name, newItem.name);
             Assert.AreEqual(item.effects.Count, newItem.effects.Count);
 
+        }
+
+        [Test]
+        public void GivenWeHaveAnItemWithNoTarget_WhenWeTryToUseItOnNoTarget_ThemWeCanUseIt()
+        {
+            // assign
+
+            // act
+            bool canBeUsed = item.isCorrectTarget(null);
+
+            // assert
+            Assert.IsTrue(canBeUsed);
+        }
+
+        [Test]
+        public void GivenWeHaveAnItemWithNoTarget_WhenWeTryToUseItOnATarget_ThemWeCantUseIt()
+        {
+            // assign
+
+            // act
+            bool canBeUsed = item.isCorrectTarget(new GameObject());
+
+            // assert
+            Assert.IsTrue(!canBeUsed);
+        }
+
+        [Test]
+        public void GivenWeHaveAnItemWithAnyItemTarget_WhenWeTryToUseItOnAnItem_ThemWeCanUseIt()
+        {
+            // assign
+            Item itemToUse = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.AnyItem, new List<ItemEffectAndValue>());
+            GameObject itemGameObject = new GameObject();
+            itemGameObject.AddComponent<ItemObject>().setLoot(new Loot(item, 100, 1), false);
+
+            // act
+            bool canBeUsed = itemToUse.isCorrectTarget(itemGameObject);
+
+            // assert
+            Assert.IsTrue(canBeUsed);
+        }
+
+        [Test]
+        public void GivenWeHaveAnItemWithAnyItemTarget_WhenWeTryToUseItOnNoItem_ThemWeCantUseIt()
+        {
+            // assign
+            Item itemToUse = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.AnyItem, new List<ItemEffectAndValue>());
+
+            // act
+            bool canBeUsed = itemToUse.isCorrectTarget(null);
+
+            // assert
+            Assert.IsTrue(!canBeUsed);
+        }
+
+        [Test]
+        public void GivenWeHaveAnItemWithEquipementAsTarget_WhenWeTryToUseItOnAnEquipement_ThemWeCanUseIt()
+        {
+            // assign
+            item = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Equipment, ItemTargetType.None, new List<ItemEffectAndValue>());
+            Item itemToUse = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.Equipment, new List<ItemEffectAndValue>());
+            GameObject itemGameObject = new GameObject();
+            itemGameObject.AddComponent<ItemObject>().setLoot(new Loot(item, 100, 1), false);
+
+            // act
+            bool canBeUsed = itemToUse.isCorrectTarget(itemGameObject);
+
+            // assert
+            Assert.IsTrue(canBeUsed);
+        }
+
+        [Test]
+        public void GivenWeHaveAnItemWithEquipementAsTarget_WhenWeTryToUseItOnANonEquipementItem_ThemWeCantUseIt()
+        {
+            // assign
+            Item itemToUse = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.Equipment, new List<ItemEffectAndValue>());
+            GameObject itemGameObject = new GameObject();
+            itemGameObject.AddComponent<ItemObject>().setLoot(new Loot(item, 100, 1), false);
+
+            // act
+            bool canBeUsed = itemToUse.isCorrectTarget(itemGameObject);
+
+            // assert
+            Assert.IsTrue(!canBeUsed);
         }
         #endregion
 

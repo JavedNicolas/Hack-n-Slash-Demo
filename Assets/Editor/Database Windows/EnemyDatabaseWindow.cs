@@ -254,7 +254,8 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
     {
         BeingStats stats = new BeingStats(baseLife, attackSpeed, castSpeed, attackSpeed, movementSpeed);
 
-        Enemy enemy = new Enemy(name, baseLife, attackSpeed, castSpeed, 10, movementSpeed, abilityIDs, abilityFrequency, prefab, possibleLoots, xp);
+        Enemy enemy = new Enemy(enemyName, baseLife, attackSpeed, castSpeed, 10, movementSpeed, abilityIDs, abilityFrequency, prefab, possibleLoots, xp);
+        enemy.databaseID = databaseID;
         // create the enemyDatabase Model
         element = new EnemyDatabaseModel(enemy, resourcesList); 
     }

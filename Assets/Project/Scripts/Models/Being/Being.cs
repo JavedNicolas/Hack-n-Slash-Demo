@@ -15,6 +15,9 @@ public class Being : Interactable
     [Header("Stats")]
     [SerializeField] public BeingStats stats = new BeingStats();
 
+    [Header("Buffs")]
+    [SerializeField] public List<Buff> buffs = new List<Buff>();
+
     [Header("Abilities")]
     [SerializeField] List<Ability> _abilities = new List<Ability>();
     [SerializeField] public List<Ability> abilities { get { return _abilities; } }
@@ -41,6 +44,7 @@ public class Being : Interactable
         this._prefab = prefab;
         this._basicAttack = new BasicAttack();
         this._currentLife = stats.maxLife;
+        this.buffs = new List<Buff>();
         setAbilities();
     }
 
@@ -51,6 +55,12 @@ public class Being : Interactable
     }
 
     #endregion
+
+    public void clampLife()
+    {
+        if (currentLife > stats.maxLife)
+            _currentLife = stats.maxLife;
+    }
 
     /// <summary>
     /// Apply damage to the being
@@ -98,6 +108,36 @@ public class Being : Interactable
     public bool removeStat(string sourceName)
     {
         return stats.removeStat(sourceName);
+    }
+
+    /// <summary>
+    /// Add a buff to the being
+    /// </summary>
+    /// <param name="buff"></param>
+    public void addBuff(Buff buff)
+    {
+        if (!buffs.Exists(x => x.name == buff.name))
+        {
+            buff.startingTime = Time.time;
+            buffs.Add(buff);
+            foreach(Stat stat in buff.stats)
+                stats.addStat(stat);
+        }
+        else
+        {
+            Buff existingBuff = buffs.Find(x => x.name == buff.name);
+            existingBuff.startingTime = Time.time;
+        }
+    }
+
+    /// <summary>
+    /// remove a buff from the being
+    /// </summary>
+    /// <param name="named">The name of the buff</param>
+    public void removeBuff(string named)
+    {
+        buffs.RemoveAll(x => x.name == named);
+        stats.removeStat(named);
     }
 
     /// <summary>

@@ -16,7 +16,7 @@ namespace Tests
             GameManager.instance = new GameObject().AddComponent<GameManager>();
             GameManager.instance.abilityDatabase = Resources.Load<AbilityDatabase>(DatabaseConstant.abilityDatabasePath);
             GameManager.instance.resourcesList = Resources.Load<DatabaseResourcesList>(ScriptableObjectConstant.resourceListPath);
-            
+            GameManager.instance.loadDatabases();
         }
 
         [SetUp]
@@ -104,6 +104,49 @@ namespace Tests
 
             // Assert
             Assert.AreEqual(baseLife, being.currentLife);
+        }
+
+        [Test]
+        public void GivenPlayerHaveNoBuff_WhenAddingABuff_ThenThePlayerHaveTheBuff()
+        {
+            // assign
+            Buff buff = new Buff("test", 1f, new List<Stat>());
+
+            // act
+            being.addBuff(buff);
+
+            // assert
+            Assert.IsTrue(being.buffs.Contains(buff));
+        }
+
+        [Test]
+        public void GivenPlayerAlreadyHaveTheBuff_WhenAddingTheBuff_ThenTheBuffStartingTimeIsRefresh()
+        {
+            // assign
+            Buff buff = new Buff("test", 1f, new List<Stat>());
+            Buff buff2 = new Buff("test", 1f, new List<Stat>());
+            Debug.Log(buff2.startingTime);
+            // act
+            being.addBuff(buff);
+            being.addBuff(buff2);
+            Buff buffInBeing = being.buffs.Find(x => x.name == buff2.name);
+
+            // assert
+            Assert.AreEqual(buff.startingTime, buffInBeing.startingTime);
+        }
+
+        [Test]
+        public void GivenPlayerHaveABuff_WhenRemovingThisBuff_ThenThePlayerDoesNotHaveThisBuff()
+        {
+            // assign
+            Buff buff = new Buff("test", 1f, new List<Stat>());
+
+            // act
+            being.addBuff(buff);
+            being.removeBuff(buff.name);
+
+            // assert
+            Assert.IsTrue(!being.buffs.Contains(buff));
         }
 
         [Test]

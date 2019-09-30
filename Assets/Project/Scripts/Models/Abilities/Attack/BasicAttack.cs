@@ -15,9 +15,9 @@ public class BasicAttack : Ability
         throw new System.NotImplementedException();
     }
 
-    public override void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
+    public override void performAbility(BeingBehavior sender, BeingBehavior target)
     {
-        useEffects(sender, targetGameObject.gameObject, EffectType.OnUse);
+        useEffects(sender, target.gameObject, EffectUseBy.Ability);
     }
 
     public override void performAbility(BeingBehavior sender, Vector3 targedPosition)

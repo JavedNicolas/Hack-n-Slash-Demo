@@ -19,7 +19,8 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
     bool isStackable = true;
     bool canBeRecycle = true;
     int maxStackableSize = 10;
-    TargetType targetType;
+    ItemType itemType;
+    ItemTargetType targetType;
     InteractableObjectType interactableType;
     int numberOfEffect;
     List<ItemEffectAndValue> effects = new List<ItemEffectAndValue>();
@@ -41,7 +42,8 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
             maxStackableSize = EditorGUILayout.IntField("Max stack size : ", maxStackableSize);
         canBeRecycle = EditorGUILayout.Toggle("Can be recycle : ", canBeRecycle);
         interactableType = (InteractableObjectType)EditorGUILayout.EnumPopup("Interactible type : ", interactableType);
-        targetType = (TargetType)EditorGUILayout.EnumPopup("Target type : ", targetType);
+        itemType = (ItemType)EditorGUILayout.EnumPopup("Item type : ", itemType);
+        targetType = (ItemTargetType)EditorGUILayout.EnumPopup("Target type : ", targetType);
         numberOfEffect = EditorGUILayout.IntField("Number Of effect :", numberOfEffect);
         updateEffectsListsSize(numberOfEffect);
         if(numberOfEffect != 0)
@@ -61,7 +63,7 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Starting time :");
-                effects[i].startingTime = (EffectType)EditorGUILayout.EnumPopup(effects[i].startingTime);
+                effects[i].usedBy = (EffectUseBy)EditorGUILayout.EnumPopup(effects[i].usedBy);
                 EditorGUILayout.EndHorizontal();
             }
 
@@ -103,6 +105,7 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
             canBeRecycle = item.canBeRecycle;
             maxStackableSize = item.maxStackableSize;
             interactableType = item.interactibleType;
+            itemType = item.itemType;
             targetType = item.targetType;
             numberOfEffect = item.effects.Count;
             effects = item.effects;
@@ -111,7 +114,8 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
 
     protected override void updateElementWithFormValues()
     {
-        Item item = new Item(name, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, canBeRecycle, targetType, effects);
+        Item item = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, canBeRecycle, itemType,targetType, effects);
+        item.databaseID = databaseID;
         element = new ItemDatabaseModel(item, resourcesList);
     }
 

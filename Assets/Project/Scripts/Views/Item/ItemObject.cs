@@ -12,10 +12,16 @@ public class ItemObject : InteractableObject
     [SerializeField] Loot _loot;
     public Loot loot { get => _loot; }
 
-    public void setLoot(Loot loot)
+    /// <summary>
+    /// Set the loot in the game object
+    /// </summary>
+    /// <param name="loot">the loot</param>
+    /// <param name="displayItem">Used for test, if false then do not set the graphical element</param>
+    public void setLoot(Loot loot, bool displayItem = true)
     {
         this._loot = loot;
-        setObjet();
+        if(displayItem)
+            setObjet();
     }
 
     private void setObjet()

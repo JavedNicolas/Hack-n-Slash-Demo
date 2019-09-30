@@ -9,11 +9,19 @@ namespace Tests
     public class InventoryTest
     {
         Inventory inventory;
+        Item item;
         #region SetUp
         [SetUp]
         public void setInventory()
         {
             inventory = new Inventory();
+        }
+
+        [SetUp]
+        public void setItem()
+        {
+            item = new Item("potion", null, new GameObject(), true, true, 1, true, ItemType.Potion, ItemTargetType.AnyItem, new List<ItemEffectAndValue>());
+            item.databaseID = 1;
         }
         #endregion
         [Test]
@@ -86,8 +94,6 @@ namespace Tests
         public void WhenRemovingSlotsInTheInventoryButThereIsNotEnoughtEmptySlot_ThenWeDontRemoveSlotAndReturnFalse()
         {
             //assign 
-            Item item = new Item("potion", null, new GameObject(), true, true, 1, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
-            item.databaseID = 1;
 
             // reduce inventorySize by 2
             int numberOfSlotNeed = inventory.numberOfSlot - 2;
@@ -109,8 +115,6 @@ namespace Tests
         public void WhenAddingItemWithNoQuanityInTheInventory_ThenThereIsASlotContainingIt()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, true, 10, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
-            item.databaseID = 1;
 
             //act
             inventory.addToInventory(item);
@@ -124,7 +128,7 @@ namespace Tests
         public void WhenAddingItemWithQuanityBelowStackableLimitInTheInventory_ThenThereIsASlotContainingThoseItems()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, true, 10, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
+            item = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.AnyItem, new List<ItemEffectAndValue>());
             item.databaseID = 1;
 
             //act
@@ -141,7 +145,7 @@ namespace Tests
         public void WhenAddingItemWithQuanityAboveStackableLimitInTheInventoryWithAvailableSlots_ThenThereIsASlotsContainingThoseItems()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, true, 10, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
+            item = new Item("potion", null, new GameObject(), true, true, 10, true, ItemType.Potion, ItemTargetType.AnyItem, new List<ItemEffectAndValue>());
             item.databaseID = 1;
 
             //act
@@ -163,8 +167,6 @@ namespace Tests
         public void WhenAddingItemWithQuanityAboveStackableLimitInTheInventoryWithNotEnoughtAvailableSlots_ThenTheItemIsNotAdded()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, true, 1, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
-            item.databaseID = 1;
             inventory.updateInventorySize(inventory.minimumSlotsCount);
 
             //act
@@ -180,8 +182,6 @@ namespace Tests
         public void WhenAddingItemWithQuantityAndNotStackableWithEnoughtEmptySlot_ThenTheItemsAreAdded()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, false, 1, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
-            item.databaseID = 1;
             int numberOfItemToAdd = inventory.minimumSlotsCount - 1;
 
             //act
@@ -197,8 +197,6 @@ namespace Tests
         public void WhenAddingItemWithQuantityAndNotStackableWithNotEnoughtEmptySlot_ThenTheItemsAreNotAdded()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, false, 1, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
-            item.databaseID = 1;
             int numberOfItemToAdd = inventory.numberOfSlot + 1;
 
             //act
@@ -215,11 +213,9 @@ namespace Tests
         public void WhenAddingItemWithQuanityAboveStackableLimitInTheInventoryWithNoAvailableSlots_ThenTheItemIsNotAdded()
         {
             // assign
-            Item item = new Item("potion", null, new GameObject(), true, true, 1, true, TargetType.AnyItem, new List<ItemEffectAndValue>());
-            item.databaseID = 1;
             inventory.updateInventorySize(inventory.minimumSlotsCount);
             // fill the inventory with this item
-            Item fillingItem = new Item("filling Item", null, new GameObject(), true, true, 1, true, TargetType.Equipment, new List<ItemEffectAndValue>());
+            Item fillingItem = new Item("filling Item", null, new GameObject(), true, true, 1, true, ItemType.Potion, ItemTargetType.Equipment, new List<ItemEffectAndValue>());
             fillingItem.databaseID = 2;
             inventory.addToInventory(fillingItem, inventory.minimumSlotsCount);
            

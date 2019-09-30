@@ -53,10 +53,17 @@ public class BeingBehavior : InteractableObject
 
     void FixedUpdate()
     {
+        clampCurrentLife();
         getToNextPathNode();
+        updateBuffs();
         interactWithCurrentInteractionTarget();
+        
     }
 
+    void clampCurrentLife()
+    {
+        being.clampLife();
+    }
 
     /// <summary>
     /// Look at the position with x and z rotation locked in place
@@ -160,6 +167,17 @@ public class BeingBehavior : InteractableObject
             stopMoving();
             ability.abilityHasBeenUsed();
         }
+    }
+    #endregion
+
+    #region buffs
+    void updateBuffs()
+    {
+        // update buff timer displayer
+
+        for(int i= 0; i < being.buffs.Count; i++)
+            if (Time.time >= being.buffs[i].startingTime + being.buffs[i].duration)
+                being.removeBuff(being.buffs[i].name);
     }
     #endregion
 

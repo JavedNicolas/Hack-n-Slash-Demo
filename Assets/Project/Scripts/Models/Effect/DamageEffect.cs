@@ -8,7 +8,7 @@ public class DamageEffect : Effect
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
         BeingBehavior targetBehavior = target.GetComponent<BeingBehavior>();
-        if (targetBehavior != null && isCorrectTarget(sender, targetBehavior))
+        if (targetBehavior != null)
             return true;
 
         return false;

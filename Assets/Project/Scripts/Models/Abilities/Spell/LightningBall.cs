@@ -6,10 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class LightningBall : Ability
 {
-    public LightningBall() : base() { }
-
-    public LightningBall(LightningBall lightningBall) : base(lightningBall) { }
-
     public override void setBaseStats()
     {
         stats.addStat(new Stat(StatType.NumberOfProjectile, StatBonusType.Pure, 1, AbilityConstant.abilityBaseSourceName, StatInfluencedBy.Intelligence, 10, getName()));
@@ -22,10 +18,10 @@ public class LightningBall : Ability
 
     public override void performAbility(BeingBehavior sender, Vector3 targetedPosition)
     {
-        sender.abilityManager.launchProjectile(this, getEffectFor(EffectType.Projectile), targetedPosition);
+        sender.abilityManager.launchProjectile(this, getEffectFor(EffectUseBy.Projectile), targetedPosition);
     }
 
-    public override void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
+    public override void performAbility(BeingBehavior sender, BeingBehavior target)
     {
         throw new NotImplementedException();
     }

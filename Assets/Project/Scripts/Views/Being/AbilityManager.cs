@@ -30,11 +30,11 @@ public class AbilityManager : MonoBehaviour
         if (ability.isAbilityAvailable(abilitySender.being))
         {
             if (isInRange(ability, targetBehavior == null ? targetedPosition : targetBehavior.transform.position))
-                if (ability.abilityAttributs.needTarget)
+                if (ability.abilityAttributs.needTarget && ability.isCorrectTarget(abilitySender, targetBehavior))
                 {
                     return tryPerformTargetedAbility(targetBehavior, ability);
                 }
-                else
+                else if(!ability.abilityAttributs.needTarget)
                 {
                     return tryPerformNotTargetedAbility(targetedPosition, ability);
                 }
@@ -58,7 +58,6 @@ public class AbilityManager : MonoBehaviour
 
         if(Physics.Linecast(senderPosition, positionToCheck, _blockingElements))
             return false;
-
         return true;
     }
 

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         loadDatabases();
 
-        playerTMp = new Player("Player Test", 200, 100, 1, 1, 25, new List<int>() { 0, 1 }, playerPrefab, 1);
+        playerTMp = new Player("Player Test", 200, 100, 1, 1, 25, new List<int>() { 0, 1, 2 }, playerPrefab, 1);
         playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
         playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
         playerTMp.stats.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
@@ -67,11 +67,11 @@ public class GameManager : MonoBehaviour
         getMouseClick();
     }
 
-    void loadDatabases()
+    public void loadDatabases()
     {
-        _enemyDatabase.loadDB();
-        _abilityDatabase.loadDB();
-        _itemDatabase.loadDB();
+        _enemyDatabase?.loadDB();
+        _abilityDatabase?.loadDB();
+        _itemDatabase?.loadDB();
     }
 
     /// <summary>

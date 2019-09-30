@@ -244,12 +244,12 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     {
         if (!targeting && _inventorySlot.item != null && !moving)
         {
-            if(_inventorySlot.item.isConsomable && _inventorySlot.item.targetType != TargetType.None)
+            if(_inventorySlot.item.isConsomable && _inventorySlot.item.targetType != ItemTargetType.None)
             {
                 targeting = true;
                 _targetingSourceSlot = this;
             }
-            else if (_inventorySlot.item.isConsomable && _inventorySlot.item.targetType == TargetType.None)
+            else if (_inventorySlot.item.isConsomable && _inventorySlot.item.targetType == ItemTargetType.None)
             {
                 useItem();
             }
@@ -279,7 +279,7 @@ public class UIInventorySlot : BaseUI, IPopUpOnHovering
     {
         if (_inventorySlot.item.use(_playerBehavior))
             if (_inventorySlot.item.isConsomable)
-                if (_inventorySlot.item.targetType == TargetType.None)
+                if (_inventorySlot.item.targetType == ItemTargetType.None)
                 {
                     _inventorySlot.removeItem();
                     updateInventorySlots(_inventorySlot);

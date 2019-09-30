@@ -1,10 +1,5 @@
 ﻿
-public enum EffectType
+public enum EffectUseBy
 {
-    OnUse, Projectile, Area
-}
-
-public enum EffectTargetType
-{
-    Self, Enemy, Allies, AllBeing, SelfAndAllies
+    Ability, Projectile, Area
 }

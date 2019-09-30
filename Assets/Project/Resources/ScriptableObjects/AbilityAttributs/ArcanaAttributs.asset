@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Arcana
   _description: Spawn a zone which deal damage over time
   _icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _targetType: 1
   _abilityTags: 
   _levelNeeded: 1
   _maxLevel: 5

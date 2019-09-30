@@ -96,8 +96,8 @@ public abstract class Ability : DatabaseElement
     /// Perform Ability (used for targeted attack)
     /// </summary>
     /// <param name="sender">The sender being model</param>
-    /// <param name="targetGameObject">The target gameObject</param>
-    abstract public void performAbility(BeingBehavior sender, BeingBehavior targetGameObject);
+    /// <param name="target">The target gameObject</param>
+    abstract public void performAbility(BeingBehavior sender, BeingBehavior target);
 
     /// <summary>
     /// Perform Ability (used for projectile)
@@ -113,13 +113,53 @@ public abstract class Ability : DatabaseElement
     /// <param name="sender"></param>
     /// <param name="target"></param>
     /// <param name="forEffectType"></param>
-    public void useEffects(BeingBehavior sender, GameObject target, EffectType forEffectType)
+    public void useEffects(BeingBehavior sender, GameObject target, EffectUseBy forEffectType)
     {
-        foreach(AbilityEffectAndValue effectAndValue in abilityAttributs.effectAndValues)
+        BeingBehavior targetBehavior = target.GetComponent<BeingBehavior>();
+
+        if(targetBehavior != null && isCorrectTarget(sender, targetBehavior))
+            foreach(AbilityEffectAndValue effectAndValue in abilityAttributs.effectAndValues)
+            {
+                if(effectAndValue.effectType == forEffectType)
+                    effectAndValue.useEffect(sender, target, this);
+            }
+    }
+
+    /// <summary>
+    /// check if the target is valid
+    /// </summary>
+    /// <param name="sender">The sender</param>
+    /// <param name="target">The target</param>
+    /// <returns>return true if the target is correct</returns>
+    public bool isCorrectTarget(BeingBehavior sender, BeingBehavior target)
+    {
+        BeingBehavior targetScript = target.GetComponent<BeingBehavior>();
+
+        switch (abilityAttributs.targetType)
         {
-            if(effectAndValue.effectType == forEffectType)
-                effectAndValue.useEffect(sender, target, this);
+            case BeingTargetType.Self:
+                if (targetScript.being == sender.being)
+                    return true;
+                break;
+            case BeingTargetType.Enemy:
+                if (targetScript.teamID != sender.teamID)
+                    return true;
+                break;
+            case BeingTargetType.Allies:
+                if (targetScript.teamID == sender.teamID)
+                    return true;
+                break;
+            case BeingTargetType.SelfAndAllies:
+                if (targetScript.teamID == sender.teamID || targetScript.being == sender.being)
+                    return true;
+                break;
+            case BeingTargetType.AllBeing:
+                if (targetScript.teamID == sender.teamID || targetScript.teamID != sender.teamID || targetScript.being == sender.being)
+                    return true;
+                break;
         }
+
+        return false;
     }
 
     /// <summary>
@@ -127,7 +167,7 @@ public abstract class Ability : DatabaseElement
     /// </summary>
     /// <param name="effectType"></param>
     /// <returns></returns>
-    public List<AbilityEffectAndValue> getEffectFor(EffectType effectType)
+    public List<AbilityEffectAndValue> getEffectFor(EffectUseBy effectType)
     {
         return abilityAttributs.effectAndValues.FindAll(x => x.effectType == effectType).ToList();
     }
@@ -142,7 +182,7 @@ public abstract class Ability : DatabaseElement
         switch (abilityAttributs.coolDownType)
         {
             case AbilityCoolDownType.ASPD: return Time.time >= lastTimeUsed + (1f / sender.stats.attackSpeed) ? true : false;
-            case AbilityCoolDownType.Cooldown: break;
+            case AbilityCoolDownType.Cooldown: ICoolDownAttributs coolDownAttributs = (ICoolDownAttributs)abilityAttributs; return Time.time >= lastTimeUsed + coolDownAttributs.coolDown ? true : false;
             case AbilityCoolDownType.CastSpeed: return Time.time >= lastTimeUsed + (1f / sender.stats.castSpeed) ? true : false;
         }
 

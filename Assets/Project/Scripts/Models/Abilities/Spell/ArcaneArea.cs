@@ -4,10 +4,6 @@ using System.Collections;
 [System.Serializable]
 public class ArcaneArea : Ability
 {
-    public ArcaneArea() : base() { }
-
-    public ArcaneArea(ArcaneArea arcaneArea) : base(arcaneArea){}
-
     public override void setBaseStats()
     {
         
@@ -15,7 +11,7 @@ public class ArcaneArea : Ability
 
     public override void performAbility(BeingBehavior sender, Vector3 targetedPosition)
     {
-        sender.abilityManager.spawnArea(this, getEffectFor(EffectType.Area), targetedPosition);
+        sender.abilityManager.spawnArea(this, getEffectFor(EffectUseBy.Area), targetedPosition);
     }
 
     public override void animation()
@@ -23,7 +19,7 @@ public class ArcaneArea : Ability
        
     }
 
-    public override void performAbility(BeingBehavior sender, BeingBehavior targetGameObject)
+    public override void performAbility(BeingBehavior sender, BeingBehavior target)
     {
         throw new System.NotImplementedException();
     }

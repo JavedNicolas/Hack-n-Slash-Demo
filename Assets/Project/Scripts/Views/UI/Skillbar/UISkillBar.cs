@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UISkillBar: MonoBehaviour
 {
-
     public List<UISkillSlot> numberOfSkillSlot = new List<UISkillSlot>();
 
     /// <summary>
@@ -13,7 +12,6 @@ public class UISkillBar: MonoBehaviour
     /// <returns></returns>
     public int getSkillSlotNumber()
     {
-
         return numberOfSkillSlot.Count;
     }
 

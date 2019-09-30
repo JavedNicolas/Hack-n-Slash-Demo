@@ -21,7 +21,7 @@ public class Loot
         else
         {
             this.quantity = loot.quantity;
-            ItemDatabaseModel itemDatabaseModel = GameManager.instance.itemDatabase.getElementWithDBID(itemDatabaseID);
+            ItemDatabaseModel itemDatabaseModel = GameManager.instance.itemDatabase.getElementWithDBID(loot.item.databaseID);
             this.item = new Item(itemDatabaseModel.databaseModelToItem(GameManager.instance.resourcesList));
             this.itemDatabaseID = loot.item.databaseID;
         }
@@ -40,7 +40,11 @@ public class Loot
     public Loot(Item item, float chanceToDrop, int quantity, bool isRandom = false)
     {
         if (item != null)
+        {
             this.itemDatabaseID = item.databaseID;
+            this.item = item;
+        }
+
         this.chanceToDrop = chanceToDrop;
         this.quantity = quantity;
         this.isRandom = isRandom;

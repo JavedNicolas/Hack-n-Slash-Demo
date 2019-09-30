@@ -10,18 +10,18 @@ public class ItemEffectAndValue
     [SerializeField] public Effect effect;
 
     [Header("Starting time")]
-    [SerializeField] public EffectType startingTime;
+    [SerializeField] public EffectUseBy usedBy;
 
     [Header("Start influencing the value")]
     [SerializeField] public List<StatType> statTypes;
 
     public ItemEffectAndValue() { }
 
-    public ItemEffectAndValue(float value, Effect effect, EffectType startingTime, List<StatType> statTypes)
+    public ItemEffectAndValue(float value, Effect effect, EffectUseBy startingTime, List<StatType> statTypes)
     {
         this.value = value;
         this.effect = effect;
-        this.startingTime = startingTime;
+        this.usedBy = startingTime;
         this.statTypes = statTypes;
     }
 
@@ -33,28 +33,9 @@ public class ItemEffectAndValue
     /// <param name="effectOrigin"></param>
     public bool useEffect(BeingBehavior sender, GameObject target, DatabaseElement effectOrigin)
     {
-        if (!canBeUsed(sender, target, effectOrigin))
-
-        return false;
         float valueBuffed = sender.being.stats.getBuffedValue(value, statTypes, GetType().Name);
         effect.use(sender, target, valueBuffed, effectOrigin);
  
-        return true;
-    }
-
-    /// <summary>
-    /// Check if the effect can be used
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="target"></param>
-    /// <param name="effectOrigin"></param>
-    /// <returns></returns>
-    public bool canBeUsed(BeingBehavior sender, GameObject target, DatabaseElement effectOrigin)
-    {
-        float valueBuffed = sender.being.stats.getBuffedValue(value, statTypes, GetType().Name);
-        if (!effect.canBeUsed(sender, target, valueBuffed))
-            return false;
-
         return true;
     }
 

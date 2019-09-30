@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a12d00ff4521b4995bdbe725beb629, type: 3}
+  m_Name: GoliathAttributs
+  m_EditorClassIdentifier: 
+  _name: Goliath
+  _description: Make the target a Goliath.
+  _icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _targetType: 2
+  _abilityTags: 05000000
+  _levelNeeded: 1
+  _maxLevel: 1
+  _range: 20
+  _manaCost: 10
+  _coolDownType: 2
+  _needTarget: 1
+  _canBeCastedOnSelf: 1
+  _checkForRange: 1
+  _effectAndValues: []
+  _coolDown: 2
+  _duration: 5
