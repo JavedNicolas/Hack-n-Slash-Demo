@@ -1,10 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(GridLayoutGroup))]
 public class UISkillBar: MonoBehaviour
 {
-    public List<UISkillSlot> numberOfSkillSlot = new List<UISkillSlot>();
+    [SerializeField] List<UISkillSlot> skillSlots = new List<UISkillSlot>();
+    GridLayoutGroup gridLayout;
+
+    private void Start()
+    {
+        getSkillSlots();
+    }
+
+    private void LateUpdate()
+    {
+        if (skillSlots.Count > 0)
+            GetComponent<GridLayoutGroup>()?.setCellSize(Orientation.Horizontal, skillSlots.Count, GetComponent<RectTransform>());
+    }
+
+    /// <summary>
+    /// get all the skill slot in child
+    /// </summary>
+    void getSkillSlots()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            UISkillSlot skillSlot;
+            if (transform.GetChild(i).TryGetComponent(out skillSlot))
+                skillSlots.Add(skillSlot);
+        }
+    }
 
     /// <summary>
     /// Get the number of skill slot available
@@ -12,7 +39,7 @@ public class UISkillBar: MonoBehaviour
     /// <returns></returns>
     public int getSkillSlotNumber()
     {
-        return numberOfSkillSlot.Count;
+        return skillSlots.Count;
     }
 
     /// <summary>
@@ -22,9 +49,9 @@ public class UISkillBar: MonoBehaviour
     /// <returns></returns>
     public UISkillSlot getSkillAtIndex(int index)
     {
-        if (index > numberOfSkillSlot.Count)
+        if (index > skillSlots.Count)
             return null;
 
-        return numberOfSkillSlot[index];
+        return skillSlots[index];
     }
 }

@@ -24,8 +24,24 @@ public class UISkillSlot : MonoBehaviour, IPopUpOnHovering, IPointerDownHandler
 
     private void Start()
     {
+        skillIcon.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (ability != null && !skillIcon.enabled)
+            skillIcon.enabled = true;
+    }
+
+    public void setSkillSlot(bool isChoiceIcon,  Ability ability, Transform parent)
+    {
         if (isChoiceIcon)
             keyDisplayer.SetActive(false);
+
+        this.isChoiceIcon = isChoiceIcon;
+        this.ability = ability;
+        transform.SetParent(parent);
+        transform.localScale = new Vector3(1, 1, 1);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

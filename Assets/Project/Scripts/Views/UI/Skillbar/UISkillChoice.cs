@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UISkillChoice : MonoBehaviour
 {
     [Header("Skill icon prefab")]
     public GameObject skillIconUIPrefab;
+    [Header("Number of slot per Line")]
+    public int numberOfSlotPerLine;
 
     // instance 
     public static UISkillChoice instance;
@@ -19,6 +22,7 @@ public class UISkillChoice : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
     /// <summary>
     /// Show all the skill the player have
     /// </summary>
@@ -26,22 +30,18 @@ public class UISkillChoice : MonoBehaviour
     {
         this._skillSlotToChange = forSkillSlot;
 
-        clearChild();
+        transform.clearChild();
+        GetComponent<GridLayoutGroup>()?.setCellSize(Orientation.Horizontal, numberOfSlotPerLine, GetComponent<RectTransform>());
         Player player = GameManager.instance.getPlayer();
 
-        for (int i = 0; i < player.abilities.Count; i++)
+        for (int i = 0; i < player?.abilities.Count; i++)
         {
             GameObject skillIcon = Instantiate(skillIconUIPrefab);
             UISkillSlot skillIconUI = skillIcon.GetComponent<UISkillSlot>();
             if (skillIconUI != null)
-            {
-                skillIconUI.ability = player.abilities[i];
-                skillIconUI.isChoiceIcon = true;
-                skillIcon.transform.SetParent(transform);
-                skillIconUI.transform.localScale = new Vector3(1, 1, 1);
-            }
-
+                skillIconUI.setSkillSlot(true, player.abilities[i], transform);
         }
+
     }
 
     /// <summary>
@@ -51,16 +51,5 @@ public class UISkillChoice : MonoBehaviour
     public void updateSkillWithChoice(Ability skill)
     {
         _skillSlotToChange.ability = skill;
-    }
-
-    /// <summary>
-    /// Clear child to avoir duplicate
-    /// </summary>
-    void clearChild()
-    {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
     }
 }

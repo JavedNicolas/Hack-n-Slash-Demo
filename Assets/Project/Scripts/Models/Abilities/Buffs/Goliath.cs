@@ -17,7 +17,7 @@ public class Goliath : Ability
             goliathBuffStats.Add(new Stat(StatType.Life, StatBonusType.additional, 250, "Goliath"));
             goliathBuffStats.Add(new Stat(StatType.AreaSize, StatBonusType.Multiplied, 100, "Goliath"));
             float duration = ((IDurationAttributs)abilityAttributs).duration;
-            Buff goliathBuff = new Buff("Goliath", duration, goliathBuffStats);
+            Buff goliathBuff = new Buff("Goliath", abilityAttributs.icon, duration, goliathBuffStats);
 
             float lifeBeforeBuff = target.being.stats.maxLife;
             target.being.addBuff(goliathBuff);

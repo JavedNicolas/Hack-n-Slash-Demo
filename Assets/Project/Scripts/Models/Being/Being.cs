@@ -118,7 +118,6 @@ public class Being : Interactable
     {
         if (!buffs.Exists(x => x.name == buff.name))
         {
-            buff.startingTime = Time.time;
             buffs.Add(buff);
             foreach(Stat stat in buff.stats)
                 stats.addStat(stat);
@@ -126,7 +125,7 @@ public class Being : Interactable
         else
         {
             Buff existingBuff = buffs.Find(x => x.name == buff.name);
-            existingBuff.startingTime = Time.time;
+            existingBuff.resetStartTime();
         }
     }
 

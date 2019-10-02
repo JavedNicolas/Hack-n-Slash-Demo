@@ -115,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillIconUIPrefab: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
     type: 3}
+  numberOfSlotPerLine: 0
 --- !u!1 &3894605248172312425
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +145,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8713181062266050799}
+  - {fileID: 1200523559022406922}
   - {fileID: 3448058591214747573}
   - {fileID: 9087182101193005127}
   - {fileID: 4002644797899047946}
@@ -365,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b30454deeffbc43a9fb0a8c0491a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfSkillSlot: []
+  skillSlots: []
 --- !u!114 &1964270186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,24 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b30454deeffbc43a9fb0a8c0491a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfSkillSlot:
-  - {fileID: 3774695452675284732}
-  - {fileID: 7156482066948815270}
-  - {fileID: 3644888164064878164}
-  - {fileID: 8864590106798834201}
-  - {fileID: 3660520921920080107}
-  - {fileID: 1704102767172347181}
-  - {fileID: 8797474448843981933}
-  - {fileID: 2546798434223485837}
-  - {fileID: 703049727658459281}
-  - {fileID: 707832234609876846}
-  - {fileID: 4209686578830969119}
-  - {fileID: 5818857960681313549}
-  - {fileID: 4764678785123910105}
-  - {fileID: 8926312049681493991}
-  - {fileID: 3732500708518833951}
-  - {fileID: 8001386628189569799}
-  - {fileID: 7127860035626560658}
+  skillSlots: []
 --- !u!1001 &522027523928997005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -508,15 +492,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot10
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot10
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -526,12 +510,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -541,170 +535,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 522027523928997005}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4209686578830969119 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 522027523928997005}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1001 &664064770941299566
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 976603488181763353}
-    m_Modifications:
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_Name
-      value: SkillSlot
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 22.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!224 &8713181062266050799 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 664064770941299566}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3774695452675284732 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 664064770941299566}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1052104507751144077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -817,15 +647,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot14
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot14
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -835,27 +665,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &3732500708518833951 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 1052104507751144077}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &9170903473792870668 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -974,15 +802,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot05
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot05
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -992,27 +820,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &3660520921920080107 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 1124099480306466169}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &9098909393115139832 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -1131,15 +957,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot03
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot03
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -1149,27 +975,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &3644888164064878164 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 1135026534460713926}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &9087182101193005127 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -1288,15 +1112,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot07
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot07
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -1306,12 +1130,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -1321,18 +1155,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2165485167753938463}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2546798434223485837 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 2165485167753938463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3094925773876875455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1445,15 +1267,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot05
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot05
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -1463,12 +1285,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -1478,18 +1310,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3094925773876875455}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1704102767172347181 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 3094925773876875455}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3785252728113900284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1602,15 +1422,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot09
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot09
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -1620,12 +1440,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -1635,18 +1465,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3785252728113900284}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &707832234609876846 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 3785252728113900284}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3788915863515837699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1759,15 +1577,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot08
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot08
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -1777,27 +1595,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &703049727658459281 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 3788915863515837699}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4992422157381125762 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -1916,15 +1732,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot04
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot04
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -1934,27 +1750,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &8864590106798834201 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 5066562068797159307}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4002644797899047946 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -2073,15 +1887,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot13
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot13
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -2091,12 +1905,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -2106,18 +1930,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5095246164928584309}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8926312049681493991 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 5095246164928584309}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5135153066296439295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2230,15 +2042,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot06
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot06
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -2248,27 +2060,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &8797474448843981933 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 5135153066296439295}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3936130572242551422 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -2387,15 +2197,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot15
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot15
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -2405,27 +2215,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &8001386628189569799 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 5935727099476997781}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2559094888577991956 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -2544,57 +2352,13 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot02
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_text
-      value: 'Z
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 22.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &7156482066948815270 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 6775028344311204916}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3448058591214747573 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -2713,15 +2477,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot16
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot16
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -2731,12 +2495,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -2746,18 +2520,166 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6899070461398341888}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7127860035626560658 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+--- !u!1001 &7022614542023483019
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 976603488181763353}
+    m_Modifications:
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_Name
+      value: SkillSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_text
+      value: A
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
+--- !u!224 &1200523559022406922 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
     type: 3}
-  m_PrefabInstance: {fileID: 6899070461398341888}
+  m_PrefabInstance: {fileID: 7022614542023483019}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7896479873515757727
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2870,15 +2792,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot11
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot11
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -2888,27 +2810,25 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
---- !u!114 &5818857960681313549 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 7896479873515757727}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2038342810379506462 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8204515527113700225, guid: ed001a47aec16ec45841d854628ef792,
@@ -3027,15 +2947,15 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-        type: 3}
-      propertyPath: inputName
-      value: SkillSlot12
-      objectReference: {fileID: 0}
     - target: {fileID: 3414171552833812431, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: inputName
+      value: SkillSlot12
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
@@ -3045,12 +2965,22 @@ PrefabInstance:
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_fontSize
-      value: 22.8
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195384743533010930, guid: ed001a47aec16ec45841d854628ef792,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed001a47aec16ec45841d854628ef792, type: 3}
@@ -3060,15 +2990,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 9172382165857875019}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4764678785123910105 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4419529765119112594, guid: ed001a47aec16ec45841d854628ef792,
-    type: 3}
-  m_PrefabInstance: {fileID: 9172382165857875019}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b5d30b643f88e42a7587338180f322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

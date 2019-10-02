@@ -110,7 +110,7 @@ namespace Tests
         public void GivenPlayerHaveNoBuff_WhenAddingABuff_ThenThePlayerHaveTheBuff()
         {
             // assign
-            Buff buff = new Buff("test", 1f, new List<Stat>());
+            Buff buff = new Buff("test", null, 1f, new List<Stat>());
 
             // act
             being.addBuff(buff);
@@ -123,8 +123,8 @@ namespace Tests
         public void GivenPlayerAlreadyHaveTheBuff_WhenAddingTheBuff_ThenTheBuffStartingTimeIsRefresh()
         {
             // assign
-            Buff buff = new Buff("test", 1f, new List<Stat>());
-            Buff buff2 = new Buff("test", 1f, new List<Stat>());
+            Buff buff = new Buff("test", null, 1f, new List<Stat>());
+            Buff buff2 = new Buff("test", null, 1f, new List<Stat>());
             Debug.Log(buff2.startingTime);
             // act
             being.addBuff(buff);
@@ -139,7 +139,7 @@ namespace Tests
         public void GivenPlayerHaveABuff_WhenRemovingThisBuff_ThenThePlayerDoesNotHaveThisBuff()
         {
             // assign
-            Buff buff = new Buff("test", 1f, new List<Stat>());
+            Buff buff = new Buff("test", null, 1f, new List<Stat>());
 
             // act
             being.addBuff(buff);

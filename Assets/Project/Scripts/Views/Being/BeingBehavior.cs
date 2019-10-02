@@ -173,11 +173,10 @@ public class BeingBehavior : InteractableObject
     #region buffs
     void updateBuffs()
     {
-        // update buff timer displayer
-
         for(int i= 0; i < being.buffs.Count; i++)
-            if (Time.time >= being.buffs[i].startingTime + being.buffs[i].duration)
-                being.removeBuff(being.buffs[i].name);
+            if(being.buffs[i].duration != -1)
+                if (Time.time >= being.buffs[i].startingTime + being.buffs[i].duration)
+                    being.removeBuff(being.buffs[i].name);
     }
     #endregion
 

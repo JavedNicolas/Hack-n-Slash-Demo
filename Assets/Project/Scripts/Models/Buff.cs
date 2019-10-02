@@ -4,15 +4,36 @@ using System.Collections.Generic;
 
 public class Buff
 {
-    [SerializeField] public float startingTime;
-    [SerializeField] public float duration;
-    [SerializeField] public string name;
-    [SerializeField] public List<Stat> stats = new List<Stat>();
+    [SerializeField] public float _startingTime;
+    public float startingTime  => _startingTime;
 
-    public Buff(string name, float duration,List<Stat> stats)
+    [SerializeField] float _duration;
+    public float duration => _duration;
+
+    [SerializeField] string _name;
+    public string name => _name;
+
+    [SerializeField] List<Stat> _stats = new List<Stat>();
+    public List<Stat> stats => _stats;
+
+    [SerializeField] Sprite _icon;
+    public Sprite icon => _icon; 
+
+    [SerializeField] bool _isDebuff;
+    public bool isDebuff => _isDebuff; 
+
+    public Buff(string name, Sprite icon, float duration, List<Stat> stats, bool isDebuff = false)
     {
-        this.duration = duration;
-        this.name = name;
-        this.stats = stats;
+        this._duration = duration;
+        this._name = name;
+        this._icon = icon;
+        this._stats = stats;
+        this._isDebuff = isDebuff;
+        resetStartTime();
+    }
+
+    public void resetStartTime()
+    {
+        this._startingTime = Time.time;
     }
 }
