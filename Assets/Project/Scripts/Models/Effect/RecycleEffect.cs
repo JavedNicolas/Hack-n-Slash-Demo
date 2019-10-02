@@ -8,7 +8,6 @@ public class RecycleEffect : Effect
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
         UIInventorySlot inventorySlotUI = target.GetComponent<UIInventorySlot>();
-        Debug.Log((inventorySlotUI != null) + " : " + inventorySlotUI.hasItem() + " : " + inventorySlotUI.inventorySlot.item.canBeRecycle);
         if (inventorySlotUI != null && inventorySlotUI.hasItem())
             if (inventorySlotUI.inventorySlot.item.canBeRecycle)
                 return true;

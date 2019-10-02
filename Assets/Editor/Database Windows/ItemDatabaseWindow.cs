@@ -116,6 +116,7 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
     {
         Item item = new Item(itemName, itemIcon, itemModel, isConsomable, isStackable, maxStackableSize, canBeRecycle, itemType,targetType, effects);
         item.databaseID = databaseID;
+        item.interactibleType = interactableType;
         element = new ItemDatabaseModel(item, resourcesList);
     }
 

@@ -60,9 +60,11 @@ public class UISkillSlot : MonoBehaviour, IPopUpOnHovering, IPointerDownHandler
         {
             if (isChoiceIcon)
             {
+                GameManager.instance.lockClick(true, true);
                 UISkillChoice.instance.updateSkillWithChoice(_skill);
                 UISkillChoice.instance.gameObject.SetActive(false);
                 displayPopUp(false);
+                GameManager.instance.lockClick(false, true);
             }
             else
             {

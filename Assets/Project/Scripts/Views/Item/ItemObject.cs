@@ -32,7 +32,7 @@ public class ItemObject : InteractableObject
         itemNameDisplay += _loot.item.name;
         itemNameLabel.text = itemNameDisplay;
 
-        _loot.item.itemHasBeenPickedUP += deleteItem;
+        _loot.item.itemHasBeenPickedUP = deleteItem;
         interactable = _loot.item;
     }
 
