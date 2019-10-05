@@ -11,7 +11,7 @@ public class AbilityDatabaseWindow : DatabaseWindows<AbilityDatabaseModel>
 
     AbilityAttributs attributs;
 
-    public override void initDB(DatabaseResourcesList resourcesList)
+    public override void initDB(ResourcesList resourcesList)
     {
         base.initDB(resourcesList);
         ((AbilityDatabase)database).initElements(resourcesList);

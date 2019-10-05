@@ -18,7 +18,7 @@ namespace Tests
             GameManager.instance.abilityDatabase = Resources.Load<AbilityDatabase>(DatabaseConstant.abilityDatabasePath);
             GameManager.instance.itemDatabase = Resources.Load<ItemDatabase>(DatabaseConstant.itemDatabasePath);
             GameManager.instance.enemyDatabase = Resources.Load<EnemyDatabase>(DatabaseConstant.databaseFolder + DatabaseConstant.enemyDatabaseFileName);
-            GameManager.instance.resourcesList = (DatabaseResourcesList)ScriptableObject.CreateInstance(typeof(DatabaseResourcesList));
+            GameManager.instance.resourcesList = (ResourcesList)ScriptableObject.CreateInstance(typeof(ResourcesList));
             GameManager.instance.loadDatabases();
         }
 

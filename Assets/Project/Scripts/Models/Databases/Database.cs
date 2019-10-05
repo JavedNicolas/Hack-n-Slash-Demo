@@ -102,7 +102,7 @@ public class Database<T> : ScriptableObject where T : DatabaseElement
     {
         string dbAsString = File.ReadAllText(AssetDatabase.GetAssetPath(_file));
         if (dbAsString != "")
-            elements = JsonUtility.FromJson<JsonWrappingClass<T>>(dbAsString)._elements;
+            elements = JsonUtility.FromJson<JsonWrappingClass<T>>(dbAsString).elements;
         else
             elements = new List<T>();
     }

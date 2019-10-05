@@ -7,9 +7,25 @@ public static class TransfromExtension {
     /// </summary>
     public static void clearChild(this Transform transform)
     {
-        foreach (Transform child in transform)
+        if (Application.isPlaying)
+            foreach (Transform child in transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+        if (!Application.isPlaying)
         {
-            GameObject.Destroy(child.gameObject);
+            var tempArray = new GameObject[transform.childCount];
+
+            for (int i = 0; i < tempArray.Length; i++)
+            {
+                tempArray[i] = transform.GetChild(i).gameObject;
+            }
+
+            foreach (var child in tempArray)
+            {
+                GameObject.DestroyImmediate(child);
+            }
         }
     }
 

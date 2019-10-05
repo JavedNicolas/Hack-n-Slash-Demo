@@ -12,7 +12,7 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     // database
     protected abstract string databasePath { get; }
 
-    protected DatabaseResourcesList resourcesList;
+    protected ResourcesList resourcesList;
 
     // scroll position
     Vector2 scrollPos;
@@ -30,7 +30,7 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     /// <summary>
     /// Display windows
     /// </summary>
-    public virtual void initDB(DatabaseResourcesList resourcesList)
+    public virtual void initDB(ResourcesList resourcesList)
     {
         this.resourcesList = resourcesList;
         database = Resources.Load<Database<T>>(databasePath);

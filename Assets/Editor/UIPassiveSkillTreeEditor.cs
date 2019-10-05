@@ -13,17 +13,27 @@ public class UIPassiveSkillTreeEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if(GUILayout.Button("Update Links"))
-        {
-            updateTree();
-        }
+        if (GUILayout.Button("Save Skill Tree"))
+            saveSkillTree();
 
+        if (GUILayout.Button("Load Passive Tree"))
+            updateTree();
         base.OnInspectorGUI();
     }
 
     void updateTree()
     {
-        skillTree.updateNodes();
-        skillTree.drawNodeLink();
+        skillTree.loadPassiveTreeFromJson();
+        skillTree.initNodes();
+        skillTree.moveNodesToSavedPosition();
+        skillTree.drawDefaultNodeLink();
+    }
+
+    void saveSkillTree()
+    {
+        skillTree.getChildNodes();
+        skillTree.savePositions();
+        skillTree.initNodes();
+        skillTree.savePassiveTreeToJson();
     }
 }

@@ -4,20 +4,28 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(LineRenderer))]
+public enum NodeStyle { Allocated, Unallocated, Locked }
+
 public class UIPassiveNode : BaseUI, IPopUpOnHovering
 {
-    [Header("Link drawing")]
-    [SerializeField] public LineRenderer lineRenderer;
+    [SerializeField] string _GUID = "";
 
     [Header("Node position and links")]
+    int currentLevel = 0;
     [SerializeField] bool _isBase = false;
     [SerializeField] bool _isAllocated = false;
     [SerializeField] Vector3 _position;
     [SerializeField] List<UIPassiveNode> _connectedNodes = new List<UIPassiveNode>();
 
+    [Header("Levels")]
+    [SerializeField] UINodeLevelDisplayer _levelHolder;
+
     [Header("Node")]
     [SerializeField] PassiveNode _node;
+
+    [Header("Links")]
+    [SerializeField] Transform _linksHolder;
+    [SerializeField] LineRenderer _lineRendererPrefab;
 
     public bool isAllocated
     {
@@ -31,43 +39,150 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
         }
     }
     public bool isBase => _isBase;
-    public Vector3 position  => _position; 
+    public Vector3 position => _position; 
     public List<UIPassiveNode> connectedNodes => _connectedNodes; 
     public PassiveNode node  => _node;
+    public string GUID => _GUID;
 
-    public void setPosition()
+
+    private void Update()
     {
-        _position = transform.position;
+        if (!connectedNodes.Exists(x => x.isAllocated) && !isBase)
+            setStyle(NodeStyle.Locked);
+        else
+            setStyle(_isAllocated ? NodeStyle.Allocated : NodeStyle.Unallocated);
     }
 
     /// <summary>
-    /// Draw the links with the linked nodes
+    /// Set attributs from model
     /// </summary>
-    /// <param name="lineWidth">The with of the line</param>
-    /// <param name="lineColor">The color of the line</param>
-    public void drawLinks(float lineWidth, Color lineColor, Material lineMaterial)
+    /// <param name="id"></param>
+    /// <param name="position"></param>
+    /// <param name="isBase"></param>
+    public void setNodeFromModel(string id, Vector3 position, bool isBase)
     {
-        List<Vector3> positions = new List<Vector3>();
-
-        // set the line renderer
-        if (lineRenderer == null)
-            lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.positionCount = connectedNodes.Count * 2;
-        lineRenderer.material = lineMaterial;
-        lineRenderer.startColor = lineColor;
-        lineRenderer.endColor = lineColor;
-        lineRenderer.startWidth = lineWidth;
-        lineRenderer.endWidth = lineWidth;
-        lineRenderer.useWorldSpace = true;
-
-        foreach (UIPassiveNode connectionNode in _connectedNodes)
-        {
-            positions.Add(position);
-            positions.Add(connectionNode.position);
-        }
-
-        lineRenderer.SetPositions(positions.ToArray());
+        this._GUID = id;
+        this._position = position;
+        this._isBase = isBase;
     }
+
+    public void initNode()
+    {
+        if(_GUID == "")
+            generateID();
+
+        _levelHolder?.initDisplayer(Random.Range(1, 4));
+    }
+
+    /// <summary>
+    /// save the current position
+    /// </summary>
+    public void saveCurrentPosition()
+    {
+        _position = transform.localPosition;
+    }
+
+    /// <summary>
+    /// Move the node to the saved position
+    /// </summary>
+    public void moveNodeToSavedPosition()
+    {
+        transform.localPosition = _position;
+    }
+
+    public void drawLinks()
+    {
+        foreach (UIPassiveNode connectionNode in connectedNodes)
+        {
+            // set the line position
+            List<Vector3> positions = new List<Vector3>();
+
+            positions.Add(transform.position);
+            positions.Add(connectionNode.transform.position);
+            // create and set lineRenderer
+            LineRenderer _defaultLineRenderer = Instantiate(_lineRendererPrefab);
+
+            Color lineColor = getLineColor(connectionNode);
+
+            _defaultLineRenderer.transform.SetParent(_linksHolder);
+            _defaultLineRenderer.positionCount = positions.Count;
+            _defaultLineRenderer.startColor = lineColor;
+            _defaultLineRenderer.endColor = lineColor;
+
+            _defaultLineRenderer.SetPositions(positions.ToArray());
+        }
+    }
+
+    /// <summary>
+    /// Update the color of the link based on the allocation of each node
+    /// </summary>
+    /// <param name="connectedNode">The node connected with the link to modify</param>
+    void updateConnectedLinkColor()
+    {
+        foreach (UIPassiveNode connectedNode in connectedNodes)
+        {
+            LineRenderer[] lineRenderers = _linksHolder.GetComponentsInChildren<LineRenderer>();
+
+            for (int i = 0; i < lineRenderers.Length; i++)
+            {
+                if (lineRenderers[i].GetPosition(0) == connectedNode.transform.position || lineRenderers[i].GetPosition(1) == connectedNode.transform.position)
+                {
+                    Color lineColor = getLineColor(connectedNode);
+                    lineRenderers[i].startColor = lineColor;
+                    lineRenderers[i].endColor = lineColor;
+                    break;
+                }
+            }
+        } 
+    }
+
+    #region graphical change
+    /// <summary>
+    /// Set the style of the node based on his allocation
+    /// </summary>
+    /// <param name="nodeStyle"></param>
+    void setStyle(NodeStyle nodeStyle) 
+    {
+        switch (nodeStyle)
+        {
+            case NodeStyle.Allocated: setAllocatedStyle(); break;
+            case NodeStyle.Unallocated: setUnallocatedStyle(); break;
+            case NodeStyle.Locked: setLockedStyle(); break;
+        }
+    }
+
+    void setAllocatedStyle()
+    {
+        GetComponent<Image>().color = Color.blue;
+    }
+
+    void setUnallocatedStyle()
+    {
+        GetComponent<Image>().color = Color.white;
+        _levelHolder?.displayLockLevel(false);
+    }
+
+    void setLockedStyle()
+    {
+        GetComponent<Image>().color = Color.gray;
+        _levelHolder?.displayLockLevel(true);
+    }
+
+    /// <summary>
+    /// Get the color on link line based on the allocation
+    /// </summary>
+    /// <param name="connectedNode"></param>
+    /// <returns></returns>
+    Color getLineColor(UIPassiveNode connectedNode)
+    {
+        if (_isAllocated && connectedNode.isAllocated)
+            return Color.blue;
+        if ((_isAllocated && !connectedNode.isAllocated) || (!_isAllocated && connectedNode.isAllocated))
+            return Color.white;
+
+        return Color.gray;
+    }
+    #endregion
 
     #region hovering
     public void displayPopUp(bool display)
@@ -91,12 +206,26 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     {
         if (!_isBase)
         {
-            if (connectedNodes.Exists(x => x._isAllocated == true) && !_isAllocated)
+            if (connectedNodes.Exists(x => x._isAllocated == true) && (!_isAllocated || currentLevel < getMaxLevel()))
                 isAllocated = true;
-            else if (_isAllocated)
-                isAllocated = false;
         }
-       
+    }
+
+    protected override void rightClickOnUI()
+    {
+        if (!_isBase)
+        {
+            if (currentLevel >= 1)
+            {
+                currentLevel--;
+                _levelHolder.updateLevel(currentLevel);
+            }
+            
+            if(currentLevel == 0)
+            {
+                isAllocated = false;
+            }
+        }
     }
 
     /// <summary>
@@ -105,7 +234,17 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     /// <param name="isAllocated"></param>
     void hasBeenAllocated()
     {
-        GetComponent<Image>().color = Color.blue;
+        setStyle(NodeStyle.Allocated);
+
+        updateConnectedLinkColor();
+        foreach (UIPassiveNode connectedNode in connectedNodes)
+            connectedNode.updateConnectedLinkColor();
+
+        if (!isBase && currentLevel < getMaxLevel())
+        {
+            currentLevel++;
+            _levelHolder.updateLevel(currentLevel);
+        }
     }
 
     /// <summary>
@@ -114,7 +253,11 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     /// <param name="isAllocated"></param>
     void hasBeenUnallocated()
     {
-        GetComponent<Image>().color = Color.white;
+        setStyle(NodeStyle.Unallocated);
+
+        updateConnectedLinkColor();
+        foreach (UIPassiveNode connectedNode in connectedNodes)
+            connectedNode.updateConnectedLinkColor();
 
         if (_connectedNodes.FindAll(x => x.isAllocated).Count > 1)
             // check if each allocated connected node are link to a base
@@ -170,12 +313,20 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
         return false;
     }
 
-    protected override void rightClickOnUI(){}
-
     protected override void dragging(PointerEventData eventData){}
 
     protected override void dragginEnd(PointerEventData eventData){ }
     #endregion
 
+    public void generateID()
+    {
+        _GUID = System.Guid.NewGuid().ToString();
+    }
 
+    public int getMaxLevel() { return  _levelHolder._levelDisplayers.Count == 0 ? 1 :_levelHolder._levelDisplayers.Count; }
+    /// <summary>
+    /// Get the position with 1 on the z. (used for the lines)
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 getWorldPosition() { Vector3 alteredPosition = _position; alteredPosition.z = 1; return alteredPosition; }
 }

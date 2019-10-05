@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
     public AbilityDatabase abilityDatabase { get => _abilityDatabase; set => _abilityDatabase = value; }
     [SerializeField] ItemDatabase _itemDatabase;
     public ItemDatabase itemDatabase { get => _itemDatabase; set => _itemDatabase = value; }
-    [SerializeField] DatabaseResourcesList _resourcesList;
-    public DatabaseResourcesList resourcesList { get => _resourcesList; set => _resourcesList = value; }
+    [SerializeField] ResourcesList _resourcesList;
+    public ResourcesList resourcesList { get => _resourcesList; set => _resourcesList = value; }
 
     [SerializeField] GameObject _itemObject;
     public GameObject itemObjetPrefab { get => _itemObject; }

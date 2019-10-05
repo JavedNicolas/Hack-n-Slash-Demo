@@ -19177,5 +19177,6 @@ MonoBehaviour:
   precision: 360
   _radius: 5
   lineWidth: 0.1
-  lineColor: {r: 0.94275093, g: 0, b: 1, a: 0}
+  lineColor: {r: 0.7734461, g: 0, b: 1, a: 1}
+  lineMaterial: {fileID: 2100000, guid: f48bf5f173381f243bf0af7fad387fab, type: 2}
   line: {fileID: 0}

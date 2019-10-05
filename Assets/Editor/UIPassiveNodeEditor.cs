@@ -9,12 +9,10 @@ public class UIPassiveNodeEditor : Editor
     private void OnEnable()
     {
         passiveNode = (UIPassiveNode)target;
-        passiveNode.lineRenderer = passiveNode.GetComponent<LineRenderer>();
     }
 
     public override void OnInspectorGUI()
     {
-        passiveNode.setPosition();
         base.OnInspectorGUI();
     }
 }

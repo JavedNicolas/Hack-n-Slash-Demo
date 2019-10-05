@@ -6,7 +6,7 @@ public class PassiveNode
     [SerializeField] string _name;
     [SerializeField] Sprite _icon;
     [SerializeField] NodeEffect _nodeEffect;
-    [SerializeField] int _numberOfLevel;
+    [SerializeField] int _numberOfLevel = 2;
     [SerializeField] int _currentLevel;
 
     public new string name { get => _name; }

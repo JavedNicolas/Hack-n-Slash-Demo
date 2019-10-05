@@ -11,7 +11,7 @@ public class AbilityDatabase : Database<AbilityDatabaseModel>
 {
     [SerializeField] public List<Ability> abilities = AbilityList.list;
 
-    public void initElements(DatabaseResourcesList resourcesList)
+    public void initElements(ResourcesList resourcesList)
     {
         loadDB();
         for (int i =0; i < abilities.Count; i++)
@@ -26,7 +26,7 @@ public class AbilityDatabase : Database<AbilityDatabaseModel>
         }
     }
 
-    public Ability getAbilityFromDatabaseID(int databaseID, DatabaseResourcesList resourcesList)
+    public Ability getAbilityFromDatabaseID(int databaseID, ResourcesList resourcesList)
     {
         AbilityDatabaseModel databaseModel = elements.Find(x => x.databaseID == databaseID);
         if (databaseModel == null)

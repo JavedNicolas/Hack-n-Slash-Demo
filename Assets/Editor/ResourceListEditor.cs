@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(DatabaseResourcesList))]
+[CustomEditor(typeof(ResourcesList))]
 public class ResourceListEditor : Editor
 {
-    DatabaseResourcesList resourcesList;
+    ResourcesList resourcesList;
     bool canEdit;
     string searchString = "";
     SearchField searchField;
@@ -16,7 +16,7 @@ public class ResourceListEditor : Editor
 
     private void OnEnable()
     {
-        resourcesList = (DatabaseResourcesList)target;
+        resourcesList = (ResourcesList)target;
         EditorUtility.SetDirty(resourcesList);
     }
 

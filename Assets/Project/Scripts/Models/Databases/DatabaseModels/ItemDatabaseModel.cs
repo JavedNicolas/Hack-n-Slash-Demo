@@ -16,7 +16,7 @@ public class ItemDatabaseModel : DatabaseElement
     [SerializeField] public InteractableObjectType interactibleType;
     [SerializeField] public List<ItemEffectAndValuesDatabaseModel> effectAndValues = new List<ItemEffectAndValuesDatabaseModel>();
 
-    public ItemDatabaseModel(Item item, DatabaseResourcesList resourcesList)
+    public ItemDatabaseModel(Item item, ResourcesList resourcesList)
     {
         this.databaseID = item.databaseID;
         this.name = item.name;
@@ -37,7 +37,7 @@ public class ItemDatabaseModel : DatabaseElement
         this.effectAndValues = itemEffectAndValues;
     }
 
-    public Item databaseModelToItem(DatabaseResourcesList resourcesList)
+    public Item databaseModelToItem(ResourcesList resourcesList)
     {
         Sprite sprite = (Sprite)resourcesList.getObject<Sprite>(spriteGUID);
         GameObject model = (GameObject)resourcesList.getObject<GameObject>(modelGUID);

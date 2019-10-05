@@ -18,7 +18,7 @@ public class LootDatabaseModel
     }
 
 
-    public Loot databaseModelToLoot(DatabaseResourcesList resourcesList, ItemDatabase itemDatabase)
+    public Loot databaseModelToLoot(ResourcesList resourcesList, ItemDatabase itemDatabase)
     {
         Item item = itemDatabase.getElementWithDBID(itemDatabaseID)?.databaseModelToItem(resourcesList);
         return new Loot(item, chanceToDrop, quantity, isRandom);

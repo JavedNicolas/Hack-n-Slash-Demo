@@ -9,7 +9,7 @@ namespace Tests
     public class ItemTests
     {
         Item item;
-        DatabaseResourcesList resourcesList;
+        ResourcesList resourcesList;
         #region SetUp
         [SetUp]
         public void setItem()
@@ -20,7 +20,7 @@ namespace Tests
         [SetUp]
         public void setResourceList()
         {
-            resourcesList = (DatabaseResourcesList)ScriptableObject.CreateInstance(typeof(DatabaseResourcesList));
+            resourcesList = (ResourcesList)ScriptableObject.CreateInstance(typeof(ResourcesList));
         }
         #endregion
 

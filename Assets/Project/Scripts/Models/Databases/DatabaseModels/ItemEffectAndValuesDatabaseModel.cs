@@ -15,7 +15,7 @@ public class ItemEffectAndValuesDatabaseModel
     [Header("Start influencing the value")]
     [SerializeField] public List<StatType> statTypes;
 
-    public ItemEffectAndValuesDatabaseModel(ItemEffectAndValue effectAndValue, DatabaseResourcesList resourcesList)
+    public ItemEffectAndValuesDatabaseModel(ItemEffectAndValue effectAndValue, ResourcesList resourcesList)
     {
         effectGUID = resourcesList.getGUIDFor(effectAndValue.effect);
         value = effectAndValue.value;
@@ -23,7 +23,7 @@ public class ItemEffectAndValuesDatabaseModel
         statTypes = effectAndValue.statTypes;
     }
 
-    public ItemEffectAndValue dataBaseModelToItemEffectAndValue(DatabaseResourcesList resourcesList)
+    public ItemEffectAndValue dataBaseModelToItemEffectAndValue(ResourcesList resourcesList)
     {
         Effect effect = (Effect)resourcesList.getObject<ScriptableObject>(effectGUID);
         ItemEffectAndValue itemEffectAndValue = new ItemEffectAndValue(value, effect, usedBy, statTypes);

@@ -7,6 +7,7 @@ public class RadiusDisplayer : MonoBehaviour
     [SerializeField] float _radius;
     [SerializeField] float lineWidth;
     [SerializeField] Color lineColor;
+    [SerializeField] Material lineMaterial;
     [SerializeField] LineRenderer line;
     public float radius { get => _radius; }
 
@@ -26,10 +27,12 @@ public class RadiusDisplayer : MonoBehaviour
     void drawRadius()
     {
         line.useWorldSpace = false;
-        line.startWidth = lineWidth;
-        line.endWidth = lineWidth;
+        line.material = lineMaterial;
+        line.generateLightingData = true;
         line.startColor = lineColor;
         line.endColor = lineColor;
+        line.startWidth = lineWidth;
+        line.endWidth = lineWidth;
         line.positionCount = precision + 1;
 
         var points = new Vector3[precision + 1];

@@ -16,7 +16,7 @@ public class EnemyDatabaseModel : DatabaseElement
     [SerializeField] public float experience;
     [SerializeField] public InteractableObjectType interactbileType;
 
-    public EnemyDatabaseModel(Enemy enemy, DatabaseResourcesList resourcesList)
+    public EnemyDatabaseModel(Enemy enemy, ResourcesList resourcesList)
     {
         this.databaseID = enemy.databaseID;
         this.name = enemy.name;
@@ -34,7 +34,7 @@ public class EnemyDatabaseModel : DatabaseElement
         this.possibleLootsDatabaseModel = lootDatabaseModels;
     }
 
-    public Enemy databaseModelToEnemy(DatabaseResourcesList resourcesList, ItemDatabase itemDatabase)
+    public Enemy databaseModelToEnemy(ResourcesList resourcesList, ItemDatabase itemDatabase)
     {
         GameObject prefab = (GameObject)resourcesList.getObject<GameObject>(prefabGUID);
 

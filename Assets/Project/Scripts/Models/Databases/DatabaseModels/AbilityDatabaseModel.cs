@@ -14,14 +14,14 @@ public class AbilityDatabaseModel : DatabaseElement
         this.attributsGuid = attributsGUID;
     }
 
-    public AbilityDatabaseModel(Ability ability, DatabaseResourcesList resourcesList)
+    public AbilityDatabaseModel(Ability ability, ResourcesList resourcesList)
     {
         this.databaseID = ability.databaseID;
         this.name = ability.getName();
         this.attributsGuid = resourcesList.getGUIDFor(ability.abilityAttributs);
     }
 
-    public Ability abilityModelToAbility(DatabaseResourcesList resourcesList, AbilityDatabase abilityDatabase)
+    public Ability abilityModelToAbility(ResourcesList resourcesList, AbilityDatabase abilityDatabase)
     {
         AbilityAttributs attributs = (AbilityAttributs)resourcesList.getObject<ScriptableObject>(attributsGuid);
         Ability ability = abilityDatabase.abilities.Find(x => x.getName() == name);

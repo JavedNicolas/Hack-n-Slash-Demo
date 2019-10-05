@@ -14,8 +14,8 @@ public class ObjectAndID
     }
 }
 
-[CreateAssetMenu(menuName = "test/test", fileName ="test")]
-public class DatabaseResourcesList : ScriptableObject
+[CreateAssetMenu(menuName = "ResourcesList", fileName ="Resource List")]
+public class ResourcesList : ScriptableObject
 {
     [SerializeField] public List<ObjectAndID> objects = new List<ObjectAndID>();
 
@@ -46,8 +46,7 @@ public class DatabaseResourcesList : ScriptableObject
 
     string generateID()
     {
-        System.Guid guid = new System.Guid();
-        guid = System.Guid.NewGuid();
+        System.Guid guid = System.Guid.NewGuid();
         return guid.ToString();
     }
 }
