@@ -130,7 +130,6 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
 
     #endregion
 
-
     #region element setter
     protected abstract void setFieldWithElementValues();
 

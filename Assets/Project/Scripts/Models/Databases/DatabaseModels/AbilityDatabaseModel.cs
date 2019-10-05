@@ -18,7 +18,7 @@ public class AbilityDatabaseModel : DatabaseElement
     {
         this.databaseID = ability.databaseID;
         this.name = ability.getName();
-        this.attributsGuid = resourcesList.getGUIDFor(ability.abilityAttributs);
+        this.attributsGuid = resourcesList?.getGUIDFor(ability.abilityAttributs);
     }
 
     public Ability abilityModelToAbility(ResourcesList resourcesList, AbilityDatabase abilityDatabase)

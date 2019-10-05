@@ -7,7 +7,7 @@ public static class ScriptableObjectConstant
     public const string abilityAttributsMenuName = "Ability/Ability Attributs/";
     public const string effectMenuName = "Effect/";
     public const string effectFolderPath = "Resources/ScriptableObjects/Effects/";
-    public const string resourceListPath = "ScriptableObjects/RessourcesList";
+    public const string resourceListPath = "ScriptableObjects/DatabaseRessourcesList";
 }
 
 public static class DatabaseConstant

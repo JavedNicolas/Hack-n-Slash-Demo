@@ -1,5 +1,5 @@
 ﻿
 public enum EffectUseBy
 {
-    Ability, Projectile, Area
+    OnUse, Projectile, Area
 }

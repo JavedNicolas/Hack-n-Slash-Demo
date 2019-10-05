@@ -10,8 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc1526dada4b63545bdde26f52514507, type: 3}
-  m_Name: HealOnHitEffect
+  m_Name: Heal Effect
   m_EditorClassIdentifier: 
-  _description: Heal yourself for {0} when you hit an enemy.
-  _startingType: 1
-  _effectTargetType: 1
+  _description: Heal yourself for {0} on use.
