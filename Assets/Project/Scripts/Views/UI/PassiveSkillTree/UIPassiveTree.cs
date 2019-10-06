@@ -35,7 +35,7 @@ public class UIPassiveTree : BaseUI
         loadPassiveTreeFromJson();
         initNodes();
         moveNodesToSavedPosition();
-        drawDefaultNodeLink();
+        drawNodeLink();
         initAllocation(GameManager.instance.getPlayer());
     }
 
@@ -137,7 +137,7 @@ public class UIPassiveTree : BaseUI
     /// <summary>
     /// Draw default all the nodes links
     /// </summary>
-    public void drawDefaultNodeLink()
+    public void drawNodeLink()
     {
         for (int i =0; i < nodes.Count; i++)
         {
@@ -226,14 +226,15 @@ public class UIPassiveTree : BaseUI
     protected override void dragging(PointerEventData eventData)
     {
         transform.position = (Vector3) eventData.position - dragingOffset;
+        drawNodeLink();
     }
 
     protected override void dragginEnd(PointerEventData eventData){}
 
     void zoom()
     {
-        print(Input.mouseScrollDelta.y);
         transform.localScale = transform.localScale * ((Input.mouseScrollDelta.y * 0.1f) + 1);
+        drawNodeLink();
     }
     #endregion
 

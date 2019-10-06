@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public enum NodeStyle { Allocated, Unallocated, Locked }
 
-public class UIPassiveNode : BaseUI, IPopUpOnHovering
+[RequireComponent(typeof(RectTransform))]
+public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
 {
     [SerializeField] string _GUID = "";
 
@@ -96,13 +97,14 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
 
     public void drawLinks()
     {
+        _linksHolder.clearChild();
         foreach (UIPassiveNode connectionNode in connectedNodes)
         {
             // set the line position
             List<Vector3> positions = new List<Vector3>();
 
-            positions.Add(transform.position);
-            positions.Add(connectionNode.transform.position);
+            positions.Add(getCenterPosition());
+            positions.Add(connectionNode.getCenterPosition());
             // create and set lineRenderer
             LineRenderer _defaultLineRenderer = Instantiate(_lineRendererPrefab);
 
@@ -179,20 +181,40 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     }
     #endregion
 
+    #region describable interface
+
+    public string getName()
+    {
+        return name;
+    }
+
+    public string getDescription(Being owner)
+    {
+        string description = "";
+        foreach(Stat stat in node.stats)
+        {
+            description += StatDescription.getStatDescription(stat.value, stat.statType, stat.bonusType);
+        }
+
+        return description;
+    }
+    #endregion
+
     #region hovering
     public void displayPopUp(bool display)
     {
-
+        if(!isBase)
+            GameUI.instance.displayDescription(display, this, this, true);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
+        displayPopUp(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-
+        displayPopUp(false);
     }
     #endregion
 
@@ -344,10 +366,20 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
         _GUID = System.Guid.NewGuid().ToString();
     }
 
-    public int getMaxLevel() { return  _levelHolder._levelDisplayers.Count == 0 ? 1 :_levelHolder._levelDisplayers.Count; }
     /// <summary>
-    /// Get the position with 1 on the z. (used for the lines)
+    /// Get the position of the center of the item even if the pivot has been modified
     /// </summary>
     /// <returns></returns>
-    public Vector3 getWorldPosition() { Vector3 alteredPosition = _position; alteredPosition.z = 1; return alteredPosition; }
+    public Vector3 getCenterPosition()
+    {
+        RectTransform rect = GetComponent<RectTransform>();
+        float x = transform.position.x - rect.sizeDelta.x * (rect.pivot.x - 0.5f);
+        float y = transform.position.y - rect.sizeDelta.y * (rect.pivot.y - 0.5f);
+
+        return new Vector3(x, y, 1);
+    }
+
+    public int getMaxLevel() { return  _levelHolder._levelDisplayers.Count == 0 ? 1 :_levelHolder._levelDisplayers.Count; }
+
+
 }

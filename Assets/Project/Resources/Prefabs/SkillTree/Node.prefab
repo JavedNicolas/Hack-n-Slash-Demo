@@ -37,9 +37,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 119, y: 377.1}
-  m_SizeDelta: {x: 35.7, y: 35.706}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 101.150024, y: 395.953}
+  m_SizeDelta: {x: 35.700012, y: 35.706055}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &8588331246050328860
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -96,6 +96,11 @@ MonoBehaviour:
   _position: {x: 119, y: 377.1, z: 0}
   _connectedNodes: []
   _levelHolder: {fileID: 2467821299857231493}
+  _node:
+    name: 
+    icon: {fileID: 0}
+    stats: []
+    maxLevel: 1
   _linksHolder: {fileID: 687712843374504472}
   _lineRendererPrefab: {fileID: 2848300376621677310, guid: c74e16caedf71994daa4a80ddc1efabf,
     type: 3}
