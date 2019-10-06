@@ -18,7 +18,6 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
     float castSpeed;
     GameObject prefab;
     float movementSpeed;
-    InteractableObjectType interactableType;
     int numberOfLoot;
     int numberOfAbility;
     List<int> abilityIDs = new List<int>();
@@ -56,7 +55,6 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
         castSpeed = EditorGUILayout.FloatField("Cast Speed :", castSpeed);
         prefab = (GameObject)EditorGUILayout.ObjectField("Prefabs : ", prefab, typeof(GameObject), false);
         movementSpeed = EditorGUILayout.FloatField("Movement Speed : ", movementSpeed);
-        interactableType = InteractableObjectType.Enemy;
         numberOfLoot = EditorGUILayout.IntField("Number Of Loot :", numberOfLoot);
         numberOfAbility = EditorGUILayout.IntField("Number Of Ability :", numberOfAbility);
         updateLootListsSize(numberOfLoot);
@@ -256,6 +254,7 @@ public class EnemyDatabaseWindow : DatabaseWindows<EnemyDatabaseModel>
 
         Enemy enemy = new Enemy(enemyName, baseLife, attackSpeed, castSpeed, 10, movementSpeed, abilityIDs, abilityFrequency, prefab, possibleLoots, xp);
         enemy.databaseID = databaseID;
+        enemy.interactibleType = InteractableObjectType.Enemy;
         // create the enemyDatabase Model
         element = new EnemyDatabaseModel(enemy, resourcesList); 
     }

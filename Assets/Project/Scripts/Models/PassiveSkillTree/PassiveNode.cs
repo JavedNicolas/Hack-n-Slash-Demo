@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
+[System.Serializable]
 public class PassiveNode 
 {
-    [SerializeField] string _name;
-    [SerializeField] Sprite _icon;
-    [SerializeField] NodeEffect _nodeEffect;
-    [SerializeField] int _numberOfLevel = 2;
-    [SerializeField] int _currentLevel;
+    [SerializeField] public string name;
+    [SerializeField] public Sprite icon;
+    [SerializeField] public List<Stat> nodeStats = new List<Stat>();
+    [SerializeField] public int maxLevel = 2;
 
-    public new string name { get => _name; }
-    public Sprite icon { get => _icon; }
-    public NodeEffect nodeEffect { get => _nodeEffect; }
-    public int numberOfLevel { get => _numberOfLevel; }
-    public int currentLevel { get => _currentLevel; }
+    public PassiveNode() { }
+
+    public PassiveNode(string name, Sprite icon, List<Stat> nodeStats, int maxLevel)
+    {
+        this.name = name;
+        this.icon = icon;
+        this.nodeStats = nodeStats;
+        this.maxLevel = maxLevel;
+    }
 }

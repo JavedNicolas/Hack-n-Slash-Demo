@@ -7,7 +7,9 @@ using UnityEditor;
 
 public class UIPassiveSkillTree : MonoBehaviour
 {
+    [Header("Skill tree saving")]
     [SerializeField] Object _passiveTreeSaveFile;
+    [SerializeField] ResourcesList resourcesList;
 
     [Header("Skill Tree Elements")]
     [SerializeField] GameObject _baseContainer;
@@ -83,7 +85,7 @@ public class UIPassiveSkillTree : MonoBehaviour
         List<UIPassiveNodeModel> nodesGUID = new List<UIPassiveNodeModel>();
         for (int i = 0; i < nodes.Count; i++)
         {
-            nodesGUID.Add(new UIPassiveNodeModel(nodes[i]));
+            nodesGUID.Add(new UIPassiveNodeModel(nodes[i], resourcesList));
         }
 
         JsonWrappingClass<UIPassiveNodeModel> wrappingClass = new JsonWrappingClass<UIPassiveNodeModel>(nodesGUID);
@@ -107,8 +109,7 @@ public class UIPassiveSkillTree : MonoBehaviour
         for(int i = 0; i < nodesModel.Count; i++)
         {
             GameObject nodeInstance = Instantiate(nodesModel[i].isBase ? basePrefab : nodePrefab);
-            nodeInstance.name = i.ToString();
-            UIPassiveNode node = nodesModel[i].modelToUIPassiveNode(nodeInstance.GetComponent<UIPassiveNode>());
+            UIPassiveNode node = nodesModel[i].modelToUIPassiveNode(nodeInstance.GetComponent<UIPassiveNode>(), resourcesList);
             node.transform.SetParent(node.isBase ? _baseContainer.transform : _nodeContainer.transform);
 
             // Remove later

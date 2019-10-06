@@ -44,7 +44,6 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     public PassiveNode node  => _node;
     public string GUID => _GUID;
 
-
     private void Update()
     {
         if (!connectedNodes.Exists(x => x.isAllocated) && !isBase)
@@ -59,11 +58,12 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     /// <param name="id"></param>
     /// <param name="position"></param>
     /// <param name="isBase"></param>
-    public void setNodeFromModel(string id, Vector3 position, bool isBase)
+    public void setNodeFromModel(string id, Vector3 position, bool isBase, PassiveNode node)
     {
         this._GUID = id;
         this._position = position;
         this._isBase = isBase;
+        this._node = node;
     }
 
     public void initNode()
@@ -71,6 +71,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
         if(_GUID == "")
             generateID();
 
+        name = _node.name;
         _levelHolder?.initDisplayer(Random.Range(1, 4));
     }
 
@@ -317,6 +318,12 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
 
     protected override void dragginEnd(PointerEventData eventData){ }
     #endregion
+
+    public void setNode(PassiveNode node)
+    {
+        this._node = node;
+        name = node.name;
+    }
 
     public void generateID()
     {

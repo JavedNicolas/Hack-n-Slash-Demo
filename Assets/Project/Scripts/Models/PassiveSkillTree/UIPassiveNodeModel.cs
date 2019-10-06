@@ -9,20 +9,23 @@ public class UIPassiveNodeModel
     [SerializeField] public Vector3 position;
     [SerializeField] public List<string> connectedNodesGUID;
     [SerializeField] public bool isBase;
+    [SerializeField] public PassiveNodeModel node;
 
-    public UIPassiveNodeModel(UIPassiveNode node)
+    public UIPassiveNodeModel(UIPassiveNode uiNode, ResourcesList resourcesList)
     {
-        this.GUID = node.GUID;
-        this.position = node.position;
+        this.GUID = uiNode.GUID;
+        this.position = uiNode.position;
         this.connectedNodesGUID = new List<string>();
-        foreach (UIPassiveNode connectedNode in node.connectedNodes)
+        foreach (UIPassiveNode connectedNode in uiNode.connectedNodes)
             this.connectedNodesGUID.Add(connectedNode.GUID);
-        this.isBase = node.isBase;
+        this.isBase = uiNode.isBase;
+        this.node = new PassiveNodeModel(uiNode.node, resourcesList);
     }   
 
-    public UIPassiveNode modelToUIPassiveNode(UIPassiveNode nodeToSet)
+    public UIPassiveNode modelToUIPassiveNode(UIPassiveNode nodeToSet, ResourcesList resourcesList)
     {
-        nodeToSet.setNodeFromModel(GUID, position, isBase);
+        PassiveNode passiveNode = node?.modelToPassiveNode(resourcesList); 
+        nodeToSet.setNodeFromModel(GUID, position, isBase, passiveNode);
         return nodeToSet;
     }
 

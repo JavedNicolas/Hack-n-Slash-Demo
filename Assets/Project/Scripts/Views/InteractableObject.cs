@@ -7,14 +7,14 @@ using TMPro;
 public abstract class InteractableObject : MonoBehaviour
 {
     // Private var
-    protected MeshRenderer renderer;
+    protected MeshRenderer mesRenderer;
 
     [Header("Object attributs")]
     public Interactable interactable;
 
     private void Awake()
     {
-        renderer = GetComponent<MeshRenderer>();
+        mesRenderer = GetComponent<MeshRenderer>();
     }
 
     /// <summary>

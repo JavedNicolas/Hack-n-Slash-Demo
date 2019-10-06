@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public struct Stat
+public class Stat
 {
     [SerializeField] public StatType statType;
     [SerializeField] public StatBonusType bonusType;
@@ -12,6 +12,8 @@ public struct Stat
     [SerializeField] public string sourceName;
     [SerializeField] public bool isSpecific;
     [SerializeField] public string isSpecificTo;
+
+    public Stat() { }
 
     public Stat(StatType statType, StatBonusType bonusType,float value, string sourceName)
     {

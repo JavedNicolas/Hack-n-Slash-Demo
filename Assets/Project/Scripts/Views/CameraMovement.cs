@@ -6,7 +6,7 @@ public class CameraMovement : MonoBehaviour
 {
     public float cameraZOffset = 20;
     public GameObject playerController;
-    private Camera camera;
+    private new Camera camera;
 
     // Start is called before the first frame update
     void Awake()
