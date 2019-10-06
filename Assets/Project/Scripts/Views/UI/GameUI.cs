@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] public UILife lifeUI;
     [SerializeField] public UIMana manaUI;
     [SerializeField] public UITopBar topBar;
-    [SerializeField] UILevelUpDisplayer levelUpDisplayer; 
+    [SerializeField] UILevelUpDisplayer levelUpDisplayer;
 
     [Header("Description")]
     [SerializeField] public Canvas detailPopUPCanvas;
@@ -31,9 +32,17 @@ public class GameUI : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    private void Start()
+    public void loadUI()
     {
+        StartCoroutine("loadPassiveTree");
         initDetailPopUp();
+    }
+
+    IEnumerator loadPassiveTree()
+    {
+        SceneManager.LoadScene(SceneConstant.passiveTreeSceneName, LoadSceneMode.Additive);
+        yield return new WaitUntil(() => UIPassiveTree.instance != null);
+        UIPassiveTree.instance.displayTree();
     }
 
     private void initDetailPopUp()

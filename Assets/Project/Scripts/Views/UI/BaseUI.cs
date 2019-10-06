@@ -4,14 +4,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public abstract class BaseUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
+public abstract class BaseUI : MonoBehaviour, IPointerDownHandler,IBeginDragHandler , IDragHandler, IEndDragHandler
 {
+    protected Vector3 dragingOffset;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
             rightClickOnUI();
         else if(eventData.button == PointerEventData.InputButton.Left)
             leftClickOnUI();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        dragingOffset = (Vector3)eventData.position - transform.position;
     }
 
     public void OnDrag(PointerEventData eventData)

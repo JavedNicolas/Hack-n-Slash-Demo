@@ -42,7 +42,6 @@ public class PlayerBehavior : BeingBehavior
             _being = value;
             interactable = value;
         }
-
     }
 
     // TEMPORARY
@@ -69,6 +68,7 @@ public class PlayerBehavior : BeingBehavior
     {
         skillBarKeyDown();
         displayInventory();
+        displayPassiveTree();
     }
 
     public void getUIElements()
@@ -216,6 +216,12 @@ public class PlayerBehavior : BeingBehavior
         {
             _inventoryUI.showInventory(true);
         }
+    }
+
+    void displayPassiveTree()
+    {
+        if (Input.GetButtonDown("PassiveTree"))
+            UIPassiveTree.instance.displayTree();
     }
 
     void launchlevelUpAnimation()

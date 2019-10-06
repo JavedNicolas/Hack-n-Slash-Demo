@@ -13,7 +13,11 @@ public class Player : Being
     [SerializeField] private float _currentMana;
     public float currentMana { get => _currentMana; }
 
+    [Header("Passive node")]
+    [SerializeField] List<PlayerAllocatedNode> _allocatedNodesGUID = new List<PlayerAllocatedNode>();
+
     public new PlayerStats stats { get => (PlayerStats)base.stats; }
+    public List<PlayerAllocatedNode> allocatedNodesInfo => _allocatedNodesGUID;
     #endregion
 
     public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<int> abilityIDs, GameObject prefab, int currentLevel = 1) :

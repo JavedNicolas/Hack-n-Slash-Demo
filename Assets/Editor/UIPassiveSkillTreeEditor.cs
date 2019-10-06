@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(UIPassiveSkillTree))]
+[CustomEditor(typeof(UIPassiveTree))]
 public class UIPassiveSkillTreeEditor : Editor
 {
-    UIPassiveSkillTree skillTree;
+    UIPassiveTree skillTree;
 
     private void OnEnable()
     {
-        skillTree = (UIPassiveSkillTree)target;
+        skillTree = (UIPassiveTree)target;
     }
 
     public override void OnInspectorGUI()

@@ -52,34 +52,34 @@ public class UIPassiveNodeEditor : Editor
 
     void addStat()
     {
-        passiveNode.nodeStats.Add(new Stat());
+        passiveNode.stats.Add(new Stat());
     }
 
     void displayStats()
     {
 
-        for(int i = 0; i< passiveNode.nodeStats.Count; i++)
+        for(int i = 0; i< passiveNode.stats.Count; i++)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Stat n°" + i +" :", titleStyle);
             if (GUILayout.Button("x"))
             {
-                passiveNode.nodeStats.RemoveAt(i);
+                passiveNode.stats.RemoveAt(i);
                 displayStats();
                 break;
             } 
             EditorGUILayout.EndHorizontal();
 
-            passiveNode.nodeStats[i].statType = (StatType)EditorGUILayout.EnumPopup("Stat Type : ", passiveNode.nodeStats[i].statType);
-            passiveNode.nodeStats[i].bonusType = (StatBonusType)EditorGUILayout.EnumPopup("Bonus Type : ", passiveNode.nodeStats[i].bonusType);
-            passiveNode.nodeStats[i].value = EditorGUILayout.FloatField("Value : ", passiveNode.nodeStats[i].value);
-            passiveNode.nodeStats[i].isInfluencedBy = (StatInfluencedBy)EditorGUILayout.EnumPopup("Is Influence by an other Stat : ", passiveNode.nodeStats[i].isInfluencedBy);
-            if(passiveNode.nodeStats[i].isInfluencedBy != StatInfluencedBy.Nothing)
-                passiveNode.nodeStats[i].influencedEvery = EditorGUILayout.FloatField("Influence Every : ", passiveNode.nodeStats[i].influencedEvery);
-            passiveNode.nodeStats[i].isSpecific = EditorGUILayout.Toggle("Is Specific Something :", passiveNode.nodeStats[i].isSpecific);
-            if (passiveNode.nodeStats[i].isSpecific)
-                passiveNode.nodeStats[i].isSpecificTo = EditorGUILayout.TextField("Is Specific To (Name): ", passiveNode.nodeStats[i].isSpecificTo);
-            passiveNode.nodeStats[i].sourceName = passiveNode.name;
+            passiveNode.stats[i].statType = (StatType)EditorGUILayout.EnumPopup("Stat Type : ", passiveNode.stats[i].statType);
+            passiveNode.stats[i].bonusType = (StatBonusType)EditorGUILayout.EnumPopup("Bonus Type : ", passiveNode.stats[i].bonusType);
+            passiveNode.stats[i].value = EditorGUILayout.FloatField("Value : ", passiveNode.stats[i].value);
+            passiveNode.stats[i].isInfluencedBy = (StatInfluencedBy)EditorGUILayout.EnumPopup("Is Influence by an other Stat : ", passiveNode.stats[i].isInfluencedBy);
+            if(passiveNode.stats[i].isInfluencedBy != StatInfluencedBy.Nothing)
+                passiveNode.stats[i].influencedEvery = EditorGUILayout.FloatField("Influence Every : ", passiveNode.stats[i].influencedEvery);
+            passiveNode.stats[i].isSpecific = EditorGUILayout.Toggle("Is Specific Something :", passiveNode.stats[i].isSpecific);
+            if (passiveNode.stats[i].isSpecific)
+                passiveNode.stats[i].isSpecificTo = EditorGUILayout.TextField("Is Specific To (Name): ", passiveNode.stats[i].isSpecificTo);
+            passiveNode.stats[i].sourceName = passiveNode.name;
 
             EditorGUILayout.Space();
         }

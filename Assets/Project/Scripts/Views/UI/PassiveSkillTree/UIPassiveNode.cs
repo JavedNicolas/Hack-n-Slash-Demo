@@ -11,7 +11,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     [SerializeField] string _GUID = "";
 
     [Header("Node position and links")]
-    int currentLevel = 0;
+    int _currentLevel = 0;
     [SerializeField] bool _isBase = false;
     [SerializeField] bool _isAllocated = false;
     [SerializeField] Vector3 _position;
@@ -43,13 +43,16 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     public List<UIPassiveNode> connectedNodes => _connectedNodes; 
     public PassiveNode node  => _node;
     public string GUID => _GUID;
+    public int currentLevel => _currentLevel;
+
+    #region allocation delegate
+    public delegate void NodeAllocationModified(bool isAllocated, UIPassiveNode node);
+    public NodeAllocationModified allocationModified;
+    #endregion
 
     private void Update()
     {
-        if (!connectedNodes.Exists(x => x.isAllocated) && !isBase)
-            setStyle(NodeStyle.Locked);
-        else
-            setStyle(_isAllocated ? NodeStyle.Allocated : NodeStyle.Unallocated);
+        setStyle();
     }
 
     /// <summary>
@@ -72,7 +75,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
             generateID();
 
         name = _node.name;
-        _levelHolder?.initDisplayer(Random.Range(1, 4));
+        _levelHolder?.initDisplayer(node.maxLevel);
     }
 
     /// <summary>
@@ -142,31 +145,22 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     /// Set the style of the node based on his allocation
     /// </summary>
     /// <param name="nodeStyle"></param>
-    void setStyle(NodeStyle nodeStyle) 
+    void setStyle() 
     {
-        switch (nodeStyle)
+        if (_isAllocated)
         {
-            case NodeStyle.Allocated: setAllocatedStyle(); break;
-            case NodeStyle.Unallocated: setUnallocatedStyle(); break;
-            case NodeStyle.Locked: setLockedStyle(); break;
+            GetComponent<Image>().color = Color.blue;
         }
-    }
-
-    void setAllocatedStyle()
-    {
-        GetComponent<Image>().color = Color.blue;
-    }
-
-    void setUnallocatedStyle()
-    {
-        GetComponent<Image>().color = Color.white;
-        _levelHolder?.displayLockLevel(false);
-    }
-
-    void setLockedStyle()
-    {
-        GetComponent<Image>().color = Color.gray;
-        _levelHolder?.displayLockLevel(true);
+        else if (!_isAllocated && connectedNodes.Exists(x => x.isAllocated))
+        {
+            GetComponent<Image>().color = Color.white;
+            _levelHolder?.displayLockLevel(false);
+        }
+        else if (!_isAllocated && !connectedNodes.Exists(x => x.isAllocated))
+        {
+            GetComponent<Image>().color = Color.gray;
+            _levelHolder?.displayLockLevel(true);
+        }
     }
 
     /// <summary>
@@ -218,7 +212,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
         {
             if (currentLevel >= 1)
             {
-                currentLevel--;
+                _currentLevel--;
                 _levelHolder.updateLevel(currentLevel);
             }
             
@@ -235,7 +229,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     /// <param name="isAllocated"></param>
     void hasBeenAllocated()
     {
-        setStyle(NodeStyle.Allocated);
+        setStyle();
 
         updateConnectedLinkColor();
         foreach (UIPassiveNode connectedNode in connectedNodes)
@@ -243,9 +237,11 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
 
         if (!isBase && currentLevel < getMaxLevel())
         {
-            currentLevel++;
+            _currentLevel++;
             _levelHolder.updateLevel(currentLevel);
         }
+
+        allocationModified?.Invoke(true, this);
     }
 
     /// <summary>
@@ -254,7 +250,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     /// <param name="isAllocated"></param>
     void hasBeenUnallocated()
     {
-        setStyle(NodeStyle.Unallocated);
+        setStyle();
 
         updateConnectedLinkColor();
         foreach (UIPassiveNode connectedNode in connectedNodes)
@@ -270,6 +266,8 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
                     return;
                 }
             }
+
+        allocationModified?.Invoke(false, this);
     }
 
     /// <summary>
@@ -319,10 +317,26 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering
     protected override void dragginEnd(PointerEventData eventData){ }
     #endregion
 
+    /// <summary>
+    /// Allocate a node without checking if it's possible (used to load the allocation of a player)
+    /// </summary>
+    /// <param name="allocate"></param>
+    public void allocatedWithoutChecking(bool allocate, int currentLevel)
+    {
+        _isAllocated = allocate;
+        _levelHolder?.updateLevel(currentLevel);
+        setStyle();
+
+        updateConnectedLinkColor();
+        foreach (UIPassiveNode connectedNode in connectedNodes)
+            connectedNode.updateConnectedLinkColor();
+    }
+
     public void setNode(PassiveNode node)
     {
         this._node = node;
         name = node.name;
+        this._levelHolder?.initDisplayer(node.maxLevel);
     }
 
     public void generateID()

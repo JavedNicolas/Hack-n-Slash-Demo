@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerStats : BeingStats
 {
@@ -13,6 +14,7 @@ public class PlayerStats : BeingStats
 
     public PlayerStats(PlayerStats stats) : base(stats)
     {
+        _stats = new List<Stat>();
         _maxMana = stats.maxMana;
         _currentJobLevel = stats.currentJobLevel;
     }

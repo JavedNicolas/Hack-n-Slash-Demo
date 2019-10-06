@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using UnityEditor;
+using UnityEngine.EventSystems;
 
-public class UIPassiveSkillTree : MonoBehaviour
+public class UIPassiveTree : BaseUI
 {
+    public static UIPassiveTree instance;
+
     [Header("Skill tree saving")]
     [SerializeField] Object _passiveTreeSaveFile;
     [SerializeField] ResourcesList resourcesList;
@@ -20,6 +23,12 @@ public class UIPassiveSkillTree : MonoBehaviour
     [SerializeField] GameObject nodePrefab;
 
     [SerializeField] List<UIPassiveNode> nodes = new List<UIPassiveNode>();
+    [SerializeField] Player _player;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -27,6 +36,63 @@ public class UIPassiveSkillTree : MonoBehaviour
         initNodes();
         moveNodesToSavedPosition();
         drawDefaultNodeLink();
+        initAllocation(GameManager.instance.getPlayer());
+    }
+
+    private void Update()
+    {
+        zoom();
+    }
+
+    public void initAllocation(Player player)
+    {
+        _player = player;
+        
+        foreach (PlayerAllocatedNode allocatedNodeInfo in _player.allocatedNodesInfo)
+        {
+            UIPassiveNode node = nodes.Find(x => x.GUID == allocatedNodeInfo.nodeGUID);
+            if(node != null)
+            {
+                node.allocatedWithoutChecking(true, allocatedNodeInfo.currentLevel);
+                foreach (Stat nodeStat in node.node.stats)
+                    _player.stats.addStat(nodeStat);
+            }
+            else
+            {
+                player.allocatedNodesInfo.Remove(allocatedNodeInfo);
+            }
+        }
+
+        foreach(UIPassiveNode node in nodes){
+            if (node.isAllocated && !node.connectedNodes.Exists(x => x.isAllocated))
+            {
+                node.isAllocated = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// remove a node from the player
+    /// </summary>
+    /// <param name="node"></param>
+    void addNodeToPlayer(UIPassiveNode node)
+    {
+        if (!_player.allocatedNodesInfo.Exists(x => x.nodeGUID == node.GUID))
+        {
+            _player.allocatedNodesInfo.Add(new PlayerAllocatedNode(node.GUID, node.currentLevel));
+            foreach (Stat nodeStat in node.node.stats)
+                _player.stats.addStat(nodeStat);
+        }
+    }
+
+    /// <summary>
+    /// remove a node from the player
+    /// </summary>
+    /// <param name="node"></param>
+    void removeNodeFromPlayer(UIPassiveNode node)
+    {
+        _player.allocatedNodesInfo.RemoveAll(x => x.nodeGUID == node.GUID);
+        _player.stats.removeStat(node.name);
     }
 
     /// <summary>
@@ -43,8 +109,29 @@ public class UIPassiveSkillTree : MonoBehaviour
     /// </summary>
     public void initNodes()
     {
-        for (int i = 0; i < nodes.Count; i++)
+        for (int i = 0; i < nodes.Count; i++) { 
             nodes[i].initNode();
+            nodes[i].allocationModified = handleNodeAllocationChanged;
+        }
+
+    }
+
+    /// <summary>
+    /// Remove or add a node to the player when a node allocation change
+    /// </summary>
+    /// <param name="iAllocated"></param>
+    /// <param name="node"></param>
+    void handleNodeAllocationChanged(bool iAllocated, UIPassiveNode node)
+    {
+        if (!iAllocated)
+        {
+            removeNodeFromPlayer(node);
+        }
+        else
+        {
+            addNodeToPlayer(node);
+        }
+                
     }
 
     /// <summary>
@@ -79,7 +166,8 @@ public class UIPassiveSkillTree : MonoBehaviour
         for (int i = 0; i < nodes.Count; i++)
             nodes[i].saveCurrentPosition();
     }
-     
+
+    #region loading and saving
     public void savePassiveTreeToJson()
     {
         List<UIPassiveNodeModel> nodesGUID = new List<UIPassiveNodeModel>();
@@ -128,6 +216,32 @@ public class UIPassiveSkillTree : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region interaction
+    protected override void leftClickOnUI(){}
 
+    protected override void rightClickOnUI(){ }
+
+    protected override void dragging(PointerEventData eventData)
+    {
+        transform.position = (Vector3) eventData.position - dragingOffset;
+    }
+
+    protected override void dragginEnd(PointerEventData eventData){}
+
+    void zoom()
+    {
+        print(Input.mouseScrollDelta.y);
+        transform.localScale = transform.localScale * ((Input.mouseScrollDelta.y * 0.1f) + 1);
+    }
+    #endregion
+
+    /// <summary>
+    /// Display or hide the skill based on his actual status (hidden or visible)
+    /// </summary>
+    public void displayTree()
+    {
+        transform.parent.gameObject.SetActive(!transform.parent.gameObject.activeSelf);
+    }
 }

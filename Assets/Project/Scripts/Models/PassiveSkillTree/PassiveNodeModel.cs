@@ -14,7 +14,7 @@ public class PassiveNodeModel
     {
         this.name = passiveNode.name;
         this.iconGUID = resourcesList.getGUIDFor(passiveNode.icon);
-        this.nodeStats = passiveNode.nodeStats;
+        this.nodeStats = passiveNode.stats;
         this.maxLevel = passiveNode.maxLevel;
     }
 

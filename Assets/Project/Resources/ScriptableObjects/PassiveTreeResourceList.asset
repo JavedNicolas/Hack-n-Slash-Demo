@@ -10,6 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 188bc5caa3ad0c94491e00765fb58e85, type: 3}
-  m_Name: SkillTreeResource List
+  m_Name: PassiveTreeResourceList
   m_EditorClassIdentifier: 
-  objects: []
+  objects:
+  - obj: {fileID: 0}
+    id: 22e4e2af-2759-4289-8712-ac5166cf9bd2
+  - obj: {fileID: 21300000, guid: 6d254a407afa0b1498389ee33e5649d6, type: 3}
+    id: d6a6267f-3526-4dc4-bd28-53203940e72a
