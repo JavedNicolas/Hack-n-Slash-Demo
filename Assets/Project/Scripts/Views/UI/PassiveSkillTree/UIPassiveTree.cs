@@ -55,8 +55,8 @@ public class UIPassiveTree : BaseUI
             {
                 node.setPlayer(_player);
                 node.allocatedWithoutChecking(allocatedNodeInfo.currentLevel);
-                foreach (Stat nodeStat in node.node.stats)
-                    _player.stats.addStat(nodeStat);
+                foreach (PassiveNodeStat nodeStat in node.node.stats)
+                    _player.stats.addStat(nodeStat.getStatForLevel(node.currentLevel));
             }
             else
             {

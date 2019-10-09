@@ -100,12 +100,16 @@ public class Player : Being
         if (!_allocatedNodesInfos.Exists(x => x.nodeGUID == GUID))
         {
             _allocatedNodesInfos.Add(new AllocatedNodeInfo(GUID, currentLevel));
-            foreach (Stat stat in passiveNode.stats)
-                stats.addStat(stat);
+            foreach (PassiveNodeStat stat in passiveNode.stats)
+                stats.addStat(stat.getStatForLevel(currentLevel));
+               
         }
         else
         {
             _allocatedNodesInfos.Find(x => x.nodeGUID == GUID).currentLevel = currentLevel;
+            removeBuff(passiveNode.name);
+            foreach (PassiveNodeStat stat in passiveNode.stats)
+                stats.addStat(stat.getStatForLevel(currentLevel));
         }
         
     }

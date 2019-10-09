@@ -75,6 +75,17 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
+    /// update the content of the detail pop up
+    /// </summary>
+    /// <param name="describable"></param>
+    /// <param name="objectToDescribe"></param>
+    /// <param name="smallSize"></param>
+    public void updateDisplayPopUP(IDescribable describable, MonoBehaviour objectToDescribe, bool smallSize = false)
+    {
+        displayDescription(detailPopUp.gameObject.activeSelf, describable, objectToDescribe, smallSize);
+    }
+
+    /// <summary>
     /// Display the description pop up
     /// </summary>
     /// <param name="display">Display the element or not</param>

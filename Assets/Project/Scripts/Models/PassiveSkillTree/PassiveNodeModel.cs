@@ -7,7 +7,7 @@ public class PassiveNodeModel
 {
     [SerializeField] public string name;
     [SerializeField] public string iconGUID;
-    [SerializeField] public List<Stat> nodeStats = new List<Stat>();
+    [SerializeField] public List<PassiveNodeStat> nodeStats = new List<PassiveNodeStat>();
     [SerializeField] public int maxLevel;
 
     public PassiveNodeModel(PassiveNode passiveNode, ResourcesList resourcesList)

@@ -36,7 +36,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
     public List<UIPassiveNode> connectedNodes => _connectedNodes; 
     public PassiveNode node  => _node;
     public string GUID => _GUID;
-    public int currentLevel => _currentLevel <= 0 ? 0 : _currentLevel; 
+    public int currentLevel => Mathf.Clamp(_currentLevel, 0, node.maxLevel); 
 
     #region allocation delegate
     public delegate void NodeAllocationModified(bool isAllocated, UIPassiveNode node);
@@ -74,7 +74,6 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
             generateID();
 
         name = _node.name;
-        print(_iconImage + " : " + node);
         _iconImage.sprite = node?.icon;
         _levelHolder?.initDisplayer(node.maxLevel, _allocatedNodeColor, _lockedNodeColor, _unallocatedNodeColor);
     }
@@ -133,9 +132,44 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
     public string getDescription(Being owner)
     {
         string description = "";
-        foreach(Stat stat in node.stats)
+        foreach(PassiveNodeStat passiveNodeStat in node.stats)
         {
-            description += StatDescription.getStatDescription(stat.value, stat.statType, stat.bonusType);
+            // if the node is allocated then display current effect
+            // else display all possible stats
+            if(isAllocated())
+            {
+                Stat stat = passiveNodeStat.getStatForLevel(Mathf.Clamp(currentLevel, 1, node.maxLevel));
+                description += StatDescription.getStatDescription(stat.value, stat.statType, stat.bonusType);
+            }
+            else
+            {
+                for (int i = 0; i < passiveNodeStat.levelValue.Count; i++)
+                {
+                    Stat stat = passiveNodeStat.getStatForLevel(Mathf.Clamp(i + 1, 1, node.maxLevel));
+                    description += "(Lv : " + (i + 1) + ") " + StatDescription.getStatDescription(stat.value, stat.statType, stat.bonusType) + "\n";
+                }
+            }
+         
+        }
+
+        return description;
+    }
+
+
+    public string getSmallDescription(Being owner)
+    {
+        string description = "";
+        foreach (PassiveNodeStat passiveNodeStat in node.stats)
+        {
+            for(int i = 0; i < passiveNodeStat.levelValue.Count; i++)
+            {
+                // only display the relevante bonus
+                if(currentLevel > 0 && i + 1!= currentLevel)
+                {
+                    Stat stat = passiveNodeStat.getStatForLevel(Mathf.Clamp(i + 1, 1, node.maxLevel));
+                    description += "(Lv : " + (i+1) + ") " + StatDescription.getStatDescription(stat.value, stat.statType, stat.bonusType) + "\n";
+                }
+            }
         }
 
         return description;
@@ -200,6 +234,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
             _levelHolder.updateLevel(currentLevel);
         }
 
+        GameUI.instance.updateDisplayPopUP(this, this, true);
         allocationModified?.Invoke(true, this);
     }
 
@@ -217,6 +252,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
 
         updateStyle();
 
+        GameUI.instance.updateDisplayPopUP(this, this, true);
         allocationModified?.Invoke(false, this);
     }
 

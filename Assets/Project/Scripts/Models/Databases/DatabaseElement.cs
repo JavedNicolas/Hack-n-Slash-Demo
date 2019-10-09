@@ -17,4 +17,9 @@ public class DatabaseElement : IDescribable
     {
         return "";
     }
+
+    public virtual string getSmallDescription(Being owner)
+    {
+        return "";
+    }
 }

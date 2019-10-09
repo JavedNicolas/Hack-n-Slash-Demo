@@ -52,12 +52,12 @@ public class UIPassiveNodeEditor : Editor
 
     void addStat()
     {
-        passiveNode.stats.Add(new Stat());
+        passiveNode.stats.Add(new PassiveNodeStat());
     }
 
     void displayStats()
     {
-
+        // display all the stats
         for(int i = 0; i< passiveNode.stats.Count; i++)
         {
             EditorGUILayout.BeginHorizontal();
@@ -70,18 +70,46 @@ public class UIPassiveNodeEditor : Editor
             } 
             EditorGUILayout.EndHorizontal();
 
-            passiveNode.stats[i].statType = (StatType)EditorGUILayout.EnumPopup("Stat Type : ", passiveNode.stats[i].statType);
-            passiveNode.stats[i].bonusType = (StatBonusType)EditorGUILayout.EnumPopup("Bonus Type : ", passiveNode.stats[i].bonusType);
-            passiveNode.stats[i].value = EditorGUILayout.FloatField("Value : ", passiveNode.stats[i].value);
-            passiveNode.stats[i].isInfluencedBy = (StatInfluencedBy)EditorGUILayout.EnumPopup("Is Influence by an other Stat : ", passiveNode.stats[i].isInfluencedBy);
-            if(passiveNode.stats[i].isInfluencedBy != StatInfluencedBy.Nothing)
-                passiveNode.stats[i].influencedEvery = EditorGUILayout.FloatField("Influence Every : ", passiveNode.stats[i].influencedEvery);
-            passiveNode.stats[i].isSpecific = EditorGUILayout.Toggle("Is Specific Something :", passiveNode.stats[i].isSpecific);
-            if (passiveNode.stats[i].isSpecific)
-                passiveNode.stats[i].isSpecificTo = EditorGUILayout.TextField("Is Specific To (Name): ", passiveNode.stats[i].isSpecificTo);
-            passiveNode.stats[i].sourceName = passiveNode.name;
+            passiveNode.stats[i].stat.statType = (StatType)EditorGUILayout.EnumPopup("Stat Type : ", passiveNode.stats[i].stat.statType);
+            passiveNode.stats[i].stat.bonusType = (StatBonusType)EditorGUILayout.EnumPopup("Bonus Type : ", passiveNode.stats[i].stat.bonusType);
+
+            EditorGUI.indentLevel += 2;
+            // values by level
+            displayLevelValues(i);
+            EditorGUI.indentLevel -= 2;
+
+            passiveNode.stats[i].stat.isInfluencedBy = (StatInfluencedBy)EditorGUILayout.EnumPopup("Is Influence by an other Stat : ", passiveNode.stats[i].stat.isInfluencedBy);
+            if(passiveNode.stats[i].stat.isInfluencedBy != StatInfluencedBy.Nothing)
+                passiveNode.stats[i].stat.influencedEvery = EditorGUILayout.FloatField("Influence Every : ", passiveNode.stats[i].stat.influencedEvery);
+            passiveNode.stats[i].stat.isSpecific = EditorGUILayout.Toggle("Is Specific Something :", passiveNode.stats[i].stat.isSpecific);
+            if (passiveNode.stats[i].stat.isSpecific)
+                passiveNode.stats[i].stat.isSpecificTo = EditorGUILayout.TextField("Is Specific To (Name): ", passiveNode.stats[i].stat.isSpecificTo);
+            passiveNode.stats[i].stat.sourceName = passiveNode.name;
 
             EditorGUILayout.Space();
+        }
+    }
+
+
+    /// <summary>
+    /// Display the field to implement the values by level
+    /// </summary>
+    /// <param name="index"></param>
+    void displayLevelValues(int index)
+    {
+        
+        EditorGUILayout.LabelField("Values by level : ", titleStyle);
+        while (passiveNode.stats[index].levelValue.Count != passiveNode.maxLevel)
+        {
+            if (passiveNode.stats[index].levelValue.Count > passiveNode.maxLevel)
+                passiveNode.stats[index].levelValue.RemoveAt(passiveNode.stats[index].levelValue.Count - 1);
+            if (passiveNode.stats[index].levelValue.Count < passiveNode.maxLevel)
+                passiveNode.stats[index].levelValue.Add(0);
+        }
+
+        for (int j = 0; j < passiveNode.maxLevel; j++)
+        {
+            passiveNode.stats[index].levelValue[j] = EditorGUILayout.FloatField("Value for Level " + index + " : ", passiveNode.stats[index].levelValue[j]);
         }
     }
 }
