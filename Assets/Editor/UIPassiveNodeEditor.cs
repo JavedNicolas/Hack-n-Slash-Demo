@@ -39,8 +39,8 @@ public class UIPassiveNodeEditor : Editor
 
         passiveNode.name = EditorGUILayout.TextField("Name : ", passiveNode.name);
         passiveNode.icon = (Sprite)EditorGUILayout.ObjectField("Icon : ", passiveNode.icon, typeof(Sprite), false);
-        passiveNode.maxLevel = EditorGUILayout.IntField("Max level : ", passiveNode.maxLevel);
-
+        passiveNode.maxLevel = EditorGUILayout.IntField("Max level : ", passiveNode.maxLevel > 3 ? 3 : passiveNode.maxLevel);
+         
         EditorGUILayout.BeginHorizontal("Box");
         EditorGUILayout.LabelField("Stats :", titleStyle);
         if (GUILayout.Button("+"))

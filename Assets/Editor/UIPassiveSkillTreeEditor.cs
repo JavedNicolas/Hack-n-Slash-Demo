@@ -26,7 +26,6 @@ public class UIPassiveSkillTreeEditor : Editor
         skillTree.loadPassiveTreeFromJson();
         skillTree.initNodes();
         skillTree.moveNodesToSavedPosition();
-        skillTree.drawNodeLink();
     }
 
     void saveSkillTree()

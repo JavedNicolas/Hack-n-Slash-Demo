@@ -8,14 +8,19 @@ public class UINodeLevelDisplayer : MonoBehaviour
     [SerializeField] int _levelPerLine;
     [SerializeField] public List<GameObject> _levelDisplayers = new List<GameObject>();
     [SerializeField] GameObject _levelDisplayPrefab;
- 
+
+    [Header("Node Color")]
+    Color _allocatedNodeColor;
+    Color _lockedNodeColor;
+    Color _unallocatedNodeColor;
+
     /// <summary>
     /// Init the level displayer : 
     /// Hide it if there is only one level
     /// esle init the number of level element 
     /// </summary>
     /// <param name="maxLevel">the max level</param>
-    public void initDisplayer(int maxLevel)
+    public void initDisplayer(int maxLevel, Color allocatedNodeColor, Color lockedNodeColor, Color unallocatedNodeColor)
     {
         _levelDisplayers = new List<GameObject>();
         transform.clearChild();
@@ -34,6 +39,9 @@ public class UINodeLevelDisplayer : MonoBehaviour
         }
 
         GetComponent<GridLayoutGroup>().setCellSize(Orientation.Horizontal, _levelPerLine, GetComponent<RectTransform>());
+        this._allocatedNodeColor = allocatedNodeColor;
+        this._lockedNodeColor = lockedNodeColor;
+        this._unallocatedNodeColor = unallocatedNodeColor;
     }
 
     public void displayLockLevel(bool locked, int currentLevel = 0)
@@ -67,9 +75,9 @@ public class UINodeLevelDisplayer : MonoBehaviour
     {
         switch (nodeStyle)
         {
-            case NodeStyle.Allocated: levelDisplayer.GetComponent<Image>().color = Color.blue; break;
-            case NodeStyle.Unallocated: levelDisplayer.GetComponent<Image>().color = Color.white; break;
-            case NodeStyle.Locked: levelDisplayer.GetComponent<Image>().color = Color.gray; break;
+            case NodeStyle.Allocated: levelDisplayer.GetComponent<Image>().color = _allocatedNodeColor; break;
+            case NodeStyle.Unallocated: levelDisplayer.GetComponent<Image>().color = _unallocatedNodeColor; break;
+            case NodeStyle.Locked: levelDisplayer.GetComponent<Image>().color = _lockedNodeColor; break;
         }
     }
 

@@ -19,7 +19,6 @@ public class UIPassiveTree : BaseUI
     [SerializeField] GameObject _nodeContainer;
 
     [Header("Node links attributs")]
-    [SerializeField] GameObject basePrefab;
     [SerializeField] GameObject nodePrefab;
 
     [SerializeField] List<UIPassiveNode> nodes = new List<UIPassiveNode>();
@@ -36,7 +35,6 @@ public class UIPassiveTree : BaseUI
         loadPassiveTreeFromJson();
         initNodes();
         moveNodesToSavedPosition();
-        drawNodeLink();
         initAllocation();
     }
 
@@ -56,7 +54,7 @@ public class UIPassiveTree : BaseUI
             if(node != null)
             {
                 node.setPlayer(_player);
-                node.allocatedWithoutChecking(true, allocatedNodeInfo.currentLevel);
+                node.allocatedWithoutChecking(allocatedNodeInfo.currentLevel);
                 foreach (Stat nodeStat in node.node.stats)
                     _player.stats.addStat(nodeStat);
             }
@@ -69,10 +67,10 @@ public class UIPassiveTree : BaseUI
         foreach(UIPassiveNode node in nodes){
             node.setPlayer(_player);
             if (node.isBase)
-                node.isAllocated = true;
-            else if (node.isAllocated && !node.connectedNodes.Exists(x => x.isAllocated))
+                node.setLevel(1);
+            else if (node.isAllocated() && !node.connectedNodes.Exists(x => x.isAllocated()))
             {
-                node.isAllocated = false;
+                node.setLevel(0);
             }
         }
     }
@@ -116,17 +114,6 @@ public class UIPassiveTree : BaseUI
                 
     }
 
-    /// <summary>
-    /// Draw default all the nodes links
-    /// </summary>
-    public void drawNodeLink()
-    {
-        for (int i =0; i < nodes.Count; i++)
-        {
-            nodes[i].moveNodeToSavedPosition();
-            nodes[i].drawLinks();
-        }
-    }
 
     /// <summary>
     /// Mode node to saved position
@@ -176,14 +163,16 @@ public class UIPassiveTree : BaseUI
         nodes = new List<UIPassiveNode>();
 
         // convert model to node
-        for(int i = 0; i < nodesModel.Count; i++)
+        for (int i = 0; i < nodesModel.Count; i++)
         {
-            GameObject nodeInstance = Instantiate(nodesModel[i].isBase ? basePrefab : nodePrefab);
+            GameObject nodeInstance = Instantiate(nodesModel[i].isBase ? nodePrefab : nodePrefab);
+            if (nodesModel[i].isBase)
+                nodeInstance.transform.localScale *= 1.5f;
             UIPassiveNode node = nodesModel[i].modelToUIPassiveNode(nodeInstance.GetComponent<UIPassiveNode>(), resourcesList);
             node.transform.SetParent(node.isBase ? _baseContainer.transform : _nodeContainer.transform);
 
             // Remove later
-            node.isAllocated = node.isBase;
+            node.setLevel(node.isBase ? 1 : 0);
             nodes.Add(node);
         }
 
@@ -208,7 +197,6 @@ public class UIPassiveTree : BaseUI
     protected override void dragging(PointerEventData eventData)
     {
         transform.position = (Vector3) eventData.position - dragingOffset;
-        drawNodeLink();
     }
 
     protected override void dragginEnd(PointerEventData eventData){}
@@ -216,7 +204,6 @@ public class UIPassiveTree : BaseUI
     void zoom()
     {
         transform.localScale = transform.localScale * ((Input.mouseScrollDelta.y * 0.1f) + 1);
-        drawNodeLink();
     }
     #endregion
 
