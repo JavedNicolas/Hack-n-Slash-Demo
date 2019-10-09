@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Spawner))]
 public class GameManager : MonoBehaviour
 {
     [Header("Database")]
@@ -17,17 +18,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] ResourcesList _resourcesList;
     public ResourcesList resourcesList { get => _resourcesList; set => _resourcesList = value; }
 
+    public static GameManager instance;
+
+    CurrentMapInstance _currentMapInstanceController;
+    Spawner _spawningController;
+
+    // TMP------------------
     [SerializeField] GameObject _itemObject;
     public GameObject itemObjetPrefab { get => _itemObject; }
 
-    public static GameManager instance;
-    GameObject player;
-
-    // TMP------------------
     public GameObject playerPrefab;
     public GameObject projectilePrefab;
     Player playerTMp;
-
+    
     #region clicks
     bool _canLeftClick = true;
     public bool canLeftClick { get => _canLeftClick; }
@@ -51,20 +54,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _currentMapInstanceController = new CurrentMapInstance();
+        _spawningController = GetComponent<Spawner>();
         loadDatabases();
-
-        playerTMp = new Player("Player Test", 200, 100, 1, 1, 25, new List<int>() { 0, 1, 2 }, playerPrefab, 1);
-        playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
-        playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
-        playerTMp.stats.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
-        playerTMp.stats.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
-        playerTMp.allocatedNodesInfo.Add(new PlayerAllocatedNode("cb8a97f6-996f-48c4-a257-b2b3b0e2f37a", 1));
-        playerTMp.allocatedNodesInfo.Add(new PlayerAllocatedNode("675c6d39-d802-4419-90d3-0bc445086335", 2));
-        playerTMp.allocatedNodesInfo.Add(new PlayerAllocatedNode("03461af9-e2b6-4700-b160-2168b7798e16", 1));
-
-        CurrentMapInstanceController.instance.loadZone();
-        spawnPlayer();
-        GameUI.instance.loadUI();
+        initplayer();
+        _currentMapInstanceController.loadInstance(_spawningController, playerTMp);
     }
 
     // Update is called once per frame
@@ -73,6 +67,18 @@ public class GameManager : MonoBehaviour
         getMouseClick();
     }
 
+    public void initplayer()
+    {
+        playerTMp = new Player("Player Test", 200, 100, 1, 1, 25, new List<int>() { 0, 1, 2 }, playerPrefab, 1);
+        playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
+        playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
+        playerTMp.stats.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
+        playerTMp.stats.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
+    }
+
+    /// <summary>
+    /// load database from jsons
+    /// </summary>
     public void loadDatabases()
     {
         _enemyDatabase?.loadDB();
@@ -111,18 +117,11 @@ public class GameManager : MonoBehaviour
             _canRightClick = !lockClick;
     }
 
-    public void spawnPlayer()
-    {
-        player = SpawningController.instance.spawnPlayer(playerTMp);
-    }
-
     // Getter
     public Player getPlayer() {
-        if(GetPlayerBehavior() != null)
-            return (Player)player.GetComponentInChildren<PlayerBehavior>().being;
-
-        return null;
+        return GetPlayerBehavior().being;
     }
-    public PlayerBehavior GetPlayerBehavior() { return player.GetComponentInChildren<PlayerBehavior>(); }
+
+    public PlayerBehavior GetPlayerBehavior() { return _currentMapInstanceController.playerGameObject.GetComponentInChildren<PlayerBehavior>(); }
     public Inventory getPlayerInventory() { return getPlayer().inventory; }
 }

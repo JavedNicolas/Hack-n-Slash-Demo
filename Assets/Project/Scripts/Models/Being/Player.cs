@@ -14,10 +14,11 @@ public class Player : Being
     public float currentMana { get => _currentMana; }
 
     [Header("Passive node")]
-    [SerializeField] List<PlayerAllocatedNode> _allocatedNodesGUID = new List<PlayerAllocatedNode>();
+    [SerializeField] List<AllocatedNodeInfo> _allocatedNodesInfos = new List<AllocatedNodeInfo>();
+    public List<AllocatedNodeInfo> allocatedNodesInfo => _allocatedNodesInfos;
 
     public new PlayerStats stats { get => (PlayerStats)base.stats; }
-    public List<PlayerAllocatedNode> allocatedNodesInfo => _allocatedNodesGUID;
+
     #endregion
 
     public Player(string name, float baseLife, float baseMana, float baseASPD, float baseCastSpeed, float baseAttackRange, List<int> abilityIDs, GameObject prefab, int currentLevel = 1) :
@@ -85,10 +86,55 @@ public class Player : Being
         return stats.currentLevelExp / LevelExperienceTable.levelExperienceNeeded[index];
     }
 
+    /// <summary>
+    /// make mana and life max value
+    /// </summary>
     void setCurrentManaAndLife()
     {
         _currentMana = stats.maxMana;
         _currentLife = stats.maxLife;
+    }
+
+    public void addPassive(PassiveNode passiveNode, int currentLevel, string GUID)
+    {
+        if (!_allocatedNodesInfos.Exists(x => x.nodeGUID == GUID))
+        {
+            _allocatedNodesInfos.Add(new AllocatedNodeInfo(GUID, currentLevel));
+            foreach (Stat stat in passiveNode.stats)
+                stats.addStat(stat);
+        }
+        else
+        {
+            _allocatedNodesInfos.Find(x => x.nodeGUID == GUID).currentLevel = currentLevel;
+        }
+        
+    }
+
+    public void removePassive(PassiveNode passiveNode, int currentLevel, string GUID)
+    {
+        if(currentLevel == 0)
+        {
+            _allocatedNodesInfos.RemoveAll(x => x.nodeGUID == GUID);
+            stats.removeStat(passiveNode.name);
+        }
+        else if(currentLevel > 0)
+        {
+            _allocatedNodesInfos.Find(x => x.nodeGUID == GUID).currentLevel--;
+        }
+        
+        
+    }
+
+    //getter
+    public int getRemainingPassivepoint() {
+        // start at one for the base
+        int passivePointSpent = 1;
+
+        for(int i = 0; i < _allocatedNodesInfos.Count; i++)
+        {
+            passivePointSpent += _allocatedNodesInfos[i].currentLevel;
+        }
+        return stats.currentLevel - passivePointSpent; 
     }
 
 }

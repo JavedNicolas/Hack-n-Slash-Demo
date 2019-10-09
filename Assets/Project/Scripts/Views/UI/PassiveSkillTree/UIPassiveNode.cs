@@ -10,6 +10,7 @@ public enum NodeStyle { Allocated, Unallocated, Locked }
 public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
 {
     [SerializeField] string _GUID = "";
+    [SerializeField] Player _player;
 
     [Header("Node position and links")]
     int _currentLevel = 0;
@@ -68,6 +69,11 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
         this._position = position;
         this._isBase = isBase;
         this._node = node;
+    }
+
+    public void setPlayer(Player player)
+    {
+        this._player = player;
     }
 
     public void initNode()
@@ -152,17 +158,25 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
         if (_isAllocated)
         {
             GetComponent<Image>().color = Color.blue;
+            if (_player?.getRemainingPassivepoint() == 0)
+                _levelHolder?.displayLockLevel(true, currentLevel);
+            else
+                _levelHolder?.displayLockLevel(false, currentLevel);
         }
-        else if (!_isAllocated && connectedNodes.Exists(x => x.isAllocated))
+        else if (!_isAllocated && connectedNodes.Exists(x => x.isAllocated) && _player?.getRemainingPassivepoint() > 0)
         {
             GetComponent<Image>().color = Color.white;
-            _levelHolder?.displayLockLevel(false);
+            _levelHolder?.displayLockLevel(false, currentLevel) ;
         }
-        else if (!_isAllocated && !connectedNodes.Exists(x => x.isAllocated))
+        else if (!_isAllocated && !connectedNodes.Exists(x => x.isAllocated) || _player?.getRemainingPassivepoint() == 0)
         {
             GetComponent<Image>().color = Color.gray;
             _levelHolder?.displayLockLevel(true);
         }
+
+        updateConnectedLinkColor();
+        foreach (UIPassiveNode connectedNode in connectedNodes)
+            connectedNode.updateConnectedLinkColor();
     }
 
     /// <summary>
@@ -223,7 +237,7 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
     {
         if (!_isBase)
         {
-            if (connectedNodes.Exists(x => x._isAllocated == true) && (!_isAllocated || currentLevel < getMaxLevel()))
+            if (connectedNodes.Exists(x => x._isAllocated == true) && (!_isAllocated || currentLevel < getMaxLevel()) && _player.getRemainingPassivepoint() > 0)
                 isAllocated = true;
         }
     }
@@ -232,16 +246,16 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
     {
         if (!_isBase)
         {
-            if (currentLevel >= 1)
-            {
-                _currentLevel--;
-                _levelHolder.updateLevel(currentLevel);
-            }
-            
-            if(currentLevel == 0)
-            {
-                isAllocated = false;
-            }
+            if (_connectedNodes.FindAll(x => x.isAllocated).Count > 1)
+                // check if each allocated connected node are link to a base
+                foreach (UIPassiveNode connectNode in connectedNodes)
+                {
+                    if (!checkRoadToBase(connectNode))
+                    {
+                        return;
+                    }
+                }
+            isAllocated = false;
         }
     }
 
@@ -251,17 +265,16 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
     /// <param name="isAllocated"></param>
     void hasBeenAllocated()
     {
-        setStyle();
-
-        updateConnectedLinkColor();
-        foreach (UIPassiveNode connectedNode in connectedNodes)
-            connectedNode.updateConnectedLinkColor();
-
         if (!isBase && currentLevel < getMaxLevel())
         {
             _currentLevel++;
             _levelHolder.updateLevel(currentLevel);
         }
+
+        setStyle();
+        updateConnectedLinkColor();
+        foreach (UIPassiveNode connectedNode in connectedNodes)
+            connectedNode.updateConnectedLinkColor();
 
         allocationModified?.Invoke(true, this);
     }
@@ -272,22 +285,20 @@ public class UIPassiveNode : BaseUI, IPopUpOnHovering, IDescribable
     /// <param name="isAllocated"></param>
     void hasBeenUnallocated()
     {
+        if (currentLevel > 0)
+        {
+            _currentLevel--;
+            _levelHolder.updateLevel(currentLevel);
+        }
+
+        if (currentLevel != 0)
+            allocatedWithoutChecking(true, currentLevel);
+
         setStyle();
 
         updateConnectedLinkColor();
         foreach (UIPassiveNode connectedNode in connectedNodes)
             connectedNode.updateConnectedLinkColor();
-
-        if (_connectedNodes.FindAll(x => x.isAllocated).Count > 1)
-            // check if each allocated connected node are link to a base
-            foreach (UIPassiveNode connectNode in connectedNodes)
-            {
-                if (!checkRoadToBase(connectNode))
-                {
-                    isAllocated = true;
-                    return;
-                }
-            }
 
         allocationModified?.Invoke(false, this);
     }

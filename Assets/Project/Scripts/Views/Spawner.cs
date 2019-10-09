@@ -2,19 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawningController : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
-    #region singleton
-    public static SpawningController instance;
-    #endregion
-
     public Transform beingParentObject;
-
-    private void Awake()
-    {
-        instance = this;
-        DontDestroyOnLoad(this);
-    }
 
     public GameObject spawnEnemy(Enemy enemy)
     {

@@ -28,13 +28,10 @@ public class UILife : MonoBehaviour
             if (!isSmallLifeBar)
                 lifeAsText.text = being.currentLife.ToString() + "/" + being.stats.maxLife.ToString();
         }
-        
     }
 
     public void setBeing(Being being)
     {
         this.being = being;
     }
-
-
 }

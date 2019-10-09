@@ -30,13 +30,14 @@ public class UIPassiveTree : BaseUI
         instance = this;
     }
 
-    private void Start()
+    public void initSkillTree(Player player)
     {
+        _player = player;
         loadPassiveTreeFromJson();
         initNodes();
         moveNodesToSavedPosition();
         drawNodeLink();
-        initAllocation(GameManager.instance.getPlayer());
+        initAllocation();
     }
 
     private void Update()
@@ -44,55 +45,36 @@ public class UIPassiveTree : BaseUI
         zoom();
     }
 
-    public void initAllocation(Player player)
+    /// <summary>
+    /// init allocated node 
+    /// </summary>
+    void initAllocation()
     {
-        _player = player;
-        
-        foreach (PlayerAllocatedNode allocatedNodeInfo in _player.allocatedNodesInfo)
+        foreach (AllocatedNodeInfo allocatedNodeInfo in _player.allocatedNodesInfo)
         {
             UIPassiveNode node = nodes.Find(x => x.GUID == allocatedNodeInfo.nodeGUID);
             if(node != null)
             {
+                node.setPlayer(_player);
                 node.allocatedWithoutChecking(true, allocatedNodeInfo.currentLevel);
                 foreach (Stat nodeStat in node.node.stats)
                     _player.stats.addStat(nodeStat);
             }
             else
             {
-                player.allocatedNodesInfo.Remove(allocatedNodeInfo);
+                _player.allocatedNodesInfo.Remove(allocatedNodeInfo);
             }
         }
 
         foreach(UIPassiveNode node in nodes){
-            if (node.isAllocated && !node.connectedNodes.Exists(x => x.isAllocated))
+            node.setPlayer(_player);
+            if (node.isBase)
+                node.isAllocated = true;
+            else if (node.isAllocated && !node.connectedNodes.Exists(x => x.isAllocated))
             {
                 node.isAllocated = false;
             }
         }
-    }
-
-    /// <summary>
-    /// remove a node from the player
-    /// </summary>
-    /// <param name="node"></param>
-    void addNodeToPlayer(UIPassiveNode node)
-    {
-        if (!_player.allocatedNodesInfo.Exists(x => x.nodeGUID == node.GUID))
-        {
-            _player.allocatedNodesInfo.Add(new PlayerAllocatedNode(node.GUID, node.currentLevel));
-            foreach (Stat nodeStat in node.node.stats)
-                _player.stats.addStat(nodeStat);
-        }
-    }
-
-    /// <summary>
-    /// remove a node from the player
-    /// </summary>
-    /// <param name="node"></param>
-    void removeNodeFromPlayer(UIPassiveNode node)
-    {
-        _player.allocatedNodesInfo.RemoveAll(x => x.nodeGUID == node.GUID);
-        _player.stats.removeStat(node.name);
     }
 
     /// <summary>
@@ -123,13 +105,13 @@ public class UIPassiveTree : BaseUI
     /// <param name="node"></param>
     void handleNodeAllocationChanged(bool iAllocated, UIPassiveNode node)
     {
-        if (!iAllocated)
+        if (iAllocated)
         {
-            removeNodeFromPlayer(node);
+            _player.addPassive(node.node, node.currentLevel, node.GUID);
         }
         else
         {
-            addNodeToPlayer(node);
+            _player.removePassive(node.node, node.currentLevel, node.GUID);
         }
                 
     }

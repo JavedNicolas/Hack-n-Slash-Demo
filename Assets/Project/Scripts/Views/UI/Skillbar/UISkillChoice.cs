@@ -10,18 +10,15 @@ public class UISkillChoice : MonoBehaviour
     [Header("Number of slot per Line")]
     public int numberOfSlotPerLine;
 
-    // instance 
-    public static UISkillChoice instance;
+    Player _player;
 
     private UISkillSlot _skillSlotToChange;
     public UISkillSlot skillSlotToChange {  get { return _skillSlotToChange; } }
 
-    public void Awake()
+    public void init(Player player)
     {
-        instance = this;
-        gameObject.SetActive(false);
+        this._player = player;
     }
-
 
     /// <summary>
     /// Show all the skill the player have
@@ -32,14 +29,17 @@ public class UISkillChoice : MonoBehaviour
 
         transform.clearChild();
         GetComponent<GridLayoutGroup>()?.setCellSize(Orientation.Horizontal, numberOfSlotPerLine, GetComponent<RectTransform>());
-        Player player = GameManager.instance.getPlayer();
 
-        for (int i = 0; i < player?.abilities.Count; i++)
+        for (int i = 0; i < _player?.abilities.Count; i++)
         {
             GameObject skillIcon = Instantiate(skillIconUIPrefab);
             UISkillSlot skillIconUI = skillIcon.GetComponent<UISkillSlot>();
             if (skillIconUI != null)
-                skillIconUI.setSkillSlot(true, player.abilities[i], transform);
+            {
+                skillIconUI.init(this);
+                skillIconUI.setSkillSlot(true, _player?.abilities[i], transform);
+            }
+                
         }
 
     }

@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 739527e151983c94d8072faac65e5fd7, type: 2}
+--- !u!114 &192396629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 337852263626760595, guid: 57bdf29ffd082d342a3739a1c982e7a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8785557622863946298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c484da28354ca44aa58bbfae5159a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &198675981
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +345,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &680635273 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1300660196, guid: ddc5bf39957ea464e97d799e7f6327ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 784591795}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c06c323432925e4ba86bbf787f9d710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &687788359 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 860337237433258922, guid: 17a0325e5036817459ed6d190390b019,
@@ -1724,6 +1748,11 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 505228345916679774, guid: ddc5bf39957ea464e97d799e7f6327ed,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1582677096, guid: ddc5bf39957ea464e97d799e7f6327ed, type: 3}
     - {fileID: 4745266903178630613, guid: ddc5bf39957ea464e97d799e7f6327ed, type: 3}
@@ -2133,6 +2162,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 421623800}
   skillBar: {fileID: 1596372722}
+  buffBar: {fileID: 192396629}
+  debuffBar: {fileID: 1848427422}
   lifeUI: {fileID: 376811767}
   manaUI: {fileID: 2084637288}
   topBar: {fileID: 1484548297}
@@ -2479,6 +2510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b30454deeffbc43a9fb0a8c0491a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _skillChoice: {fileID: 680635273}
   skillSlots: []
 --- !u!1 &1792822893
 GameObject:
@@ -2573,6 +2605,18 @@ Transform:
   m_Father: {fileID: 1892695549}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1848427422 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2933190299627520717, guid: 57bdf29ffd082d342a3739a1c982e7a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8785557622863946298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c484da28354ca44aa58bbfae5159a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1888943722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1389854941459108852, guid: 720b71914bd6f7c439ac225a37b59c4e,
@@ -3530,11 +3574,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1440493065}
     m_Modifications:
-    - target: {fileID: 8785557622359130908, guid: 57bdf29ffd082d342a3739a1c982e7a8,
-        type: 3}
-      propertyPath: m_Name
-      value: BuffBarContainer
-      objectReference: {fileID: 0}
     - target: {fileID: 8785557622359130909, guid: 57bdf29ffd082d342a3739a1c982e7a8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3639,6 +3678,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785557622359130908, guid: 57bdf29ffd082d342a3739a1c982e7a8,
+        type: 3}
+      propertyPath: m_Name
+      value: BuffBarContainer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57bdf29ffd082d342a3739a1c982e7a8, type: 3}

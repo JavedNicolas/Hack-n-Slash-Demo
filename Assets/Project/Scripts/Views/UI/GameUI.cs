@@ -10,11 +10,21 @@ public class GameUI : MonoBehaviour
     // instance
     public static GameUI instance;
 
-    [Header("Player UI")]
+    [Header("Inventory")]
     [SerializeField] public UIInventory inventoryUI;
+
+    [Header("Skill bar")]
     [SerializeField] public UISkillBar skillBar;
+
+    [Header("Buffs")]
+    [SerializeField] public UIBuffBar buffBar;
+    [SerializeField] public UIBuffBar debuffBar;
+
+    [Header("Life and mana")]
     [SerializeField] public UILife lifeUI;
     [SerializeField] public UIMana manaUI;
+
+    [Header("Top bar")]
     [SerializeField] public UITopBar topBar;
     [SerializeField] UILevelUpDisplayer levelUpDisplayer;
 
@@ -32,16 +42,21 @@ public class GameUI : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void loadUI()
+    public void loadUI(Player player)
     {
-        StartCoroutine("loadPassiveTree");
+        IEnumerator loadPassive = loadPassiveTree(player);
+        skillBar.init(player);
+        buffBar.init(player);
+        debuffBar.init(player);
+        StartCoroutine(loadPassive);
         initDetailPopUp();
     }
 
-    IEnumerator loadPassiveTree()
+    IEnumerator loadPassiveTree(Player player)
     {
         SceneManager.LoadScene(SceneConstant.passiveTreeSceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => UIPassiveTree.instance != null);
+        UIPassiveTree.instance.initSkillTree(player);
         UIPassiveTree.instance.displayTree();
     }
 

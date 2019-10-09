@@ -2,12 +2,12 @@
 using System.Collections;
 
 [System.Serializable]
-public struct PlayerAllocatedNode
+public class AllocatedNodeInfo
 {
     [SerializeField] public string nodeGUID;
     [SerializeField] public int currentLevel;
 
-    public PlayerAllocatedNode(string nodeGUID, int currentLevel)
+    public AllocatedNodeInfo(string nodeGUID, int currentLevel)
     {
         this.nodeGUID = nodeGUID;
         this.currentLevel = currentLevel;

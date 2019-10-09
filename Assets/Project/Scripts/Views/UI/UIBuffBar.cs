@@ -14,12 +14,15 @@ public class UIBuffBar : MonoBehaviour
         GetComponent<GridLayoutGroup>()?.setCellSize(Orientation.Vertical, 1, GetComponent<RectTransform>());
     }
 
+    public void init(Player player)
+    {
+        _player = player;
+    }
+
     private void Update()
     {
-        if(_player == null)
-            _player = GameManager.instance.getPlayer();
-
-        displayBuff();
+        if(_player != null)
+            displayBuff();
     }
 
     void displayBuff()

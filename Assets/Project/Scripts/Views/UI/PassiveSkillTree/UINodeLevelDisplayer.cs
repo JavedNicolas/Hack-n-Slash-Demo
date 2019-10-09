@@ -36,10 +36,16 @@ public class UINodeLevelDisplayer : MonoBehaviour
         GetComponent<GridLayoutGroup>().setCellSize(Orientation.Horizontal, _levelPerLine, GetComponent<RectTransform>());
     }
 
-    public void displayLockLevel(bool locked)
+    public void displayLockLevel(bool locked, int currentLevel = 0)
     {
         for (int i = 0; i < _levelDisplayers.Count; i++)
-            setStyle(locked ? NodeStyle.Locked : NodeStyle.Unallocated, _levelDisplayers[i]);
+        {
+            if(i < currentLevel)
+                setStyle(NodeStyle.Allocated, _levelDisplayers[i]);
+            else
+                setStyle(locked ? NodeStyle.Locked : NodeStyle.Unallocated, _levelDisplayers[i]);
+        }
+            
     }
 
     /// <summary>

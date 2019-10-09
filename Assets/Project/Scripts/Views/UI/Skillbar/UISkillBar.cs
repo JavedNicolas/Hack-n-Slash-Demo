@@ -6,11 +6,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(GridLayoutGroup))]
 public class UISkillBar: MonoBehaviour
 {
+    [SerializeField] UISkillChoice _skillChoice;
     [SerializeField] List<UISkillSlot> skillSlots = new List<UISkillSlot>();
     GridLayoutGroup gridLayout;
 
-    private void Start()
+    public void init(Player player)
     {
+        _skillChoice.init(player);
         getSkillSlots();
     }
 
@@ -29,7 +31,10 @@ public class UISkillBar: MonoBehaviour
         {
             UISkillSlot skillSlot;
             if (transform.GetChild(i).TryGetComponent(out skillSlot))
+            {
                 skillSlots.Add(skillSlot);
+                skillSlot.init(_skillChoice);
+            }  
         }
     }
 

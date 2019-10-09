@@ -7,24 +7,34 @@ using UnityEngine.EventSystems;
 
 public class UISkillSlot : MonoBehaviour, IPopUpOnHovering, IPointerDownHandler
 {
-    Ability _skill;
-    public Ability ability
-    {
-        get { return _skill; }
-        set {
-            _skill = value;
-            setIcon(_skill);
-        }
-    }
-
+    [Header("Skill attributs")]
     public bool isChoiceIcon = false;
     public Image skillIcon;
     public GameObject keyDisplayer;
     public string inputName;
 
+    Ability _skill;
+    public Ability ability
+    {
+        get { return _skill; }
+        set
+        {
+            _skill = value;
+            setIcon(_skill);
+        }
+    }
+
+    // skill choice
+    UISkillChoice _skillChoice;
+
     private void Start()
     {
         skillIcon.enabled = false;
+    }
+
+    public void init(UISkillChoice skillChoice)
+    {
+        this._skillChoice = skillChoice;
     }
 
     private void Update()
@@ -61,20 +71,20 @@ public class UISkillSlot : MonoBehaviour, IPopUpOnHovering, IPointerDownHandler
             if (isChoiceIcon)
             {
                 GameManager.instance.lockClick(true, true);
-                UISkillChoice.instance.updateSkillWithChoice(_skill);
-                UISkillChoice.instance.gameObject.SetActive(false);
+                _skillChoice.updateSkillWithChoice(_skill);
+                _skillChoice.gameObject.SetActive(false);
                 displayPopUp(false);
                 GameManager.instance.lockClick(false, true);
             }
             else
             {
-                GameObject choiceObject = UISkillChoice.instance.gameObject;
+                GameObject choiceObject = _skillChoice.gameObject;
 
-                if (UISkillChoice.instance.skillSlotToChange == this)
+                if (_skillChoice.skillSlotToChange == this)
                     choiceObject.SetActive(!choiceObject.activeSelf);
                 else
                 {
-                    UISkillChoice.instance.displaySkills(this);
+                    _skillChoice.displaySkills(this);
                     choiceObject.SetActive(true);
                 }
             }
