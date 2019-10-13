@@ -5,9 +5,18 @@ using UnityEngine;
 public static class ScriptableObjectConstant
 {
     public const string abilityAttributsMenuName = "Ability/Ability Attributs/";
+    
+    // effects
     public const string effectMenuName = "Effect/";
     public const string effectFolderPath = "Resources/ScriptableObjects/Effects/";
+
+    // ressources lists
     public const string resourceListPath = "ScriptableObjects/DatabaseRessourcesList";
+
+    // localization
+    public const string localizedTextPath = "ScriptableObjects/LocalizedText";
+    public const string FullLocalizedJsonFolder = "Assets/Project/Resources/JsonFiles/LocalizatedTextJSONs/"; 
+    public const string ResourceLocalizedJsonFolder = "JsonFiles/LocalizatedTextJSONs/";
 }
 
 public static class DatabaseConstant

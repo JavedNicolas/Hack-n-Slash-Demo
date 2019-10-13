@@ -80,7 +80,7 @@ public abstract class DatabaseWindows<T> : EditorWindow where T : DatabaseElemen
     {
 
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("E"))
+        if (GUILayout.Button("Edit"))
         {
             element = database.getElementAt(i);
             setFieldWithElementValues();
