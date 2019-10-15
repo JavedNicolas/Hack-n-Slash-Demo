@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class LanguagesEditorWindow : EditorWindow {
 
@@ -9,6 +10,7 @@ public class LanguagesEditorWindow : EditorWindow {
     Vector2 rightScrollPos;
 
     float leftSizeWidth = 200;
+    float keyAndTextHeight = 50;
 
     public void init(LocalizationText localizationTextToUse)
     {
@@ -21,7 +23,6 @@ public class LanguagesEditorWindow : EditorWindow {
             displayLanguageFields();
             EditorGUILayout.EndHorizontal();
         }
-
     }
 
     /// <summary>
@@ -34,7 +35,7 @@ public class LanguagesEditorWindow : EditorWindow {
         EditorGUILayout.LabelField("Languages : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
         EditorGUILayout.Space();
 
-        leftScrollPos = EditorGUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(leftSizeWidth + 100));
+        leftScrollPos = EditorGUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(leftSizeWidth + 130));
 
         for (int i = 0; i < localizationText.fileAndLang.Count; i++)
         {
@@ -83,10 +84,24 @@ public class LanguagesEditorWindow : EditorWindow {
         EditorGUILayout.LabelField("List of the " + localizationText.currentLangLoaded  + " language text : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
         EditorGUILayout.Space();
 
+        // display text order by key type
+        List<List<LocalizationElement>> localizationTextOrdererByKey = localizationText.getElementsByType();
 
-        for (int i = 0; i < localizationText.localizationDatas.elements.Count; i++)
+        foreach (List<LocalizationElement> itemsForKeyType in localizationTextOrdererByKey)
         {
-            localizationText.localizationDatas.elements[i].text = EditorGUILayout.TextField(localizationText.localizationDatas.elements[i].key, localizationText.localizationDatas.elements[i].text);
+            string[] keySplitted = itemsForKeyType[0].key.Split('_');
+
+            EditorGUILayout.BeginHorizontal("Box");
+            EditorGUILayout.LabelField(keySplitted[keySplitted.Length -1] + " : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
+            EditorGUILayout.EndHorizontal();
+
+            for (int i = 0; i < itemsForKeyType.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(itemsForKeyType[i].key, GUILayout.Height(keyAndTextHeight), GUILayout.Width(200));
+                itemsForKeyType[i].text = EditorGUILayout.TextArea(itemsForKeyType[i].text, GUILayout.Height(keyAndTextHeight));
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
         EditorGUILayout.EndScrollView();
@@ -101,6 +116,5 @@ public class LanguagesEditorWindow : EditorWindow {
         EditorGUILayout.Space();
 
         EditorGUILayout.EndVertical();
-
     }
 }

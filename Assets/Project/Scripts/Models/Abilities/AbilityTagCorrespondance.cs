@@ -16,8 +16,8 @@ public static class AbilityTagCorrespondance
             case AbilityTag.Heal: return new List<StatType>() { };
             case AbilityTag.Support: return new List<StatType>() { };
             case AbilityTag.Physic: return new List<StatType>() { StatType.Physical };
-            case AbilityTag.Elemental: return new List<StatType>() { StatType.Lightning, StatType.Fire, StatType.Ice, StatType.Wind  };
-            case AbilityTag.Lightning: return new List<StatType>() { StatType.Lightning};
+            case AbilityTag.Elemental: return new List<StatType>() { StatType.LightningDamage, StatType.Fire, StatType.Ice, StatType.Wind  };
+            case AbilityTag.Lightning: return new List<StatType>() { StatType.LightningDamage};
             case AbilityTag.Fire: return new List<StatType>() { StatType.Fire };
             case AbilityTag.Wind: return new List<StatType>() { StatType.Wind };
             case AbilityTag.Ice: return new List<StatType>() { StatType.Ice };

@@ -5,37 +5,37 @@ public static class StatDescription
 {
     public static string getStatDescription(float value, StatType statType, StatBonusType bonusType = StatBonusType.Pure)
     {
-        string description = "";
+        string description = getBonusTypeDescription(bonusType, value);
+        string statTypeDescription;
         switch (statType)
         {
-            case StatType.CastSpeed: description = "cast speed"; break;
-            case StatType.AttackSpeed: description = "attack speed"; break;
-            case StatType.AttackRange: description = "attack range"; break;
-            case StatType.ProjectileDamage: description = "projectile damage"; break;
-            case StatType.ProjectileSpeed: description = "projectile speed"; break;
-            case StatType.NumberOfProjectile: description = "projectile"; break;
-            case StatType.AreaDamage: description = "area damage"; break;
-            case StatType.AreaSize: description = "area size"; break;
-            case StatType.MovementSpeed: description = "movement speed"; break;
-            default: description = statType.ToString(); break;
+            case StatType.LightningDamage: statTypeDescription = "LightningDamage_Description".localize(); break;
+            case StatType.CastSpeed: statTypeDescription = "CastSpeed_Description".localize(); break;
+            case StatType.AttackSpeed: statTypeDescription = "AttackSpeed_Description".localize(); break;
+            case StatType.AttackRange: statTypeDescription = "AttackRange_Description".localize(); break;
+            case StatType.ProjectileDamage: statTypeDescription = "ProjectileDamage_Description".localize(); break;
+            case StatType.ProjectileSpeed: statTypeDescription = "ProjectileSpeed_Description".localize(); break;
+            case StatType.NumberOfProjectile: statTypeDescription = "Projectile_Description".localize(); break;
+            case StatType.AreaDamage: statTypeDescription = "AreaDamage_Description".localize(); break;
+            case StatType.AreaSize: statTypeDescription = "AreaSize_Description".localize(); break;
+            case StatType.MovementSpeed: statTypeDescription = "MovementSpeed_Description".localize(); break;
+            default: statTypeDescription = statType.ToString(); break;
         }
 
-        description = getBonusTypeDescription(bonusType, value) + description;
-
-        return description;
+        return description.Replace("{Description}", statTypeDescription).sentenceFormat();
     }
 
     static string getBonusTypeDescription(StatBonusType bonusType, float value)
     {
-        string description = "";
+        string description;
         switch (bonusType)
         {
-            case StatBonusType.Pure: description = "{0} bonus "; break;
-            case StatBonusType.additional: description = value > 0 ? "{0}% additionnal" : "{0}% reduced"; break;
-            case StatBonusType.Multiplied: description = value > 0 ? "{0}% more" : "{0}% less"; break;
+            case StatBonusType.Pure: description = "PureBonus_Description".localize(); break;
+            case StatBonusType.additional: description = value > 0 ? "AdditionalBonus_Description".localize() : "ReducedBonus_Description".localize(); break;
+            case StatBonusType.Multiplied: description = value > 0 ? "MoreBonus_Description".localize() : "LessBonus_Description".localize(); break;
             default: description = ""; break;
         }
 
-        return description.Replace("{0}", value.ToString());
+        return description.Replace("{Value}", value.ToString());
     }
 }

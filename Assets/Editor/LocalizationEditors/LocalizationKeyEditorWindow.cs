@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
+using System.Linq;
 
 public class LocalizationKeyEditorWindow : EditorWindow
 {
@@ -22,12 +24,16 @@ public class LocalizationKeyEditorWindow : EditorWindow
     float keyAndTextHeight = 50;
     float keyWidth = 150;
 
+    // key editor
+    bool keyEditorMode = false;
+    List<string> keysName;
+    string[] keys;
+
     public void init(LocalizationText localizationTextToUse)
     {
         localizationText = localizationTextToUse;
-
-
-        if(!displayList && !displayNewKeyForm)
+        
+        if (!displayList && !displayNewKeyForm)
         {
             if (GUILayout.Button("List of the keys"))
                 displayList = true;
@@ -39,7 +45,6 @@ public class LocalizationKeyEditorWindow : EditorWindow
                 displayNewKeyForm = true;
             }
         }
-      
 
         if (displayList)
             displayKey();
@@ -50,22 +55,54 @@ public class LocalizationKeyEditorWindow : EditorWindow
 
     void displayKey()
     {
-        if (GUILayout.Button("Back", GUILayout.Width(50)))
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button(" < Back", GUILayout.Width(50)))
             displayList = false;
+       
+        if (GUILayout.Button(keyEditorMode ? "Validate Change" : "Edit Key Names", GUILayout.Width(150)))
+        {
+            if (keyEditorMode)
+                updateKeysName();
+            else
+                keysName = localizationText.getKeys().ToList();
+            keyEditorMode = !keyEditorMode;
+        }
+        EditorGUILayout.EndHorizontal();
+
 
         localizationText.loadLocalizedText("English");
 
+        keys = localizationText.getKeys();
+
         scrollPosForKeys = EditorGUILayout.BeginScrollView(scrollPosForKeys);
 
-        for (int i = 0; i < localizationText.localizationDatas.elements.Count; i++)
+        // Editor mode
+        if (keyEditorMode)
         {
-            EditorGUILayout.BeginHorizontal("Box");
-            EditorGUILayout.LabelField(localizationText.localizationDatas.elements[i].key, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
-            if (GUILayout.Button("Remove") && EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete " + localizationText.localizationDatas.elements[i].key + " key ?", "Yes", "No"))
+            keys = localizationText.getKeys();
+            for (int i = 0; i < keys.Length; i++)
+            {
+                EditorGUILayout.BeginHorizontal("Box");
+                GUILayout.FlexibleSpace();
+                keysName[i] = EditorGUILayout.TextField(keysName[i], GUILayout.Width(350));
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+        // classic mode
+        else
+        {
+            for (int i = 0; i < keys.Length; i++)
+            {
+                EditorGUILayout.BeginHorizontal("Box");
+
+                EditorGUILayout.LabelField(keys[i], new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
+                if (GUILayout.Button("Remove", GUILayout.Width(150)) && EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete " + keys[i] + " key ?", "Yes", "No"))
                 {
                     removeKey(localizationText.localizationDatas.elements[i].key);
                 }
-            EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
         EditorGUILayout.EndScrollView();
@@ -84,7 +121,11 @@ public class LocalizationKeyEditorWindow : EditorWindow
         if (localizationText.localizationDatas == null)
             localizationText.loadLocalizedText("English");
 
-        newKey = EditorGUILayout.TextField("New Key : ", newKey);
+        EditorGUILayout.BeginHorizontal("Box");
+        GUILayout.FlexibleSpace();
+        newKey = EditorGUILayout.TextField("New Key : ", newKey, GUILayout.Width(350));
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.EndHorizontal();
 
         if (localizationText.localizationDatas.elements.Exists(x => x.key == newKey) && EditorUtility.DisplayDialog("Error", "The key already exist !", "Ok"))
         {
@@ -95,7 +136,7 @@ public class LocalizationKeyEditorWindow : EditorWindow
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.BeginVertical("Box");
+        EditorGUILayout.BeginVertical();
 
         EditorGUILayout.LabelField("Set a value for each language", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
 
@@ -128,5 +169,10 @@ public class LocalizationKeyEditorWindow : EditorWindow
         displayNewKeyForm = false;
         newKey = "";
         EditorGUI.FocusTextInControl("");
+    }
+
+    void updateKeysName()
+    {
+        localizationText.updateKeysName(keysName, keys);
     }
 }

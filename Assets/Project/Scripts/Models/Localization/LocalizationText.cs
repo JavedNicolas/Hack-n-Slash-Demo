@@ -22,7 +22,7 @@ public class LocalizationText : ScriptableObject
     /// <returns></returns>
     public string getTextForKey(string key)
     {
-        LocalizationItem localizationItem = _localizationDatas.elements.Find(x => x.key == key);
+        LocalizationElement localizationItem = _localizationDatas.elements.Find(x => x.key == key);
         return localizationItem == null ? "" : localizationItem.text;
     }
 
@@ -56,7 +56,7 @@ public class LocalizationText : ScriptableObject
         for(int i =0; i < langs.Length; i++)
         {
             loadLocalizedText(langs[i]);
-            _localizationDatas.elements.Add(new LocalizationItem(key, newText[i]));
+            _localizationDatas.elements.Add(new LocalizationElement(key, newText[i]));
             saveLocalizedText();
         }
     }
@@ -105,15 +105,84 @@ public class LocalizationText : ScriptableObject
         File.WriteAllText(filePath, dataAsJson);
     }
 
+    /// <summary>
+    /// check if there is a language loaded
+    /// </summary>
+    /// <returns></returns>
     public bool hasLanguageDataLoaded()
     {
         return localizationDatas != null ? true : false;
     }
 
+    /// <summary>
+    /// Unload localizatation
+    /// </summary>
     public void unloadLocalizationData()
     {
         _localizationDatas = null;
         _currentLangLoaded = "";
+    }
+
+    /// <summary>
+    /// Get a list of all the keys
+    /// </summary>
+    /// <returns></returns>
+    public string[] getKeys()
+    {
+        List<string> keys = new List<string>();
+        foreach(LocalizationElement elements in localizationDatas.elements)
+        {
+            keys.Add(elements.key);
+        }
+
+        return keys.ToArray();
+    }
+
+    /// <summary>
+    /// get all the localization element organized by type
+    /// </summary>
+    /// <returns></returns>
+    public List<List<LocalizationElement>> getElementsByType()
+    {
+        List<List<LocalizationElement>> elementByType = new List<List<LocalizationElement>>();
+
+        List<string> keyTypes = new List<string>();
+        foreach(string key in getKeys())
+        {
+            // split the key
+            string[] splittedKey = key.Split('_');
+            // get the last part
+            string lastSplittedKeyPart = splittedKey[splittedKey.Length - 1];
+
+            // if it's not already in the array add it to the list
+            if (!keyTypes.Contains(lastSplittedKeyPart))
+                keyTypes.Add(lastSplittedKeyPart);
+        }
+
+        foreach(string keyType in keyTypes)
+        {
+            List<LocalizationElement> localizationElements = new List<LocalizationElement>();
+            localizationElements.AddRange(localizationDatas.elements.FindAll(x => x.key.Contains(keyType)));
+            elementByType.Add(localizationElements);
+        }
+
+        return elementByType;
+    }
+
+    public void updateKeysName(List<string> keysNameModifed, string[] oldKeys)
+    {
+        foreach(LanguageFiles languageFiles in _fileAndLang)
+        {
+            loadLocalizedText(languageFiles.language);
+            for (int i = 0; i < keysNameModifed.Count; i++)
+            {
+                LocalizationElement element = localizationDatas.elements.Find(x => x.key == oldKeys[i]);
+                if (element != null)
+                    element.key = keysNameModifed[i];
+
+            }
+            saveLocalizedText();
+        }    
     }
 }
 

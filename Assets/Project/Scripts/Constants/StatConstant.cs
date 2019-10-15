@@ -16,7 +16,7 @@ public enum StatType
     Physical,
     Ice,
     Fire,
-    Lightning,
+    LightningDamage,
     Wind,
 
     // ability speed

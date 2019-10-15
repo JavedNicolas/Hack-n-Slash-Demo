@@ -9,7 +9,7 @@ public class NewLanguageEditorWindow : EditorWindow
     static LocalizationText localizationText;
 
     string newLang;
-    LocalizationItem[] newTexts;
+    LocalizationElement[] newTexts;
 
     Vector2 scrollPos;
 
@@ -22,9 +22,9 @@ public class NewLanguageEditorWindow : EditorWindow
 
         if(newTexts == null || newTexts.Length != localizationText.getTextElementCount())
         {
-            newTexts = new LocalizationItem[localizationText.getTextElementCount()];
+            newTexts = new LocalizationElement[localizationText.getTextElementCount()];
             for (int i = 0; i < newTexts.Length; i++)
-                newTexts[i] = new LocalizationItem();
+                newTexts[i] = new LocalizationElement();
         }
      
         displayForm();
@@ -77,13 +77,13 @@ public class NewLanguageEditorWindow : EditorWindow
         string fileName = fileNameWithoutExtension + ".json";
         string filePath = ScriptableObjectConstant.FullLocalizedJsonFolder + fileName;
 
-        JsonWrappingClass<LocalizationItem> jsonWrapper = new JsonWrappingClass<LocalizationItem>(newTexts.ToList());
+        JsonWrappingClass<LocalizationElement> jsonWrapper = new JsonWrappingClass<LocalizationElement>(newTexts.ToList());
         string dataAsJson = JsonUtility.ToJson(jsonWrapper);
         File.WriteAllText(filePath, dataAsJson);
 
         localizationText.addLanguage(newLang, (Object)Resources.Load<Object>(ScriptableObjectConstant.ResourceLocalizedJsonFolder + fileNameWithoutExtension));
         newLang = "";
-        newTexts = new LocalizationItem[0];
+        newTexts = new LocalizationElement[0];
         EditorGUI.FocusTextInControl("");
     }
 }

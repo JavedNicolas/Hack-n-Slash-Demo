@@ -4,20 +4,20 @@ using UnityEngine;
 [System.Serializable]
 public class LocalizationDatas
 {
-    [SerializeField] public List<LocalizationItem> elements = new List<LocalizationItem>();
+    [SerializeField] public List<LocalizationElement> elements = new List<LocalizationElement>();
 }
 
 [System.Serializable]
-public class LocalizationItem
+public class LocalizationElement
 {
     [SerializeField] public string key;
     [SerializeField] public string text;
 
-    public LocalizationItem()
+    public LocalizationElement()
     {
     }
 
-    public LocalizationItem(string key, string text)
+    public LocalizationElement(string key, string text)
     {
         this.key = key;
         this.text = text;

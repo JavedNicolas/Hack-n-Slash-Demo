@@ -29,6 +29,6 @@ public abstract class Effect
     {
         string newDescription = description.Replace("{Element}", DescriptionText.getElementTypeText(element));
         newDescription = newDescription.Replace("{Value}", buffedValue.ToString());
-        return newDescription;
+        return newDescription.sentenceFormat();
     }
 }

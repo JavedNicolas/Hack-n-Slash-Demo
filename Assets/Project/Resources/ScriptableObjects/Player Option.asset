@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28f481c83390444dae789fa48de17a1, type: 3}
   m_Name: Player Option
   m_EditorClassIdentifier: 
-  _lang: English
+  _lang: "Fran\xE7ais"
