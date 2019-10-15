@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = ScriptableObjectConstant.effectMenuName + "Recycle Effect", fileName = "Recycle Effect")]
 public class RecycleEffect : Effect
 {
+    protected override string description => "Recycle_Description".localize();
+
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
         UIInventorySlot inventorySlotUI = target.GetComponent<UIInventorySlot>();

@@ -267,25 +267,6 @@ MonoBehaviour:
   inventorySlotPrefab: {fileID: 3592209779250753517, guid: 1cafa02f469e44e4eb22fa64c365681f,
     type: 3}
   _numberOfSlotPerLine: 7
---- !u!1 &432539239 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7447079957248460692, guid: aea83fd657f71414497d3322cd1ddc2c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7447079957869135887}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &432539241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 432539239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 552fff710d862eb4a89b8b98a4fad4f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _key: Level_Text
 --- !u!1 &468682454 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 860337237959972608, guid: 17a0325e5036817459ed6d190390b019,
@@ -3830,7 +3811,7 @@ PrefabInstance:
     - target: {fileID: 8901576039468648795, guid: 4558d022dcf8d0a42a0b9ed1c26f675b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 205.51
+      value: 205.50977
       objectReference: {fileID: 0}
     - target: {fileID: 8901576039468648795, guid: 4558d022dcf8d0a42a0b9ed1c26f675b,
         type: 3}

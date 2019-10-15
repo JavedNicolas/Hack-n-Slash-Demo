@@ -23,6 +23,7 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
     ItemTargetType targetType;
     InteractableObjectType interactableType;
     int numberOfEffect;
+    List<int> effectsIndex = new List<int>();
     List<ItemEffectAndValue> effects = new List<ItemEffectAndValue>();
 
     #region Right panel (The form)
@@ -53,7 +54,8 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
                 EditorGUILayout.LabelField("Effect n° " + i + " : ", centerTitle);
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Effect :");
-                effects[i].effect = (Effect)EditorGUILayout.ObjectField(effects[i].effect, typeof(Effect), true);
+                effectsIndex[i] = EditorGUILayout.Popup(effectsIndex[i], EffectList.getEffectsNames());
+                effects[i].effect = EffectList.effects[effectsIndex[i]];
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
@@ -76,18 +78,8 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
 
     void updateEffectsListsSize(int size)
     {
-        while (effects.Count != size)
-        {
-            if (effects.Count < size)
-            {
-                effects.Add(new ItemEffectAndValue());
-            }
-            else if (effects.Count > size)
-            {
-                effects.RemoveAt(effects.Count - 1);
-            }
-        }
-
+        effects.updateSize(size);
+        effectsIndex.updateSize(size);
     }
     #endregion
 
@@ -109,6 +101,11 @@ public class ItemDatabaseWindow : DatabaseWindows<ItemDatabaseModel>
             targetType = item.targetType;
             numberOfEffect = item.effects.Count;
             effects = item.effects;
+            effectsIndex.updateSize(effects.Count);
+            for(int i = 0; i < effects.Count; i++)
+            {
+                effectsIndex[i] = EffectList.getIndexfor(effects[i].effect.getName());
+            }
         }
     }
 

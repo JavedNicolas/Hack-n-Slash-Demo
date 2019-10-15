@@ -7,7 +7,7 @@ public class ItemEffectAndValuesDatabaseModel
 {
     [Header("Effect and values")]
     [SerializeField] public float value;
-    [SerializeField] public string effectGUID;
+    [SerializeField] public string effectName;
 
     [Header("Starting time")]
     [SerializeField] public EffectUseBy usedBy;
@@ -17,7 +17,7 @@ public class ItemEffectAndValuesDatabaseModel
 
     public ItemEffectAndValuesDatabaseModel(ItemEffectAndValue effectAndValue, ResourcesList resourcesList)
     {
-        effectGUID = resourcesList.getGUIDFor(effectAndValue.effect);
+        effectName = effectAndValue.effect.getName();
         value = effectAndValue.value;
         usedBy = effectAndValue.usedBy;
         statTypes = effectAndValue.statTypes;
@@ -25,7 +25,7 @@ public class ItemEffectAndValuesDatabaseModel
 
     public ItemEffectAndValue dataBaseModelToItemEffectAndValue(ResourcesList resourcesList)
     {
-        Effect effect = (Effect)resourcesList.getObject<ScriptableObject>(effectGUID);
+        Effect effect = EffectList.effects.Find(x => x.getName() == effectName);
         ItemEffectAndValue itemEffectAndValue = new ItemEffectAndValue(value, effect, usedBy, statTypes);
         return itemEffectAndValue;
     }

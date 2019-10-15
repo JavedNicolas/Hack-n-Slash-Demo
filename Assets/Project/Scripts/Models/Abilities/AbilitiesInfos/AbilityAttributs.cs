@@ -25,10 +25,7 @@ public class AbilityAttributs : ScriptableObject
     "This will not allow the ability to cross through walls.")]
     [SerializeField] private bool _checkForRange = true;
 
-    [SerializeField] private List<AbilityEffectAndValue> _effectAndValues = new List<AbilityEffectAndValue>();
-
-    
-    
+    [HideInInspector][SerializeField] private List<AbilityEffectAndValue> _effectAndValues = new List<AbilityEffectAndValue>();
 
     public new string name { get => _name;}
     public string description { get => _description; }

@@ -11,7 +11,7 @@ public class LocalizationTextHubEditorWindow : EditorWindow
     static NewLanguageEditorWindow newLanguageEditor;
     static LocalizationKeyEditorWindow newLocalizationKeyEditor;
 
-    int currentTab;
+    static int currentTab;
 
     [MenuItem("Localization/Edit Text")]
     static void showWindow()
@@ -26,6 +26,29 @@ public class LocalizationTextHubEditorWindow : EditorWindow
         window.Show();
     }
 
+    #region localization menu items
+    [MenuItem("Localization/Edit languages")]
+    static void showAbilityDB()
+    {
+        showWindow();
+        currentTab = 0;
+    }
+
+    [MenuItem("Localization/Localizaion Keys")]
+    static void showEnemyDB()
+    {
+        showWindow();
+        currentTab = 1;
+    }
+
+    [MenuItem("Localization/Add language")]
+    static void showItemDB()
+    {
+        showWindow();
+        currentTab = 2;
+    }
+    #endregion
+
     private void OnGUI()
     {
         // set localizedText 
@@ -34,7 +57,6 @@ public class LocalizationTextHubEditorWindow : EditorWindow
             localizationText = Resources.Load<LocalizationText>(ScriptableObjectConstant.localizedTextPath);
             localizationText.unloadLocalizationData();
         }
-            
 
         localizationText = (LocalizationText)EditorGUILayout.ObjectField(localizationText, typeof(LocalizationText), false);
 

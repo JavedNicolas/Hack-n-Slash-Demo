@@ -18,4 +18,9 @@ public static class StringExtension
         }
         return bufferString;
     }
+
+    public static string localize(this string str)
+    {
+        return LocalizationManager.instance == null ? "" : LocalizationManager.instance.getText(str);
+    }
 }

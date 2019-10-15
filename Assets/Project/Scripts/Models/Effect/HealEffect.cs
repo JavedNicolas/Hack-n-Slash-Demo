@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = ScriptableObjectConstant.effectMenuName + "Self Heal Effect", fileName = "self Heal Effect")]
-public class SelfHealEffect : Effect
+public class HealEffect : Effect
 {
+    protected override string description => "Heal_Description".localize();
+
     public override bool canBeUsed(BeingBehavior sender, GameObject target, float value)
     {
         if (sender.being.currentLife != sender.being.stats.maxLife)

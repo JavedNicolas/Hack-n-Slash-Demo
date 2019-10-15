@@ -9,19 +9,11 @@ public class AbilityEffectAndValue
     [SerializeField] public List<float> valuesByLevel = new List<float>();
     [SerializeField] public List<StatType> statTypes = new List<StatType>();
 
-    [SerializeField] public Effect effect;
+    [SerializeField] public int effectIndex;
+    [SerializeField] public Element element;
 
     [Header("Starting time")]
     [SerializeField] public EffectUseBy effectType;
-
-    public AbilityEffectAndValue() { }
-
-    public AbilityEffectAndValue(List<float> valuesByLevel, Effect effect, EffectUseBy startingTime, EffectUseBy effectType)
-    {
-        this.valuesByLevel = valuesByLevel;
-        this.effect = effect;
-        this.effectType = effectType;
-    }
 
     /// <summary>
     /// use the effect with the buffed attributs
@@ -33,7 +25,7 @@ public class AbilityEffectAndValue
     {
         float currentLevelValue = getValueForCurrentLevel(getCurrentLevel(effectOrigin));
         float valueBuffed = sender.being.stats.getBuffedValue(currentLevelValue, statTypes, GetType().Name, getStat(effectOrigin));
-        effect.use(sender, target, valueBuffed, effectOrigin);
+        getEffect().use(sender, target, valueBuffed, effectOrigin);
 
         return true;
     }
@@ -67,7 +59,7 @@ public class AbilityEffectAndValue
         string description = "";
         float value = getValueForCurrentLevel(getCurrentLevel(effectOrigin));
         float buffedValue = owner.stats.getBuffedValue(value, statTypes, effectOrigin.getName(), getStat(effectOrigin));
-        description += effect.description.Replace("{0}", buffedValue.ToString());
+        description += getEffect().getDescription(buffedValue, element);
 
         return description;
     }
@@ -83,6 +75,11 @@ public class AbilityEffectAndValue
             return valuesByLevel[currentLevel - 1];
 
         return valuesByLevel[valuesByLevel.Count - 1];
+    }
+
+    Effect getEffect()
+    {
+        return EffectList.effects[effectIndex];
     }
 }
 

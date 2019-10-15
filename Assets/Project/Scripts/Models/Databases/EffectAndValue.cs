@@ -41,13 +41,13 @@ public class ItemEffectAndValue
 
     public string getName()
     {
-        throw new System.NotImplementedException();
+        return "";
     }
 
     public string getDescription(Being owner, DatabaseElement effectOrigin)
     {
         float buffedValue = owner.stats.getBuffedValue(value, statTypes, effectOrigin.getName());
 
-        return effect.description.Replace("{0}" , buffedValue.ToString()); ;
+        return effect.getDescription(buffedValue);
     }
 }

@@ -16,7 +16,6 @@ public class LanguagesEditorWindow : EditorWindow {
         // display localizedText edition
         if (localizationText != null)
         {
-            EditorGUI.FocusTextInControl("");
             EditorGUILayout.BeginHorizontal();
             displayLanguage();
             displayLanguageFields();
@@ -35,7 +34,7 @@ public class LanguagesEditorWindow : EditorWindow {
         EditorGUILayout.LabelField("Languages : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
         EditorGUILayout.Space();
 
-        leftScrollPos = EditorGUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(leftSizeWidth + 50));
+        leftScrollPos = EditorGUILayout.BeginScrollView(leftScrollPos, GUILayout.Width(leftSizeWidth + 100));
 
         for (int i = 0; i < localizationText.fileAndLang.Count; i++)
         {
@@ -44,6 +43,14 @@ public class LanguagesEditorWindow : EditorWindow {
             if (GUILayout.Button("Edit"))
             {
                 localizationText.loadLocalizedText(localizationText.fileAndLang[i].language);
+            }
+
+            if (GUILayout.Button("Remove"))
+            {
+                if (EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete " + localizationText.fileAndLang[i].language + " language ?", "Yes", "No"))
+                {
+                    localizationText.fileAndLang.RemoveAt(i);
+                }
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -59,7 +66,7 @@ public class LanguagesEditorWindow : EditorWindow {
     void displayLanguageFields()
     {
         EditorGUILayout.BeginVertical();
-        rightScrollPos = EditorGUILayout.BeginScrollView(leftScrollPos);
+        rightScrollPos = EditorGUILayout.BeginScrollView(rightScrollPos);
    
         if (!localizationText.hasLanguageDataLoaded())
         {
@@ -73,7 +80,6 @@ public class LanguagesEditorWindow : EditorWindow {
             EditorGUILayout.LabelField("No JSON file in the Localized Text  ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
         }
 
-
         EditorGUILayout.LabelField("List of the " + localizationText.currentLangLoaded  + " language text : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
         EditorGUILayout.Space();
 
@@ -85,14 +91,16 @@ public class LanguagesEditorWindow : EditorWindow {
 
         EditorGUILayout.EndScrollView();
 
-
         if (GUILayout.Button("Save language"))
         {
             localizationText.saveLocalizedText();
+            EditorGUI.FocusTextInControl("");
+            localizationText.unloadLocalizationData();
         }
 
         EditorGUILayout.Space();
 
         EditorGUILayout.EndVertical();
+
     }
 }

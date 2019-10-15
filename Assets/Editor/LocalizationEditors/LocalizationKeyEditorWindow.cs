@@ -61,8 +61,10 @@ public class LocalizationKeyEditorWindow : EditorWindow
         {
             EditorGUILayout.BeginHorizontal("Box");
             EditorGUILayout.LabelField(localizationText.localizationDatas.elements[i].key, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
-            if (GUILayout.Button("Remove"))
-                removeKey(localizationText.localizationDatas.elements[i].key);
+            if (GUILayout.Button("Remove") && EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete " + localizationText.localizationDatas.elements[i].key + " key ?", "Yes", "No"))
+                {
+                    removeKey(localizationText.localizationDatas.elements[i].key);
+                }
             EditorGUILayout.EndHorizontal();
         }
 
@@ -79,7 +81,18 @@ public class LocalizationKeyEditorWindow : EditorWindow
         for(int i = 0; i < langs.Length; i++)
             langs[i] = localizationText.fileAndLang[i].language;
 
+        if (localizationText.localizationDatas == null)
+            localizationText.loadLocalizedText("English");
+
         newKey = EditorGUILayout.TextField("New Key : ", newKey);
+
+        if (localizationText.localizationDatas.elements.Exists(x => x.key == newKey) && EditorUtility.DisplayDialog("Error", "The key already exist !", "Ok"))
+        {
+            newKey = "";
+            
+            EditorGUI.FocusTextInControl("");
+        }
+
         EditorGUILayout.Space();
 
         EditorGUILayout.BeginVertical("Box");
@@ -113,6 +126,7 @@ public class LocalizationKeyEditorWindow : EditorWindow
     {
         localizationText.addKeyToLanguages(newKey, newTexts, langs);
         displayNewKeyForm = false;
+        newKey = "";
         EditorGUI.FocusTextInControl("");
     }
 }

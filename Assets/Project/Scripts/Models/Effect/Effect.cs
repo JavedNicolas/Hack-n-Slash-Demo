@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Effect : ScriptableObject
+public abstract class Effect
 {
-    [Header("Effect attributs")]
-    [SerializeField] string _description;
-    public string description { get { return _description; } }
+    protected abstract string description { get; }
 
     /// <summary>
     /// Apply the effect
@@ -22,4 +20,15 @@ public abstract class Effect : ScriptableObject
     /// <returns>Return true if the effect can be used</returns>
     public abstract bool canBeUsed(BeingBehavior sender, GameObject target, float value);
 
+    public string getName()
+    {
+        return GetType().ToString();
+    }
+
+    public virtual string getDescription(float buffedValue, Element element = Element.None)
+    {
+        string newDescription = description.Replace("{Element}", DescriptionText.getElementTypeText(element));
+        newDescription = newDescription.Replace("{Value}", buffedValue.ToString());
+        return newDescription;
+    }
 }
