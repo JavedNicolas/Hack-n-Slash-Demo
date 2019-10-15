@@ -56,6 +56,7 @@ public class LocalizationTextHubEditorWindow : EditorWindow
         {
             localizationText = Resources.Load<LocalizationText>(ScriptableObjectConstant.localizedTextPath);
             localizationText.unloadLocalizationData();
+            localizationText.loadBaseLanguage();
         }
 
         localizationText = (LocalizationText)EditorGUILayout.ObjectField(localizationText, typeof(LocalizationText), false);

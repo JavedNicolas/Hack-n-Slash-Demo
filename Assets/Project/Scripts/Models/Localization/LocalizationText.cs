@@ -9,11 +9,22 @@ public class LocalizationText : ScriptableObject
 {
     [SerializeField] List<LanguageFiles> _fileAndLang;
     LocalizationDatas _localizationDatas;
+    LocalizationDatas _baseLocalizationDatas;
     string _currentLangLoaded = "";
 
     public List<LanguageFiles> fileAndLang => _fileAndLang;
     public LocalizationDatas localizationDatas => _localizationDatas;
+    public LocalizationDatas baseLocalizationDatas => _baseLocalizationDatas;
     public string currentLangLoaded => _currentLangLoaded;
+
+
+    /// <summary>
+    /// Load the base language which is english
+    /// </summary>
+    public void loadBaseLanguage()
+    {
+        loadLocalizedText("English", true);
+    }
 
     /// <summary>
     /// get the key for a key
@@ -41,8 +52,7 @@ public class LocalizationText : ScriptableObject
     /// </summary>
     public int getTextElementCount()
     {
-        loadLocalizedText("English");
-        return _localizationDatas == null || localizationDatas.elements == null ? 0 :  localizationDatas.elements.Count;
+        return _baseLocalizationDatas == null || _baseLocalizationDatas.elements == null ? 0 : _baseLocalizationDatas.elements.Count;
     }
 
     /// <summary>
@@ -58,6 +68,7 @@ public class LocalizationText : ScriptableObject
             loadLocalizedText(langs[i]);
             _localizationDatas.elements.Add(new LocalizationElement(key, newText[i]));
             saveLocalizedText();
+            loadBaseLanguage();
         }
     }
 
@@ -74,6 +85,7 @@ public class LocalizationText : ScriptableObject
             if (index != -1)
                 localizationDatas.elements.RemoveAt(index);
             saveLocalizedText();
+            loadBaseLanguage();
         }
     }
 
@@ -81,14 +93,17 @@ public class LocalizationText : ScriptableObject
     /// Load the localized text from the json
     /// </summary>
     /// <param name="lang">The language to load</param>
-    public void loadLocalizedText(string lang)
+    public void loadLocalizedText(string lang, bool baseLang = false)
     {
         LanguageFiles languageFiles = _fileAndLang.Find(x => x.language == lang);
         if (languageFiles.file != null)
         {
             string filePath = AssetDatabase.GetAssetPath(languageFiles.file);
             string dataAsJson = File.ReadAllText(filePath);
-            _localizationDatas = JsonUtility.FromJson<LocalizationDatas>(dataAsJson);
+            if(baseLang)
+                _baseLocalizationDatas = JsonUtility.FromJson<LocalizationDatas>(dataAsJson);
+            else
+                _localizationDatas = JsonUtility.FromJson<LocalizationDatas>(dataAsJson);
             _currentLangLoaded = lang;
         }
     }
@@ -130,7 +145,7 @@ public class LocalizationText : ScriptableObject
     public string[] getKeys()
     {
         List<string> keys = new List<string>();
-        foreach(LocalizationElement elements in localizationDatas.elements)
+        foreach(LocalizationElement elements in _baseLocalizationDatas.elements)
         {
             keys.Add(elements.key);
         }

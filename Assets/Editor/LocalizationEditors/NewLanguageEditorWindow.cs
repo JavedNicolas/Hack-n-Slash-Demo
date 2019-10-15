@@ -33,7 +33,6 @@ public class NewLanguageEditorWindow : EditorWindow
     private void displayForm()
     {
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-        localizationText.loadLocalizedText("English");
         newLang = EditorGUILayout.TextField("Language name : ", newLang);
 
         EditorGUILayout.LabelField("Please set those key's texts : ", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold });
@@ -41,9 +40,8 @@ public class NewLanguageEditorWindow : EditorWindow
 
         for (int i = 0; i < newTexts.Length; i++)
         {
-            string text = newTexts[i].text;
-            string key = localizationText.localizationDatas.elements[i].key;
-            string englishText = localizationText.localizationDatas.elements[i].text;
+            string key = localizationText.baseLocalizationDatas.elements[i].key;
+            string englishText = localizationText.baseLocalizationDatas.elements[i].text;
 
             EditorGUILayout.BeginHorizontal();
 

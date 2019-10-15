@@ -69,9 +69,6 @@ public class LocalizationKeyEditorWindow : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-
-        localizationText.loadLocalizedText("English");
-
         keys = localizationText.getKeys();
 
         scrollPosForKeys = EditorGUILayout.BeginScrollView(scrollPosForKeys);
@@ -97,9 +94,9 @@ public class LocalizationKeyEditorWindow : EditorWindow
                 EditorGUILayout.BeginHorizontal("Box");
 
                 EditorGUILayout.LabelField(keys[i], new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
-                if (GUILayout.Button("Remove", GUILayout.Width(150)) && EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete " + keys[i] + " key ?", "Yes", "No"))
+                if (GUILayout.Button("Remove", GUILayout.Width(150)) && EditorUtility.DisplayDialog("Are you sure ?", "Do you want to delete the key : " + keys[i] + " ?", "Yes", "No"))
                 {
-                    removeKey(localizationText.localizationDatas.elements[i].key);
+                    removeKey(keys[i]);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -118,16 +115,13 @@ public class LocalizationKeyEditorWindow : EditorWindow
         for(int i = 0; i < langs.Length; i++)
             langs[i] = localizationText.fileAndLang[i].language;
 
-        if (localizationText.localizationDatas == null)
-            localizationText.loadLocalizedText("English");
-
         EditorGUILayout.BeginHorizontal("Box");
         GUILayout.FlexibleSpace();
         newKey = EditorGUILayout.TextField("New Key : ", newKey, GUILayout.Width(350));
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
 
-        if (localizationText.localizationDatas.elements.Exists(x => x.key == newKey) && EditorUtility.DisplayDialog("Error", "The key already exist !", "Ok"))
+        if (localizationText.baseLocalizationDatas.elements.Exists(x => x.key == newKey) && EditorUtility.DisplayDialog("Error", "The key already exist !", "Ok"))
         {
             newKey = "";
             

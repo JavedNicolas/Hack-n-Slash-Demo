@@ -12,6 +12,10 @@ public class LanguagesEditorWindow : EditorWindow {
     float leftSizeWidth = 200;
     float keyAndTextHeight = 50;
 
+    // keys and categories
+    bool[] displayKeyTypeCategory;
+    List<List<LocalizationElement>> localizationTextOrdererByKey;
+
     public void init(LocalizationText localizationTextToUse)
     {
         localizationText = localizationTextToUse;
@@ -44,6 +48,11 @@ public class LanguagesEditorWindow : EditorWindow {
             if (GUILayout.Button("Edit"))
             {
                 localizationText.loadLocalizedText(localizationText.fileAndLang[i].language);
+                localizationTextOrdererByKey = localizationText.getElementsByType();
+                displayKeyTypeCategory = new bool[localizationTextOrdererByKey.Count];
+                // display the first elements
+                if(displayKeyTypeCategory.Length> 0)
+                    displayKeyTypeCategory[0] = true;
             }
 
             if (GUILayout.Button("Remove"))
@@ -85,23 +94,29 @@ public class LanguagesEditorWindow : EditorWindow {
         EditorGUILayout.Space();
 
         // display text order by key type
-        List<List<LocalizationElement>> localizationTextOrdererByKey = localizationText.getElementsByType();
 
-        foreach (List<LocalizationElement> itemsForKeyType in localizationTextOrdererByKey)
+
+        for(int j = 0; j < localizationTextOrdererByKey.Count; j++)
         {
+            List<LocalizationElement> itemsForKeyType = localizationTextOrdererByKey[j];
             string[] keySplitted = itemsForKeyType[0].key.Split('_');
 
             EditorGUILayout.BeginHorizontal("Box");
             EditorGUILayout.LabelField(keySplitted[keySplitted.Length -1] + " : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
+
+            // hide or display the category
+            if (GUILayout.Button(displayKeyTypeCategory[j] ? "Hide" : "Display"))
+                displayKeyTypeCategory[j] = !displayKeyTypeCategory[j];
             EditorGUILayout.EndHorizontal();
 
-            for (int i = 0; i < itemsForKeyType.Count; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(itemsForKeyType[i].key, GUILayout.Height(keyAndTextHeight), GUILayout.Width(200));
-                itemsForKeyType[i].text = EditorGUILayout.TextArea(itemsForKeyType[i].text, GUILayout.Height(keyAndTextHeight));
-                EditorGUILayout.EndHorizontal();
-            }
+            if(displayKeyTypeCategory[j])
+                for (int i = 0; i < itemsForKeyType.Count; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField(itemsForKeyType[i].key, GUILayout.Height(keyAndTextHeight), GUILayout.Width(200));
+                    itemsForKeyType[i].text = EditorGUILayout.TextArea(itemsForKeyType[i].text, GUILayout.Height(keyAndTextHeight));
+                    EditorGUILayout.EndHorizontal();
+                }
         }
 
         EditorGUILayout.EndScrollView();
