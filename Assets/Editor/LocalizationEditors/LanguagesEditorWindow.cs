@@ -39,9 +39,6 @@ public class LanguagesEditorWindow : EditorWindow {
 
         for (int i = 0; i < localizationText.fileAndLang.Count; i++)
         {
-            if (localizationText.fileAndLang[i].file == null)
-                continue;
-
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(localizationText.fileAndLang[i].language);
             if (GUILayout.Button("Edit"))
@@ -70,6 +67,12 @@ public class LanguagesEditorWindow : EditorWindow {
             EditorGUILayout.EndScrollView();
             return;
         }
+
+        if (localizationText.fileAndLang.Find(x => x.language == localizationText.currentLangLoaded).file == null)
+        {
+            EditorGUILayout.LabelField("No JSON file in the Localized Text  ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
+        }
+
 
         EditorGUILayout.LabelField("List of the " + localizationText.currentLangLoaded  + " language text : ", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
         EditorGUILayout.Space();

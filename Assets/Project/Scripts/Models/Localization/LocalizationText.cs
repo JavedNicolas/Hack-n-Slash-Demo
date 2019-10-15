@@ -8,14 +8,29 @@ using System.IO;
 public class LocalizationText : ScriptableObject
 {
     [SerializeField] List<LanguageFiles> _fileAndLang;
-    public List<LanguageFiles> fileAndLang => _fileAndLang;
-
     LocalizationDatas _localizationDatas;
-    public LocalizationDatas localizationDatas => _localizationDatas;
-
     string _currentLangLoaded = "";
+
+    public List<LanguageFiles> fileAndLang => _fileAndLang;
+    public LocalizationDatas localizationDatas => _localizationDatas;
     public string currentLangLoaded => _currentLangLoaded;
 
+    /// <summary>
+    /// get the key for a key
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public string getTextForKey(string key)
+    {
+        LocalizationItem localizationItem = _localizationDatas.elements.Find(x => x.key == key);
+        return localizationItem == null ? "" : localizationItem.text;
+    }
+
+    /// <summary>
+    /// Add a ned language
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="file"></param>
     public void addLanguage(string name, Object file)
     {
         _fileAndLang.Add(new LanguageFiles(name, file));

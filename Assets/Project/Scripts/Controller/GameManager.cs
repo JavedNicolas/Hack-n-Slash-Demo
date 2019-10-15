@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] ResourcesList _resourcesList;
     public ResourcesList resourcesList { get => _resourcesList; set => _resourcesList = value; }
 
+    [Header("Player options")]
+    [SerializeField] PlayerOptions _playerOptions;
+
     public static GameManager instance;
 
     CurrentMapInstance _currentMapInstanceController;
@@ -56,6 +59,7 @@ public class GameManager : MonoBehaviour
     {
         _currentMapInstanceController = new CurrentMapInstance();
         _spawningController = GetComponent<Spawner>();
+        loadPlayerOptions();
         loadDatabases();
         initplayer();
         _currentMapInstanceController.loadInstance(_spawningController, playerTMp);
@@ -67,13 +71,18 @@ public class GameManager : MonoBehaviour
         getMouseClick();
     }
 
-    public void initplayer()
+    void initplayer()
     {
         playerTMp = new Player("Player Test", 200, 100, 1, 1, 25, new List<int>() { 0, 1, 2 }, playerPrefab, 1);
         playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.additional, 20, "Test2"));
         playerTMp.stats.addStat(new Stat(StatType.Life, StatBonusType.Multiplied, 20, "Test2"));
         playerTMp.stats.addStat(new Stat(StatType.AreaSize, StatBonusType.additional, 50, "Test2", StatInfluencedBy.Level, 1));
         playerTMp.stats.addStat(new Stat(StatType.CastSpeed, StatBonusType.Pure, 1, "Test2"));
+    }
+
+    void loadPlayerOptions()
+    {
+        LocalizationManager.instance.changeLang(_playerOptions.lang);
     }
 
     /// <summary>
@@ -89,7 +98,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Get mouse click and fire the delegate
     /// </summary>
-    public void getMouseClick()
+    void getMouseClick()
     {
         bool overInterface;
         if (Input.GetButton(InputConstant.leftMouseButtonName))
