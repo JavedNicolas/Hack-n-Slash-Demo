@@ -133,4 +133,5 @@ public class GameManager : MonoBehaviour
 
     public PlayerBehavior GetPlayerBehavior() { return _currentMapInstanceController.playerGameObject.GetComponentInChildren<PlayerBehavior>(); }
     public Inventory getPlayerInventory() { return getPlayer().inventory; }
+    public bool playerHasPassivePointAvailable() { return getPlayer().getRemainingPassivepoint() > 0 ? true : false;  }
 }
