@@ -6,10 +6,11 @@ using UnityEngine.AI;
 public class BeingBehavior : InteractableObject
 {
     [Header("Being model")]
-    public Transform transformToMove;
+    public NavMeshAgent navMeshAgent;
 
-    [Header("Speed")]
-    public float gameObjectHeight;
+    [Header("Navigation")]
+    [SerializeField] private float gameObjectHeight;
+    [SerializeField] private float slowingDistance = 1;
 
     [Header("Team")]
     public bool canBeAttacked = true;
@@ -20,6 +21,9 @@ public class BeingBehavior : InteractableObject
     protected NavMeshPath _navMeshPath;
     protected Vector3 _yOffset;
 
+    // Mesh attributs
+    [SerializeField] private Animator _animator;
+    private MeshFilter _meshFilter;
 
     //Ability manager
     protected AbilityManager _abilityManager;
@@ -46,18 +50,42 @@ public class BeingBehavior : InteractableObject
 
     void Awake()
     {
+        if (navMeshAgent != null)
+        {
+            _animator = navMeshAgent.gameObject.GetComponent<Animator>();
+            if (_animator == null)
+                _animator = navMeshAgent.gameObject.GetComponentInChildren<Animator>();
+        }
+
         _abilityManager = GetComponent<AbilityManager>();
         _navMeshPath = new NavMeshPath();
-        _yOffset = new Vector3(0, gameObjectHeight / 2 - 0.1f, 0);
+        setMeshYOffset();
     }
 
     void FixedUpdate()
     {
         clampCurrentLife();
-        getToNextPathNode();
         updateBuffs();
         interactWithCurrentInteractionTarget();
-        
+        playRunAnimation();
+    }
+
+    void setMeshYOffset()
+    {
+        _yOffset = new Vector3(0, 0, 0);
+    }
+
+    // play the run animation smoothly
+    void playRunAnimation()
+    {
+        if (_animator == null)
+            return;
+
+        if (navMeshAgent.velocity.magnitude == 0)
+            _animator.SetFloat("SpeedPercent", 0);
+        else
+            _animator.SetFloat("SpeedPercent", 1);
+
     }
 
     void clampCurrentLife()
@@ -83,30 +111,10 @@ public class BeingBehavior : InteractableObject
     /// <param name="distanceToStop">Distance from which the move need to be stopped</param>
     public void moveTo(Vector3 destination, float distanceToStop = 0.1f)
     {
-        NavMesh.CalculatePath(transformToMove.position, destination, NavMesh.AllAreas, _navMeshPath);
         this._distanceToStop = distanceToStop;
 
-        if (_navMeshPath.corners.Length > 0)
-            _path = _navMeshPath.corners.ToList();
-
-        getToNextPathNode();
-    }
-
-    /// <summary>
-    /// Move to the next path point
-    /// </summary>
-    protected void getToNextPathNode()
-    {
-        if (_path.Count == 0)
-            return;
-        Vector3 currentPathDestination = _path[0] + _yOffset;
-        transformToMove.position = Vector3.MoveTowards(transformToMove.position, currentPathDestination, being.stats.movementSpeed* Time.deltaTime);
-        lookAtStraight(currentPathDestination);
-
-        if (transformToMove.position == currentPathDestination || (_path.Count == 1 && Vector3.Distance(transformToMove.position, currentPathDestination) <= _distanceToStop))
-        {
-            _path.RemoveAt(0);
-        }
+        navMeshAgent.stoppingDistance = this._distanceToStop;
+        navMeshAgent.SetDestination(destination);
     }
 
     /// <summary>

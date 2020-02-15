@@ -12,6 +12,7 @@ public class Spawner : MonoBehaviour
         GameObject enemyGO = Instantiate(newEnemy.model);
         enemyGO.GetComponent<EnemyBehavior>().being = newEnemy;
         enemyGO.transform.position = new Vector3(Random.Range(-90, -20), 2, 50);
+        enemyGO.transform.eulerAngles = newEnemy.model.transform.eulerAngles;
         enemyGO.transform.SetParent(beingParentObject);
         return enemyGO;
     }
@@ -20,7 +21,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject playerGO = Instantiate(player.model);
         playerGO.GetComponentInChildren<PlayerBehavior>().being = player;
-        playerGO.transform.position = new Vector3(-87, 2, 8);
+        playerGO.transform.position = new Vector3(-87, 0, 8);
         playerGO.transform.SetParent(beingParentObject);
         return playerGO;
     }
